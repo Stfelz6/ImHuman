@@ -25,6 +25,9 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { useRef } from 'react';
 import { useThree } from '@react-three/fiber';
+import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../../graphql/queries';
+import * as mutations from '../../../graphql/mutations';
 import {
   EffectComposer,
   DepthOfField,
@@ -40,13 +43,14 @@ import {
   useCubeTexture,
   MeshDistortMaterial
 } from "@react-three/drei";
+import awsconfig from '../../../aws-exports';
+Amplify.configure(awsconfig);
 
 export const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   const { address, account } = useGetAccountInfo();
   /* eslint-disable */ 
   const Balance = (parseInt(account.balance)/1000000000000000000).toPrecision(5);
   const location = useLocation();
-  console.log(account.balance);
   // console.log(6*10000000000000000000)
   let inputValue = useRef(0);
 
@@ -54,6 +58,7 @@ export const DashboardLayout = ({ children }: React.PropsWithChildren) => {
     inputValue.current = event.target.value;
     console.log(inputValue.current)
   }
+
 
   useEffect(() => {
     const pathnameWithoutFirstSlash = location.pathname.substring(1);
@@ -71,25 +76,6 @@ export const DashboardLayout = ({ children }: React.PropsWithChildren) => {
     }
   }
   return (
-    /* eslint-disable */ 
-    // <div className='container py-4'>
-    //   <div className='row'>
-    //     <div className='col-12 col-md-10 mx-auto'>
-    //       <div className='card shadow-sm border-0'>
-    //         <div className='card-body p-1'>
-    //           <div className='card border-0 bg-primary'>
-    //             <div className='card-body text-center p-4'>
-    //               <TopInfo />
-    //               <Actions />
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       <div className={styles.transactions}>{children}</div>
-    //     </div>
-    //   </div>
-    // </div>
-
     /* eslint-disable */ 
 <div className='d-flex flex-fill align-items-center container custom-container'>
 <div className='row w-100'>

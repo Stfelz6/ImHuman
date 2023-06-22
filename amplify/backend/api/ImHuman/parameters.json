@@ -1,0 +1,6 @@
+{
+  "AppSyncApiName": "ImHuman",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthModeLastUpdated": "2023-06-22T23:04:20.847Z"
+}

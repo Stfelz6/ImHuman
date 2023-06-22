@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { EnvironmentsEnum } from '@multiversx/sdk-dapp/types';
 import {
   TransactionsToastList,
@@ -20,8 +20,30 @@ import {
 import { PageNotFound, Unlock } from 'pages';
 import { routeNames } from 'routes';
 import { routes } from 'routes';
+// import { DataStore } from '@aws-amplify/datastore';
+import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import * as queries from './graphql/queries';
+import * as mutations from './graphql/mutations';
+// import * as subscriptions from './graphql/subscriptions';
+// import schema from './models/schema'
+// import {
+// 	BrowserRouter as Router,
+// 	Routes,
+// 	Route,
+// 	Link,
+//   Navigate,
+//   useParams,
+//   useNavigate
+// } from 'react-router-dom';
+// import consoleLogo from './consoleLogo.png';
+// import AddQuestionJUSTTESTING from './Components/HUD/LoggedDashboard/AddQuestionJUSTTESTING';
+
+import awsconfig from './aws-exports';
+Amplify.configure(awsconfig);
+// var AWS = require("aws-sdk");
 
 export const App = () => {
+
   return (
     <AxiosInterceptorContext.Provider>
       <AxiosInterceptorContext.Interceptor

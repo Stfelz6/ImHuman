@@ -1,0 +1,25 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  wallet: String
+  herotag: String
+  totalDonated: Float
+  role: String
+  date_joined: String
+  Campaigns: [Campaign] @hasMany(indexName: "byUser", fields: ["id"])
+}
+
+type Campaign @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  wallet: String
+  title: String
+  description: String
+  amountNeeded: Float
+  amountCurrent: Float
+  deadline: String
+  photo: String
+  docs: String
+  isActive: String
+  needsValidation: String
+  urgencyLevel: String
+  userID: ID! @index(name: "byUser")
+}
