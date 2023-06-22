@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import {
   faChartSimple,
   faFileSignature,
@@ -26,9 +27,14 @@ import {
 import { AuthRedirectWrapper } from 'components';
 import { walletConnectV2ProjectId } from 'config';
 
+import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../../graphql/queries';
+import * as mutations from '../../../graphql/mutations';
 import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 import { FormatAmount } from '@multiversx/sdk-dapp/UI/FormatAmount';
 import { contractAddress } from 'config';
+import awsconfig from '../../../aws-exports';
+Amplify.configure(awsconfig);
 
 export const Navbar = () => {
   const commonProps = {
@@ -38,6 +44,26 @@ export const Navbar = () => {
 
   const { address, account } = useGetAccountInfo();
   {/* eslint-disable */ }
+
+  
+  function getCurrentDateAsString() {
+    const currentDate = new Date();
+  
+    // Get day, month, and year components
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Month is zero-based, so add 1
+    const year = currentDate.getFullYear();
+  
+    // Pad single-digit day/month with leading zero if necessary
+    const formattedDay = day < 10 ? `0${day}` : day;
+    const formattedMonth = month < 10 ? `0${month}` : month;
+  
+    // Format the date as "dd/mm/yyyy"
+    const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
+  
+    return formattedDate;
+  }
+
 
   const [HeroTag, setHerotag] = useState('');
   const fetchHeroTag = () =>{
@@ -69,6 +95,56 @@ export const Navbar = () => {
   const handleLogout = () => {
     logout(`${window.location.origin}/unlock`);
   };
+
+  
+  const putNewUserToCustomDB = async () => {
+    const userDetails = {
+      wallet:account.address,
+      herotag:HeroTag,
+      totalDonated:0,
+      role:'User',
+      date_joined: getCurrentDateAsString()
+    };
+    try {
+      const newUser = await API.graphql({
+        query: mutations.createUser,
+        variables: { input: userDetails }
+      });
+      console.log("User has been created:", newUser);
+    } catch (error) {
+      console.log("Error creating user:", error);
+    }
+  }
+
+  const createUserIfNotExists = async () => {
+    try {
+      const variables = {
+        filter: {
+          wallet: {
+            eq: account.address
+          }
+        }
+      };
+
+      const response = await (API.graphql({ query: queries.listUsers, variables: variables }) as Promise<{ data: { listUsers: { items: any[] } } }>);
+      console.log(response);
+      if (response.data.listUsers.items.length === 0) {
+        putNewUserToCustomDB();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+  
+  
+  useEffect(() => {
+    // assuming "account" is the user object
+    if (account) {
+      createUserIfNotExists();
+    }
+  }, [account, HeroTag]); // you may want to add "account" as a dependency as well
+  
 
   
   const CustomTooltipLogout = (props) => (
