@@ -1,0 +1,402 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.bg-img{
+  background-color: black !important;
+  /* background-image: url('assets/img/back.png'); */
+  background-size: cover;
+  opacity: 1;
+}
+
+.login-methods{
+  width: 100px;
+}
+
+.text-footer{
+  opacity: 0.8;
+  font-size: 13px;
+}
+footer{
+  backdrop-filter: blur(30px) !important;
+  animation: animation-load-card 6s;
+}
+
+.card{
+  background: rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+}
+
+.custom-connect-btn{
+  background-color: #131313 !important;
+  border: none !important;
+  background-image: url('assets/img/logo.png') !important;
+  background-size: 40px 40px !important;
+  background-position: 0px;
+  background-repeat: repeat-y;
+  padding-top: 6px !important;
+  padding-left: 53px !important;
+  padding-right: 15px;
+  padding-bottom: 6px !important;
+  border-radius: 10px;
+  font-size: 16px !important;
+  color: white !important;
+  transition: all ease-in 0.3s !important;
+  opacity: 0.7;
+  cursor: pointer !important;
+}
+
+.custom-connect-btn:hover{
+  opacity: 1;
+}
+
+.custom-btn-heart{
+  background-color: #b316c6 !important;
+  padding-top: 6px;
+  padding-bottom: 5px;
+  padding-left: 7px;
+  padding-right: 7px;
+  border-radius: 7px;
+  top:-9px;
+  left:8px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.custom-btn-lock{
+  background-color: #b316c6 !important;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 7px;
+  padding-right: 7px;
+  border-radius: 7px;
+  top:-9px;
+  left:8px;
+  position: absolute;
+  cursor: default !important;
+}
+
+.custom-button{
+  background-color: #b316c6 !important;
+  border: none !important;
+  color: black !important;
+  font-size: 15px !important;
+}
+
+.custom-connect-text{
+  color: white;
+  opacity: 0.6;
+  transition: all ease-in 0.3s;
+}
+
+.hint-login{
+  opacity: 0.5;
+}
+
+.custom-connect-text:hover{
+  color: white;
+  opacity:0.9;
+}
+
+.navbar-pos{
+  z-index: 10 !important;
+}
+
+.custom-card-login-vars{
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  z-index: 10 !important;
+}
+
+.custom-card-main{
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(8px);
+  z-index: 10 !important;
+}
+
+.custom-icon{
+  color: black !important;
+}
+
+
+.animation-load-card{
+  transition: all ease-in 3s !important;
+  animation-name: animation-load-card !important;
+  animation-duration: 3s !important;
+}
+
+@keyframes animation-load-card {
+  0%{
+    opacity:0;
+  }
+  50%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+
+.animation-load-card-login{
+  transition: all ease-in 3s !important;
+  animation-name: animation-load-card-login !important;
+  animation-duration: 1s !important;
+}
+
+@keyframes animation-load-card-login {
+  0%{
+    opacity:0;
+  }
+  50%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+.heart-icon{
+  color: white !important;
+}
+
+.animation-heart{
+  transition: all ease-in 3s !important;
+  animation-name: example-heart !important;
+  animation-duration: 3s !important;
+}
+
+.tooltip-custom-1{
+  top:30px !important;
+  right:-45px !important;
+  position: absolute !important;
+}
+
+.tooltip-custom-2{
+  top:10px !important;
+  position: absolute !important;
+}
+
+.right{
+  position: relative !important;
+}
+
+@keyframes example-heart {
+  0%{
+    opacity:0;
+  }
+  50%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+
+.animation-q1{
+  transition: all ease-in 3s !important;
+  animation-name: animation-q1 !important;
+  animation-duration: 3s !important;
+}
+
+@keyframes animation-q1 {
+  0%{
+    opacity:0;
+  }
+  50%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+
+.animation-q2{
+  transition: all ease-in 3s !important;
+  animation-name: animation-q2 !important;
+  animation-duration: 4s !important;
+}
+
+@keyframes animation-q2 {
+  0%{
+    opacity:0;
+  }
+  50%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+.animation-q3{
+  transition: all ease-in 3s !important;
+  animation-name: animation-q3 !important;
+  animation-duration: 5s !important;
+}
+
+@keyframes animation-q3 {
+  0%{
+    opacity:0;
+  }
+  50%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+.animation-btn{
+  transition: all ease-in 3s !important;
+  animation-name: animation-btn !important;
+  animation-duration: 6s !important;
+}
+
+@keyframes animation-btn {
+  0%{
+    opacity:0;
+  }
+  50%{
+    opacity:0;
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+.custom-quote-1{
+  text-align: left !important;
+  color: gray;
+  font-size: 18px;
+}
+.strongus{
+  color: white !important;
+}
+
+.video-particle{
+  position: relative; 
+  right: 0; 
+  bottom: 0;
+  width: 100% !important; 
+  height: 100%  !important;
+  opacity: 1;
+}
+
+.custom-container{
+  padding-left:40px !important;
+}
+
+.custom-input-field{
+  background-color: #131313;
+  border: none;
+  width: 100%;
+  padding-left:20px;
+  padding-top:8px;
+  padding-bottom:8px;
+  top:22px;
+  left: -15px;
+  position: relative;
+  border-radius: 10px;
+}
+
+.custom-balance-field{
+  background-color: #131313;
+  border: none;
+  width: 100%;
+  text-align: center !important;
+  padding-right:20px;
+  padding-left:20px;
+  padding-top:8px;
+  padding-bottom:8px;
+  top:22px;
+  position: relative;
+  border-radius: 10px;
+  right:20px;
+  cursor: default;
+  box-shadow: inset -2px 0px 0.1px rgb(212, 0, 255), -2px 0px 0.1px rgb(212, 0, 255);
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
+
+input, select, textarea{
+  color: white;
+  font-size: 16px !important;
+}
+
+.custom-hint{
+  position: absolute;
+  pointer-events: none;
+  cursor: default;
+  text-decoration: none;
+  color: white;
+  opacity: 0.4;
+  top: 7px;
+  font-size: 12px;
+  text-align: right !important;
+  right: 0px !important;
+}
+
+.custom-icon-egld{
+  position: absolute;
+  left:30%;
+  border-radius: 300px !important;
+  border: solid 5px #131313 !important;
+  margin-top:12px !important;
+  z-index: 20;
+}
+.card-body{
+  width: 100% !important;
+  /* background: rgba(0, 0, 0, 0.3) !important; */
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.custom-logout-btn{
+  color: white;
+  opacity: 0.7;
+  transition: all ease-in 0.3s;
+}
+
+.custom-logout-btn:hover{
+  color: white;
+  opacity: 1;
+}
+
+.build-tag{
+  color: white !important;
+  opacity: 0.2 !important;
+}
+
+#webgl-output{
+  width: 100%;
+  height: 100%;
+}
