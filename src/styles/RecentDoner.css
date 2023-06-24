@@ -2,20 +2,26 @@
     width: 200px;
     height: 35px;
     background-color: transparent;
-    border: 1px solid;
-    border-image: linear-gradient(to right, var(--human-pink), var(--human-cyan)) 1;
+    border: 1px solid var(--human-greydark);
+    /* border-image: linear-gradient(to right, var(--human-pink), var(--human-cyan)) 1; */
     border-radius: 7px;
     display: flex;
     align-items: center;
     justify-content: center;
     padding-left: 13px;
     margin-right: 1rem; /* Add margin to right side */
+    transform: scale(0.9);
+    transition: all ease-in-out 0.3s;
+}
+
+.container-recent-doner:hover {
+    transform: scale(1);
 }
 
 .user-text{
     text-align: center;
     opacity: 0.9;
-    color: var(--human-white);
+    color: var(--human-black);
     width: 60%;
     overflow:hidden; 
     white-space:nowrap; 
@@ -25,14 +31,14 @@
 
 .amount-text{
     opacity: 0.9;
-    color: var(--human-white);
+    color: var(--human-black);
     width: 30%;
 }
 
 
 .joined-text{
     opacity: 0.9;
-    color: var(--human-white);
+    color: var(--human-black);
     width: 40%;
     text-align: center;
     font-size: 10px;

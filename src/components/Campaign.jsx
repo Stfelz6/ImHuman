@@ -26,38 +26,13 @@ import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../styles/home.css'
-import Campaign from './Campaign';
 import { faArrowAltCircleDown, faArrowDown, faArrowUp, faCalendar, faFilter, faHeadSideCoughSlash } from '@fortawesome/free-solid-svg-icons';
 
 
-export default function Home(){
-    const [dateDirection, setDateDirection] = useState(false);
+export default function Campaign(){
 
     return(<>
-      <div className='container-big'>
-        <div className='container-filters'>
-          <div className='filtru-date' onClick={()=>{setDateDirection(!dateDirection)}}>Date posted
-            {
-              dateDirection ? (<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowDown}/></>):(<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowUp}/></>)
-            }
-          </div>
-        </div>
-
-        <div className='container-campaigns'>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-          <Campaign/>
-        </div>
-
+      <div className='container-campaign'>
       </div>
     </>)
 

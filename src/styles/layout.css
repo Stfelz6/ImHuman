@@ -53,7 +53,7 @@
 
 .BL{
     width: 50%;
-    border-left: 2px solid var(--human-pink);
+    border-left: 0px solid var(--human-greydark);
     position: relative;
     display: flex;
     user-select: none !important;
@@ -65,7 +65,7 @@
     width: 60px;        
     z-index: 399;
     opacity: 0.7;
-    background: linear-gradient(90deg, var(--human-black) 40%, rgba(0,0,0,0.2) 100%);
+    background: linear-gradient(90deg, var(--human-white) 40%, rgba(255,255,255,0.2) 100%);
 }
 
 .shadow-BL2{
@@ -75,12 +75,12 @@
     width: 60px;          
     z-index: 399;
     opacity: 0.7;
-    background: linear-gradient(270deg, var(--human-black) 40%, rgba(0,0,0,0.2) 100%);
+    background: linear-gradient(270deg, var(--human-white) 40%, rgba(255,255,255,0.2) 100%);
 }
 
 .BR{
     width: 50%;
-    border-right: 2px solid var(--human-pink);
+    border-right: 0px solid var(--human-greydark);
     position: relative;
     display: flex;
     user-select: none !important;
@@ -93,7 +93,7 @@
     width: 60px;       
     z-index: 399;
     opacity: 0.7;
-    background: linear-gradient(270deg, var(--human-black) 40%, rgba(0,0,0,0.2) 100%);
+    background: linear-gradient(270deg, var(--human-white) 40%, rgba(255,255,255,0.2) 100%);
 }
 
 
@@ -104,11 +104,11 @@
     width: 60px;         
     z-index: 399;
     opacity: 0.7;
-    background: linear-gradient(90deg, var(--human-black) 40%, rgba(0,0,0,0.2) 100%);
+    background: linear-gradient(90deg, var(--human-white) 40%, rgba(255,255,255,0.2) 100%);
 }
 
 .bottom-scroll-container {
-    background-color: var(--human-black);
+    background-color: var(--human-white);
     height: 50px;
     width: 100%;
     bottom: 0px;
@@ -136,15 +136,22 @@
   height: 8px;
   width: 20px;
   z-index: 299;
-  color: var(--human-pink);
-  stroke: var(--human-white);
+  color: var(--human-white);
+  stroke: var(--human-blue);
   border: none !important;
-  stroke-width: 20px;
+  stroke-width: 30px;
   left: 50%; /* Aligns horizontally to the center */
   transform: translateX(-50%) scale(7); /* Centers the element */
   transition: all ease-in-out 0.3s;
   cursor: pointer;
 }
+
+.arrowdown:hover{
+    color: var(--human-pink);
+    stroke: var(--human-white);
+    transform: translateX(-50%) scale(8); /* Centers the element */
+}
+
 .forall-container{
   position: absolute;
   bottom: 85px;
@@ -163,10 +170,10 @@
   left: 50%; /* Aligns horizontally to the center */
   transform: translateX(-50%); /* Centers the element */
 }
-  
 
-.arrowdown:hover{
-    transform: translateX(-50%) scale(8); /* Centers the element */
+.iconlabelsdoners{
+    position: relative;
+    top:4px;
 }
 
 .arrowdown2 {
@@ -174,7 +181,7 @@
     bottom: 12px;
     width: 470px;
     z-index: 399;
-    color: var(--human-white);
+    color: var(--human-greydark);
     text-align: center; /* Center the text horizontally */
     left: 50%; /* Move the element halfway across the container */
     transform: translateX(-50%); /* Adjust the position to center it accurately */
@@ -184,7 +191,7 @@
     justify-content: space-between;
     align-content: center;
     opacity: 0.5;
-  }
+}
   
 .label-recent-doners{
     width: 50%;

@@ -1,9 +1,11 @@
 :root {
   --human-white: #ffffff;
   --human-grey: #dedede;
+  --human-greydark: #969696;
   --human-black: #000000;
-  --human-pink: #ff00d0;
+  --human-pink: #d752ff;
   --human-cyan: #00e1ff;
+  --human-blue: #189ffa;
 }
 
 body {
@@ -39,7 +41,7 @@ code {
 }
 
 .custom-connect-btn{
-  background-color: #131313 !important;
+  background-color: var(--human-white) !important;
   border: none !important;
   background-image: url('assets/img/logo.png') !important;
   background-size: 40px 40px !important;
@@ -49,9 +51,10 @@ code {
   padding-left: 53px !important;
   padding-right: 15px;
   padding-bottom: 6px !important;
-  border-radius: 10px;
+  border-radius: 7px !important;
+  width: 213px;
   font-size: 16px !important;
-  color: white !important;
+  color: var(--human-black) !important;
   transition: all ease-in 0.3s !important;
   opacity: 0.7;
   cursor: pointer !important;

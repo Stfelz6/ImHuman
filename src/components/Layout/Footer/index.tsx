@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from 'react';
 import { ReactComponent as HeartIcon } from '../../../assets/img/heart.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowAltCircleDown, faArrowDown, faCircle, faHeart, faRectangleAd, faRectangleList, faSquare, faTriangleCircleSquare, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleDown, faArrowAltCircleLeft, faArrowAltCircleRight, faArrowDown, faArrowLeft, faCircle, faHeart, faRectangleAd, faRectangleList, faSquare, faTriangleCircleSquare, faTriangleExclamation } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/layout.css'
 import Heartbeat from 'components/Heartbeat';
 import RecentDoner from 'components/RecentDoner';
@@ -44,8 +44,8 @@ export const Footer = () => {
     }
     <FontAwesomeIcon border={true} className='arrowdown' onClick={()=>{setHoverDonateAll(!hoverDonateAll)}} icon={faHeart}/>
     <div className='arrowdown2'>
-      <div className='label-recent-doners'>Recent Donators</div>
-      <div className='label-recent-joiners'>Recent Users</div>
+      <div className='label-recent-doners'><FontAwesomeIcon border={true} className='iconlabelsdoners' icon={faArrowAltCircleLeft}/>Recent Donators</div>
+      <div className='label-recent-joiners'>Recent Users<FontAwesomeIcon border={true} className='iconlabelsdoners' icon={faArrowAltCircleRight}/></div>
     </div>
     <div className='bottom-scroll-container'>
       

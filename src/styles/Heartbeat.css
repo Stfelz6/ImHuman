@@ -13,7 +13,7 @@
     height: 20px; /* Adjust the height as needed */
     opacity: 1;
     transform: scaleY(0.4);
-    background-color:var(--human-pink);
+    background-color:var(--human-blue);
   }
   
   .heartbeat-animation {
