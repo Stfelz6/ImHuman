@@ -1,3 +1,11 @@
+:root {
+  --human-white: #ffffff;
+  --human-grey: #dedede;
+  --human-black: #000000;
+  --human-pink: #ff00d0;
+  --human-cyan: #00e1ff;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -15,7 +23,7 @@ code {
 }
 
 .bg-img{
-  background-color: black !important;
+  /* background-color: var(--human-black) !important; */
   /* background-image: url('assets/img/back.png'); */
   background-size: cover;
   opacity: 1;
@@ -23,15 +31,6 @@ code {
 
 .login-methods{
   width: 100px;
-}
-
-.text-footer{
-  opacity: 0.8;
-  font-size: 13px;
-}
-footer{
-  backdrop-filter: blur(30px) !important;
-  animation: animation-load-card 6s;
 }
 
 .card{
@@ -389,11 +388,6 @@ input[type=number]::-webkit-outer-spin-button {
 .custom-logout-btn:hover{
   color: white;
   opacity: 1;
-}
-
-.build-tag{
-  color: white !important;
-  opacity: 0.2 !important;
 }
 
 #webgl-output{

@@ -1,0 +1,41 @@
+.heartbeat-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px; /* Adjust the height as needed */
+    position: absolute;
+    width: 100%;
+    bottom:40px;
+  }
+  
+  .heartbeat-line {
+    width: 100%; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+    opacity: 1;
+    transform: scaleY(1);
+    background-color:var(--human-black);
+  }
+  
+  .heartbeat-animation {
+    opacity: 1;
+    animation: heartbeat 3s forwards ease-in-out;
+  }
+  
+  @keyframes heartbeat {
+    0% {
+        opacity: 1;
+        transform: scaleY(1);
+        background-color:var(--human-black);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(0.5);
+        background-color:var(--human-pink);
+    }
+    100% {
+        opacity: 1;
+        transform: scaleY(1);
+        background-color:var(--human-black);
+    }
+  }
+  
