@@ -12,29 +12,29 @@
     width: 100%; /* Adjust the width as needed */
     height: 20px; /* Adjust the height as needed */
     opacity: 1;
-    transform: scaleY(1);
-    background-color:var(--human-black);
+    transform: scaleY(0.4);
+    background-color:var(--human-pink);
   }
   
   .heartbeat-animation {
     opacity: 1;
-    animation: heartbeat 3s forwards ease-in-out;
+    /* animation: heartbeat 3s forwards ease-in-out; */
   }
   
   @keyframes heartbeat {
     0% {
         opacity: 1;
-        transform: scaleY(1);
+        transform: scaleY(0.7);
         background-color:var(--human-black);
     }
     50% {
         opacity: 1;
-        transform: scaleY(0.5);
+        transform: scaleY(0.4);
         background-color:var(--human-pink);
     }
     100% {
         opacity: 1;
-        transform: scaleY(1);
+        transform: scaleY(0.7);
         background-color:var(--human-black);
     }
   }

@@ -15,6 +15,7 @@ import RecentUser from 'components/RecentUser';
 export const Footer = () => {
 
   const [useri, setUseri] = useState([]);
+  const [hoverDonateAll, setHoverDonateAll] = useState(false);
 
   return (
     <>
@@ -34,9 +35,16 @@ export const Footer = () => {
     </div>
 
     <Heartbeat></Heartbeat>
-    <FontAwesomeIcon className='arrowdown' icon={faHeart}/>
+    {
+      hoverDonateAll && (
+      <>
+        <div className='forall-container'>Donate for all</div>
+      </>
+      )
+    }
+    <FontAwesomeIcon border={true} className='arrowdown' onClick={()=>{setHoverDonateAll(!hoverDonateAll)}} icon={faHeart}/>
     <div className='arrowdown2'>
-      <div className='label-recent-doners'>Recent Doners</div>
+      <div className='label-recent-doners'>Recent Donators</div>
       <div className='label-recent-joiners'>Recent Users</div>
     </div>
     <div className='bottom-scroll-container'>
@@ -60,6 +68,10 @@ export const Footer = () => {
           <RecentDoner />
           <RecentDoner />
           <RecentDoner />
+          <RecentDoner />
+          <RecentDoner />
+          <RecentDoner />
+          <RecentDoner />
         </Marquee>
       </div>
 
@@ -68,6 +80,10 @@ export const Footer = () => {
         <div className='shadow-BL2'></div>
         <Marquee velocity={5} direction="ltr" scatterRandomly={false} resetAfterTries={1} onInit={()=>{}} onFinish={()=>{}}>
           <RecentUser />      
+          <RecentUser />
+          <RecentUser />
+          <RecentUser />
+          <RecentUser />
           <RecentUser />
           <RecentUser />
           <RecentUser />

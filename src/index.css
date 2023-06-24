@@ -23,7 +23,7 @@ code {
 }
 
 .bg-img{
-  /* background-color: var(--human-black) !important; */
+  background-color: var(--human-grey);
   /* background-image: url('assets/img/back.png'); */
   background-size: cover;
   opacity: 1;
