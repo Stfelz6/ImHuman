@@ -4,8 +4,15 @@
   --human-greydark: #969696;
   --human-black: #000000;
   --human-pink: #d752ff;
+  --human-darkpink: #c615fc;
   --human-cyan: #00e1ff;
   --human-blue: #189ffa;
+  --human-darkblue: #0078c8;
+}
+
+::selection {
+  background: var(--human-pink);
+  color: var(--human-white);
 }
 
 body {
@@ -41,6 +48,8 @@ code {
 }
 
 .custom-connect-btn{
+  position: relative;
+  right: 4.4rem !important;
   background-color: var(--human-white) !important;
   border: none !important;
   background-image: url('assets/img/logo.png') !important;
@@ -113,7 +122,15 @@ code {
 }
 
 .navbar-pos{
-  z-index: 10 !important;
+}
+
+.allscreen{
+  position: absolute;
+  z-index: 400;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  background-color: black;
 }
 
 .custom-card-login-vars{
@@ -396,4 +413,29 @@ input[type=number]::-webkit-outer-spin-button {
 #webgl-output{
   width: 100%;
   height: 100%;
+}
+
+.searchBar{
+  position: relative;
+  width: 500px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  height: 40px;
+  left:4.4rem;
+  padding-left: 1rem;
+  padding-right: 3rem;
+  color: black;
+  z-index: 501 !important;
+  transition: all ease-in-out 0.3s;
+}
+.searchBarAnim{
+  width: 650px;
+}
+
+.iconSearch{
+  position: relative;
+  z-index: 20;
+  left:30px;
+  z-index: 502 !important;
 }

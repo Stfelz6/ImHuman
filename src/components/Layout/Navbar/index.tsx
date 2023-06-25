@@ -3,7 +3,8 @@ import { useEffect } from 'react';
 import {
   faChartSimple,
   faFileSignature,
-  faPowerOff
+  faPowerOff,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -26,7 +27,6 @@ import {
 } from '@multiversx/sdk-dapp/UI';
 import { AuthRedirectWrapper } from 'components';
 import { walletConnectV2ProjectId } from 'config';
-
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../../graphql/queries';
 import * as mutations from '../../../graphql/mutations';
@@ -137,7 +137,6 @@ export const Navbar = () => {
   }
   
   
-  
   useEffect(() => {
     // assuming "account" is the user object
     if (account) {
@@ -158,12 +157,21 @@ export const Navbar = () => {
       {address}
     </Tooltip>
   );
+  const [isInSearch, setIsInSearch] = useState(false);
 
   return (
+    <>
+    {
+      isInSearch && (
+      <div className='allscreen' onClick={()=>{setIsInSearch(false)}}></div>
+      )
+    }
+
     <BsNavbar className='px-4 py-3 animation-heart navbar-pos'>
+    <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search a campaign'></input>
+    <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
       <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
         {/* is logged in ? da / nu */}
-
         {isLoggedIn && (
           <>
             {/* <NavItem>
@@ -198,7 +206,6 @@ export const Navbar = () => {
         {isLoggedIn ? (
           HeroTag ? (
                       <OverlayTrigger placement="bottom" delay={10} overlay={CustomTooltipAddress}>
-                        <div className='ceva'>
                         <WalletConnectLoginButton
                           className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
                           loginButtonText={isLoggedIn ? (HeroTag ? HeroTag : censoredAddress ?? '') : 'xPortal Connect'}
@@ -210,7 +217,6 @@ export const Navbar = () => {
                               }
                             : {})}
                         /> 
-                        </div>
                       </OverlayTrigger>
                     ) : (
                         <WalletConnectLoginButton
@@ -240,5 +246,6 @@ export const Navbar = () => {
 
       </div>
     </BsNavbar>
+    </>
   );
 };
