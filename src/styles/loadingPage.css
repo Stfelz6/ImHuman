@@ -9,8 +9,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: bubbleOut 3s;
     border-radius: 0px;
+    transition: all ease-in-out 0.3s;
+    animation:  outanimation 1s 3s forwards;
+}
+
+@keyframes outanimation {
+    from{
+        top: 0;
+    }
+    to{
+        top: -1000px;
+    }
 }
   
 .loadingPageText{

@@ -26,10 +26,11 @@ import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../styles/home.css'
-import { faArrowAltCircleDown, faArrowDown, faArrowUp, faBoltLightning, faCalendar, faClose, faDove, faFile, faFilter, faHandshakeAlt, faHandSparkles, faHeadSideCoughSlash, faInfo, faInfoCircle, faMoneyBill, faMoneyCheck, faPeopleArrows, faPerson, faQuestion, faShare, faShareAlt, faShareAltSquare, faUser, faUserTie, faX } from '@fortawesome/free-solid-svg-icons';
+import { faArrowAltCircleDown, faArrowDown, faArrowUp, faBank, faBoltLightning, faCalendar, faClose, faDove, faFile, faFilter, faHandshakeAlt, faHandSparkles, faHeadSideCoughSlash, faInfo, faInfoCircle, faMoneyBill, faMoneyCheck, faPeopleArrows, faPerson, faQuestion, faRefresh, faShare, faShareAlt, faShareAltSquare, faUser, faUserTie, faX } from '@fortawesome/free-solid-svg-icons';
 import { faShareSquare, faSquareMinus } from '@fortawesome/free-regular-svg-icons';
 import LinearWithValueLabel from './LinearProgressWithLabel';
 import { PromptProps } from 'react-router-dom';
+import ContactMap from './ContactMap';
 
 
 export default function Campaign(props){
@@ -81,7 +82,7 @@ export default function Campaign(props){
       (
         <div className={`container-campaign-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`} >
           <FontAwesomeIcon className='close-container-full' icon={faClose} onClick={props.toggleMoreInfo}/>
-            <div className='container-campaign-full-1' style={{backgroundImage:`url(${props.campaignData.image})`}}>
+            <div className={`container-campaign-full-1 ${fullCampaignCategory === 'file' ? 'filemode' : ''}`} style={{backgroundImage:`url(${props.campaignData.image})`}}>
               <div className={`info-tag-people-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.noPeople}K <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie}/></div>
               <div className={`info-tag-donated-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.noPeople}K <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill}/></div>
               <div className={`info-tag-title ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.title}</div>
@@ -107,27 +108,72 @@ export default function Campaign(props){
               {
                 fullCampaignCategory === 'donate' ? 
                 (<> 
-                  <div className='box-details-donate'></div>
-                  <div className='qr-box-donate'>
-                   <img className='qr-image-details' src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png"/>
+                  <div className='box-details-donate'>
+                    <div className='forall-container-input2'>
+                      <div className='circle-logo-egld'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
+                      <input className='input-donation-forall2' type='number' placeholder='Amount'></input>
+                      <div className='input-donation-refresh-forall'>Send</div>
+                      <div className='container-balance2'>Balance: 0.4 EGLD</div>
+                    </div>
                   </div>
+                  
+                  <div className='box-details-donate2'>
+                    <div className='other-methods'>Other donating methods</div>
+                    <div className='other-methods-line'></div>
+                    <br></br>
+                    <div className='other-method1'><FontAwesomeIcon icon={faBank}/> Bank Accounts</div>
+                    <div className='other-method2'>RO11RNCB0049538375</div>
+                    <div className='other-method3'>RO11RNCB0074574593</div>
+                    <br></br>
+                    <div className='revolut-container'>
+                      <div className='other-method1'>Revolut</div>
+                      <div className='other-method2'>revolut.me/steflz</div>
+                      <div className='other-method3'>revolut.me/iamhuman</div>
+                    </div>
+                      <img className='qr-revolut' src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png"/>
+                  </div>
+                  
+
+                  {/* 
+                    <div className='qr-box-donate'>
+                     <img className='qr-image-details' src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png"/>
+                    </div> 
+                  */}
                 </>) :
                 fullCampaignCategory === 'story' ? 
                 (<>
 
                   <div className='container-text-story'>
-                    In a small town called Meadowville, there lived a young woman named Emily. Emily was a hardworking and kind-hearted individual who had fallen on tough times. She had recently lost her job and was struggling to make ends meet
-                    Emily lived in a modest apartment and was barely able to afford her basic necessities. She often skipped meals to save money and couldn't afford proper winter clothing to keep warm during the cold months. Despite her own challenges, she always maintained a positive attitude and never stopped believing that things would get better.
-                    One day, word about Emily's situation reached the community. The townspeople were deeply moved by her perseverance and decided to come together to help her. They organized a donation drive where they collected warm clothes, non-perishable food items, and essential supplies for Emily.
-                    The community's kindness didn't stop there. The local grocery store owner offered Emily a part-time job to help her regain financial stability. Additionally, a group of volunteers started a crowdfunding campaign to assist Emily in paying her rent and bills until she could find a new job.
-                    Overwhelmed with gratitude, Emily couldn't believe the generosity and support she received from her neighbors. Their collective efforts not only provided her with immediate relief but also restored her faith in humanity.
-                    With the support of the community, Emily was able to get back on her feet. She eventually found a new job and worked hard to rebuild her life. Inspired by the kindness she experienced, Emily became an active participant in community service initiatives, dedicated to helping others who were in need, just as she once was.
-                    This heartwarming story of compassion and solidarity reminds us of the power of community and the difference we can make in someone's life when we come together to lend a helping hand to those in need.
+                   {props.campaignData.description}
                   </div>
                 
                 </>) :
-                fullCampaignCategory === 'contact' ? (<></>) :
-                fullCampaignCategory === 'file' ? (<></>) : (<></>)
+                fullCampaignCategory === 'contact' ? (<>
+                <div className='container-contact'>
+                  
+                  <div className='contact-phoneNo'>
+                    Phone number: 07834785343
+                  </div>
+                  <div className='contact-email'>
+                    Email: iamhuman@gmail.com
+                  </div>
+                  <div className='contact-address'>
+                    Address: Bulevardul Ion C. Brătianu 44, București 030177
+                  </div>
+                    <ContactMap/>
+                  
+                </div>
+                </>) :
+                fullCampaignCategory === 'file' ? (<>
+                <div className='download-btn-full-container'>
+                  <div className='download-btn-full-text'>
+                    You can download all data files that atest veridicity of campaign.
+                  </div>
+                  <div className='download-btn-full'>
+                    Download
+                  </div>
+                </div>
+                </>) : (<></>)
               }
             </div>
         </div>
