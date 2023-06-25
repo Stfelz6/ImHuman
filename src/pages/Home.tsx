@@ -26,6 +26,7 @@ import { useThree } from '@react-three/fiber';
 import { AuthRedirectWrapper } from 'components';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import HomePage2 from '../components/Home';
 import {
   EffectComposer,
   DepthOfField,
@@ -166,6 +167,7 @@ const HomePage = () => {
 
 export const Home = () => (
   <AuthRedirectWrapper>
-    <HomePage />
+     {/* <HomePage /> */}
+    <HomePage2 />
   </AuthRedirectWrapper>
 );

@@ -127,7 +127,16 @@ export default function Campaign(props){
                 
                 </>) :
                 fullCampaignCategory === 'contact' ? (<></>) :
-                fullCampaignCategory === 'file' ? (<></>) : (<></>)
+                fullCampaignCategory === 'file' ? (<>
+                <div className='download-btn-full-container'>
+                  <div className='download-btn-full-text'>
+                    You can download all data files that atest veridicity of campaign.
+                  </div>
+                  <div className='download-btn-full'>
+                    Download
+                  </div>
+                </div>
+                </>) : (<></>)
               }
             </div>
         </div>

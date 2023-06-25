@@ -36,6 +36,12 @@ export default function Home(){
     const [category, setCategory] = useState('all');
     const [loadPage, setLoadPage] = useState(true);
     const [activeMoreInfoIndex, setActiveMoreInfoIndex] = useState(null);
+    
+    useEffect(() => {
+      const pathnameWithoutFirstSlash = location.pathname.substring(1);
+      const capitalizedPathname = pathnameWithoutFirstSlash.charAt(0).toUpperCase() + pathnameWithoutFirstSlash.substring(1);
+      document.title = `Home • Human`;
+    }, [location]);
 
     const toggleMoreInfo = (index) => {
       if (index === activeMoreInfoIndex) {

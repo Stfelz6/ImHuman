@@ -43,8 +43,8 @@ import {
   useCubeTexture,
   MeshDistortMaterial
 } from "@react-three/drei";
-import awsconfig from '../../../aws-exports.js';
-Amplify.configure(awsconfig);
+// import awsconfig from '../../../aws-exports.js';
+// Amplify.configure(awsconfig);
 
 export const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   const { address, account } = useGetAccountInfo();

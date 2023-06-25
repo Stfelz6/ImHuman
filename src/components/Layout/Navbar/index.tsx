@@ -34,8 +34,8 @@ import * as mutations from '../../../graphql/mutations';
 import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 import { FormatAmount } from '@multiversx/sdk-dapp/UI/FormatAmount';
 import { contractAddress } from 'config';
-import awsconfig from '../../../aws-exports.js';
-Amplify.configure(awsconfig);
+// import awsconfig from '../../../aws-exports.js';
+// Amplify.configure(awsconfig);
 
 export const Navbar = () => {
   const commonProps = {
