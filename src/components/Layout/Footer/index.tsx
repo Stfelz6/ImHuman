@@ -52,6 +52,7 @@ export const Footer = () => {
             <div className='circle-logo-egld'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
             <input className='input-donation-forall' type='number' placeholder='Amount'></input>
             <div className='input-donation-refresh-forall' ><FontAwesomeIcon icon={faRefresh}/></div>
+            <div className='container-balance'>Balance: 0.4 EGLD</div>
           </div>
 
           {
