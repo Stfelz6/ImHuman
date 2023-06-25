@@ -25,13 +25,13 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { useRef } from 'react';
 import { useThree } from '@react-three/fiber';
+import '../../styles/layout.css'
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const { search } = useLocation();
   return (
     <>
     <div style={{ position: 'relative', zIndex: 0  }}>
-      <div style={{ position: 'relative'}}>
       <div className='bg-img d-flex flex-column flex-fill wrapper'>
         <Navbar/>
         <main className='d-flex flex-column flex-grow-1'>
@@ -42,10 +42,9 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
             {children}
           </AuthenticatedRoutesWrapper>
         </main>
-        <Footer />
       </div>
-      </div>
-      <CanvasBackground />
+      {/* <CanvasBackground /> */}
+      <Footer />
     </div>
     </>
   );

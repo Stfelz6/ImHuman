@@ -1,0 +1,84 @@
+.container-recent-doner {
+    width: 200px;
+    height: 35px;
+    background-color: var(--human-blue);
+    /* border-image: linear-gradient(to right, var(--human-pink), var(--human-cyan)) 1; */
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 13px;
+    margin-right: 1rem; /* Add margin to right side */
+    transform: scale(0.9);
+    transition: all ease-in-out 0.3s;
+    overflow: visible;
+}
+
+.container-recent-doner:hover {
+    background-color: var(--human-pink);
+    transform: scale(1);
+}
+
+.user-text{
+    text-align: center;
+    opacity: 1;
+    color: var(--human-white);
+    padding-left: 8px;
+    padding-right: 4px;
+    height: 23px;
+    /* background-color: var(--human-white); */
+    /* border:solid 2px white; */
+    width: 60%;
+    position: relative;
+    left:-10px;
+    overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+}
+
+
+.joined-text{
+    opacity: 1;
+    color: var(--human-black);
+    width: 40%;
+    text-align: center;
+    font-size: 10px;
+    background-color: var(--human-darkblue);
+    color: var(--human-white);
+    border-radius: 10px;
+    height: 23px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    right:5px;
+}
+
+.amount-text{
+    opacity: 1;
+    color: var(--human-black);
+    width: 40%;
+    text-align: center;
+    font-size: 10px;
+    background-color: var(--human-darkblue);
+    color: var(--human-white);
+    border-radius: 10px;
+    height: 23px;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    right:5px;
+}
+
+
+.details-container-recent{
+    position: absolute;
+    bottom: 10px;
+    background-color: red;
+    width: 200px;
+    height: 200px;
+    z-index: 999;
+}

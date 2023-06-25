@@ -24,6 +24,7 @@ import { routes } from 'routes';
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
+import Home from 'components/Home';
 // import * as subscriptions from './graphql/subscriptions';
 // import schema from './models/schema'
 // import {
@@ -37,14 +38,12 @@ import * as mutations from './graphql/mutations';
 // } from 'react-router-dom';
 // import consoleLogo from './consoleLogo.png';
 // import AddQuestionJUSTTESTING from './Components/HUD/LoggedDashboard/AddQuestionJUSTTESTING';
-
-import awsconfig from './aws-exports';
-Amplify.configure(awsconfig);
 // var AWS = require("aws-sdk");
 
 export const App = () => {
 
   return (
+    <>
     <AxiosInterceptorContext.Provider>
       <AxiosInterceptorContext.Interceptor
         authenticatedDomanis={sampleAuthenticatedDomains}
@@ -73,11 +72,15 @@ export const App = () => {
                   />
                 ))}
                 <Route path='*' element={<PageNotFound />} />
+                <Route path='/Home' element={<Home />} />
               </Routes>
             </Layout>
+            
           </DappProvider>
         </Router>
       </AxiosInterceptorContext.Interceptor>
     </AxiosInterceptorContext.Provider>
+    
+    </>
   );
 };

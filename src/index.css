@@ -1,9 +1,25 @@
+:root {
+  --human-white: #ffffff;
+  --human-grey: #e1e1e1;
+  --human-greydark: #969696;
+  --human-black: #000000;
+  --human-pink: #d752ff;
+  --human-darkpink: #c615fc;
+  --human-cyan: #00e1ff;
+  --human-blue: #189ffa;
+  --human-darkblue: #0078c8;
+  font-family: 'Manrope', sans-serif;
+}
+
+::selection {
+  background: var(--human-pink);
+  color: var(--human-white);
+}
+
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Manrope', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -15,7 +31,7 @@ code {
 }
 
 .bg-img{
-  background-color: black !important;
+  background-color: var(--human-grey);
   /* background-image: url('assets/img/back.png'); */
   background-size: cover;
   opacity: 1;
@@ -25,22 +41,59 @@ code {
   width: 100px;
 }
 
-.text-footer{
-  opacity: 0.8;
-  font-size: 13px;
-}
-footer{
-  backdrop-filter: blur(30px) !important;
-  animation: animation-load-card 6s;
-}
-
 .card{
   background: rgba(0, 0, 0, 0.5) !important;
   color: white !important;
 }
 
+.start-campaign-btn{
+  position: relative;
+  width: 200px;
+  background-color: var(--human-blue);
+  border-radius: 10px;
+  height: 40px;
+  left:4.5rem;
+  margin-right: 1rem;
+  display: flex;
+  color: var(--human-white);
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in 0.3s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.start-campaign-btn:hover{
+  background-color: var(--human-darkblue);
+}
+
+
+
+.logo{
+  position: relative;
+  width: 160px;
+  border-radius: 10px;
+  height: 40px;
+  left:3.5rem;
+  display: flex;
+  color: var(--human-pink);
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in 0.3s;
+  user-select: none;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.flag-create-campaign{
+  position: relative;
+  left:-10px;
+}
+
 .custom-connect-btn{
-  background-color: #131313 !important;
+  position: relative;
+  right: 4.4rem !important;
+  background-color: var(--human-pink) !important;
   border: none !important;
   background-image: url('assets/img/logo.png') !important;
   background-size: 40px 40px !important;
@@ -50,9 +103,10 @@ footer{
   padding-left: 53px !important;
   padding-right: 15px;
   padding-bottom: 6px !important;
-  border-radius: 10px;
+  border-radius: 7px !important;
+  width: 185px;
   font-size: 16px !important;
-  color: white !important;
+  color: var(--human-white) !important;
   transition: all ease-in 0.3s !important;
   opacity: 0.7;
   cursor: pointer !important;
@@ -111,7 +165,38 @@ footer{
 }
 
 .navbar-pos{
-  z-index: 10 !important;
+  background-color: var(--human-white);
+  border-top: 5px solid var(--human-blue);
+  animation: alternateShadow 5s infinite ease-in-out;
+  /* box-shadow: 0px -5px 0px var(--human-blue); */
+  transition: all ease 1s;
+  position: fixed !important;
+  width: 100%;
+  z-index: 999 !important;
+}
+
+.navbar-pos.active{
+}
+
+@keyframes alternateShadow {
+  0%{
+    box-shadow: 0px 10px 20px var(--human-pink);
+  }
+  50%{
+    box-shadow: 0px 10px 20px var(--human-blue);
+  }
+  100%{
+    box-shadow: 0px 10px 20px var(--human-pink);
+  }
+}
+
+.allscreen{
+  position: absolute;
+  z-index: 400;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  background-color: black;
 }
 
 .custom-card-login-vars{
@@ -391,12 +476,39 @@ input[type=number]::-webkit-outer-spin-button {
   opacity: 1;
 }
 
-.build-tag{
-  color: white !important;
-  opacity: 0.2 !important;
-}
-
 #webgl-output{
   width: 100%;
   height: 100%;
+}
+
+.searchBar{
+  position: relative;
+  width: 300px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  height: 40px;
+  left:4.4rem;
+  padding-left: 1rem;
+  padding-right: 3rem;
+  color: black;
+  z-index: 501 !important;
+  border: solid 1px var(--human-greydark);
+  transition: all ease-in-out 0.3s;
+}
+.searchBarAnim{
+  width: 650px;
+}
+
+.iconSearch{
+  position: relative;
+  z-index: 20;
+  left:30px;
+  z-index: 502 !important;
+}
+
+.containerNavAll{
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }

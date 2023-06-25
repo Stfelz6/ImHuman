@@ -43,7 +43,7 @@ import {
   useCubeTexture,
   MeshDistortMaterial
 } from "@react-three/drei";
-import awsconfig from '../../../aws-exports';
+import awsconfig from '../../../aws-exports.js';
 Amplify.configure(awsconfig);
 
 export const DashboardLayout = ({ children }: React.PropsWithChildren) => {

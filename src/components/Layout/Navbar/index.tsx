@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import {
   faChartSimple,
   faFileSignature,
-  faPowerOff
+  faFlag,
+  faPowerOff,
+  faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -26,14 +28,13 @@ import {
 } from '@multiversx/sdk-dapp/UI';
 import { AuthRedirectWrapper } from 'components';
 import { walletConnectV2ProjectId } from 'config';
-
 import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../../../graphql/queries';
 import * as mutations from '../../../graphql/mutations';
 import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 import { FormatAmount } from '@multiversx/sdk-dapp/UI/FormatAmount';
 import { contractAddress } from 'config';
-import awsconfig from '../../../aws-exports';
+import awsconfig from '../../../aws-exports.js';
 Amplify.configure(awsconfig);
 
 export const Navbar = () => {
@@ -137,7 +138,6 @@ export const Navbar = () => {
   }
   
   
-  
   useEffect(() => {
     // assuming "account" is the user object
     if (account) {
@@ -158,12 +158,25 @@ export const Navbar = () => {
       {address}
     </Tooltip>
   );
+  const [isInSearch, setIsInSearch] = useState(false);
 
   return (
-    <BsNavbar className='px-4 py-3 animation-heart navbar-pos'>
+    <>
+    {
+      isInSearch && (
+      <div className='allscreen' onClick={()=>{setIsInSearch(false)}}></div>
+      )
+    }
+
+    <BsNavbar className='px-4 py-3 navbar-pos'>
+    <div className='containerNavAll'>
+      <div className='logo'>#imhuman</div>
+      <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
+      <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
+      <div className='start-campaign-btn'><FontAwesomeIcon className='flag-create-campaign' icon={faFlag}/>Start a campaign</div>
+    </div>
       <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
         {/* is logged in ? da / nu */}
-
         {isLoggedIn && (
           <>
             {/* <NavItem>
@@ -198,7 +211,6 @@ export const Navbar = () => {
         {isLoggedIn ? (
           HeroTag ? (
                       <OverlayTrigger placement="bottom" delay={10} overlay={CustomTooltipAddress}>
-                        <div className='ceva'>
                         <WalletConnectLoginButton
                           className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
                           loginButtonText={isLoggedIn ? (HeroTag ? HeroTag : censoredAddress ?? '') : 'xPortal Connect'}
@@ -210,7 +222,6 @@ export const Navbar = () => {
                               }
                             : {})}
                         /> 
-                        </div>
                       </OverlayTrigger>
                     ) : (
                         <WalletConnectLoginButton
@@ -240,5 +251,6 @@ export const Navbar = () => {
 
       </div>
     </BsNavbar>
+    </>
   );
 };
