@@ -28,11 +28,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '../styles/home.css'
 import Campaign from './Campaign';
 import { faArrowAltCircleDown, faArrowDown, faArrowUp, faCalendar, faEarthEurope, faFilter, faHeadSideCoughSlash } from '@fortawesome/free-solid-svg-icons';
+import LoadingPage from './LoadingPage';
 
 
 export default function Home(){
     const [dateDirection, setDateDirection] = useState(false);
     const [category, setCategory] = useState('all');
+    const [loadPage, setLoadPage] = useState(true);
+    const [activeMoreInfoIndex, setActiveMoreInfoIndex] = useState(null);
+
+    const toggleMoreInfo = (index) => {
+      if (index === activeMoreInfoIndex) {
+        setActiveMoreInfoIndex(null);  // If the active index is clicked again, close the active more info
+      } else {
+        setActiveMoreInfoIndex(index); // Otherwise, set the active index to the clicked index
+      }
+    }
+
+    useEffect(()=>{
+      setTimeout(()=>{
+        setLoadPage(false);
+      },4000)
+    })
 
     const campaignDataArray = [
       {
@@ -191,6 +208,9 @@ export default function Home(){
     
   
     return(<>
+    {
+      loadPage && (<LoadingPage></LoadingPage>)
+    }
       <div className='container-big'>
         <div className='container-filters'>
           <div className='container-categories'>
@@ -208,7 +228,8 @@ export default function Home(){
         <div className='container-campaigns'>
         {
           filteredCampaigns.map((campaignData, index) => (
-            <Campaign key={index} campaignData={campaignData} />
+            <Campaign key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
+            toggleMoreInfo={() => toggleMoreInfo(index)}/>
           ))
         }
         </div>

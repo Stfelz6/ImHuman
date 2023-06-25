@@ -169,9 +169,12 @@ export const Navbar = () => {
     }
 
     <BsNavbar className='px-4 py-3 navbar-pos'>
-    <div className='start-campaign-btn'><FontAwesomeIcon className='flag-create-campaign' icon={faFlag}/>Start a campaign</div>
-    <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
-    <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
+    <div className='containerNavAll'>
+      <div className='logo'>#imhuman</div>
+      <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
+      <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
+      <div className='start-campaign-btn'><FontAwesomeIcon className='flag-create-campaign' icon={faFlag}/>Start a campaign</div>
+    </div>
       <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
         {/* is logged in ? da / nu */}
         {isLoggedIn && (

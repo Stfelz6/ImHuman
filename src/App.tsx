@@ -43,6 +43,7 @@ import Home from 'components/Home';
 export const App = () => {
 
   return (
+    <>
     <AxiosInterceptorContext.Provider>
       <AxiosInterceptorContext.Interceptor
         authenticatedDomanis={sampleAuthenticatedDomains}
@@ -79,5 +80,7 @@ export const App = () => {
         </Router>
       </AxiosInterceptorContext.Interceptor>
     </AxiosInterceptorContext.Provider>
+    
+    </>
   );
 };

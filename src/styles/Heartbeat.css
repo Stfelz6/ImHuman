@@ -10,10 +10,10 @@
   
   .heartbeat-line {
     width: 100%; /* Adjust the width as needed */
-    height: 20px; /* Adjust the height as needed */
+    height: 3px; /* Adjust the height as needed */
     opacity: 1;
-    transform: scaleY(0.4);
-    background-color:var(--human-blue);
+    /* background-color:var(--human-blue); */
+    box-shadow: 0px 0px 20px var(--human-black);
   }
   
   .heartbeat-animation {

@@ -8,6 +8,7 @@
   --human-cyan: #00e1ff;
   --human-blue: #189ffa;
   --human-darkblue: #0078c8;
+  font-family: 'Manrope', sans-serif;
 }
 
 ::selection {
@@ -18,9 +19,7 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Manrope', sans-serif !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
@@ -49,7 +48,7 @@ code {
 
 .start-campaign-btn{
   position: relative;
-  width: 250px;
+  width: 200px;
   background-color: var(--human-blue);
   border-radius: 10px;
   height: 40px;
@@ -66,6 +65,24 @@ code {
 
 .start-campaign-btn:hover{
   background-color: var(--human-darkblue);
+}
+
+
+
+.logo{
+  position: relative;
+  width: 160px;
+  border-radius: 10px;
+  height: 40px;
+  left:3.5rem;
+  display: flex;
+  color: var(--human-pink);
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in 0.3s;
+  user-select: none;
+  font-size: 25px;
+  font-weight: 700;
 }
 
 .flag-create-campaign{
@@ -149,18 +166,27 @@ code {
 
 .navbar-pos{
   background-color: var(--human-white);
+  border-top: 5px solid var(--human-blue);
   animation: alternateShadow 5s infinite ease-in-out;
+  /* box-shadow: 0px -5px 0px var(--human-blue); */
+  transition: all ease 1s;
+  position: fixed !important;
+  width: 100%;
+  z-index: 999 !important;
+}
+
+.navbar-pos.active{
 }
 
 @keyframes alternateShadow {
   0%{
-    box-shadow: 0px 0px 10px var(--human-pink);
+    box-shadow: 0px 10px 20px var(--human-pink);
   }
   50%{
-    box-shadow: 0px 0px 10px var(--human-blue);
+    box-shadow: 0px 10px 20px var(--human-blue);
   }
   100%{
-    box-shadow: 0px 0px 10px var(--human-pink);
+    box-shadow: 0px 10px 20px var(--human-pink);
   }
 }
 
@@ -457,7 +483,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .searchBar{
   position: relative;
-  width: 500px;
+  width: 300px;
   border-radius: 10px;
   border: none;
   outline: none;
@@ -479,4 +505,10 @@ input[type=number]::-webkit-outer-spin-button {
   z-index: 20;
   left:30px;
   z-index: 502 !important;
+}
+
+.containerNavAll{
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
