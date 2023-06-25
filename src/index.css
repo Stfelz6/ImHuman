@@ -1,6 +1,6 @@
 :root {
   --human-white: #ffffff;
-  --human-grey: #dedede;
+  --human-grey: #e1e1e1;
   --human-greydark: #969696;
   --human-black: #000000;
   --human-pink: #d752ff;
@@ -47,10 +47,36 @@ code {
   color: white !important;
 }
 
+.start-campaign-btn{
+  position: relative;
+  width: 250px;
+  background-color: var(--human-blue);
+  border-radius: 10px;
+  height: 40px;
+  left:4.5rem;
+  margin-right: 1rem;
+  display: flex;
+  color: var(--human-white);
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in 0.3s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.start-campaign-btn:hover{
+  background-color: var(--human-darkblue);
+}
+
+.flag-create-campaign{
+  position: relative;
+  left:-10px;
+}
+
 .custom-connect-btn{
   position: relative;
   right: 4.4rem !important;
-  background-color: var(--human-white) !important;
+  background-color: var(--human-pink) !important;
   border: none !important;
   background-image: url('assets/img/logo.png') !important;
   background-size: 40px 40px !important;
@@ -61,9 +87,9 @@ code {
   padding-right: 15px;
   padding-bottom: 6px !important;
   border-radius: 7px !important;
-  width: 213px;
+  width: 185px;
   font-size: 16px !important;
-  color: var(--human-black) !important;
+  color: var(--human-white) !important;
   transition: all ease-in 0.3s !important;
   opacity: 0.7;
   cursor: pointer !important;
@@ -122,6 +148,20 @@ code {
 }
 
 .navbar-pos{
+  background-color: var(--human-white);
+  animation: alternateShadow 5s infinite ease-in-out;
+}
+
+@keyframes alternateShadow {
+  0%{
+    box-shadow: 0px 0px 10px var(--human-pink);
+  }
+  50%{
+    box-shadow: 0px 0px 10px var(--human-blue);
+  }
+  100%{
+    box-shadow: 0px 0px 10px var(--human-pink);
+  }
 }
 
 .allscreen{
@@ -427,6 +467,7 @@ input[type=number]::-webkit-outer-spin-button {
   padding-right: 3rem;
   color: black;
   z-index: 501 !important;
+  border: solid 1px var(--human-greydark);
   transition: all ease-in-out 0.3s;
 }
 .searchBarAnim{
