@@ -34,6 +34,14 @@ import * as mutations from '../../../graphql/mutations';
 import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 import { FormatAmount } from '@multiversx/sdk-dapp/UI/FormatAmount';
 import { contractAddress } from 'config';
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+  Navigate,
+  useParams,
+  useNavigate
+} from 'react-router-dom';
 // import awsconfig from '../../../aws-exports.js';
 // Amplify.configure(awsconfig);
 
@@ -42,6 +50,8 @@ export const Navbar = () => {
     callbackRoute: routeNames.dashboard,
     nativeAuth: true // optional
   };
+
+  const navigate = useNavigate();
 
   const { address, account } = useGetAccountInfo();
   {/* eslint-disable */ }
@@ -170,10 +180,10 @@ export const Navbar = () => {
 
     <BsNavbar className='px-4 py-3 navbar-pos'>
     <div className='containerNavAll'>
-      <div className='logo'>#imhuman</div>
+      <div className='logo' onClick={()=>{navigate('/Home');}}>#imhuman</div>
       <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
       <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
-      <div className='start-campaign-btn'><FontAwesomeIcon className='flag-create-campaign' icon={faFlag}/>Start a campaign</div>
+      <div className='start-campaign-btn' onClick={()=>{navigate('/CreateCampaign');}}><FontAwesomeIcon className='flag-create-campaign' icon={faFlag} />Start a campaign</div>
     </div>
       <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
         {/* is logged in ? da / nu */}

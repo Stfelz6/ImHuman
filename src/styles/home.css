@@ -110,6 +110,7 @@
     top:3px;
     margin-left:5px;
     color: var(--human-black);
+    border: none !important;
 }
 
 
@@ -128,10 +129,10 @@
 }
 
 .container-campaign:hover{
-    transform: scale(1.05);
+    transform: scale(1.03);
     /* border: 1px solid var(--human-pink); */
-    /* box-shadow: 0px 0px 50px var(--human-pink); */
-    box-shadow: 0px 0px 150px var(--human-pink);
+    box-shadow: 0px 0px 50px var(--human-pink);
+    /* box-shadow: 0px 0px 150px var(--human-pink); */
 }
 
 @keyframes switchbox{

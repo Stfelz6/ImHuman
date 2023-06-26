@@ -191,6 +191,7 @@
   padding-bottom: 2rem;
   opacity: 1;
   animation: showIT 0.3s ease-in-out;
+  z-index: 9999;
 }
 
 @keyframes showIT {
@@ -342,6 +343,7 @@
 .iconlabelsdoners{
     position: relative;
     top:4px;
+    border:none !important;
 }
 
 .arrowdown2 {
@@ -365,6 +367,7 @@
     width: 50%;
     font-size: 17px;
     user-select: none !important;
+    border:none !important;
 }
 
 .label-recent-joiners{

@@ -25,13 +25,14 @@ import { Amplify, API, graphqlOperation } from 'aws-amplify';
 import * as queries from '../graphql/queries';
 import * as mutations from '../graphql/mutations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import '../styles/home.css'
+import '../styles/ManagerDashboard.css'
 import Campaign from './Campaign';
 import { faArrowAltCircleDown, faArrowDown, faArrowUp, faCalendar, faEarthEurope, faFilter, faHeadSideCoughSlash } from '@fortawesome/free-solid-svg-icons';
 import LoadingPage from './LoadingPage';
+import CampaignManager from './CampaignManager';
 
 
-export default function Home(){
+export default function ManagerDashboard(){
     const [dateDirection, setDateDirection] = useState(false);
     const [category, setCategory] = useState('all');
     const [loadPage, setLoadPage] = useState(true);
@@ -217,27 +218,18 @@ export default function Home(){
     {
       loadPage && (<LoadingPage></LoadingPage>)
     }
-      <div className='container-big'>
-        <div className='container-filters'>
-          <div className='container-categories'>
-            <div className='filtru-allfields' onClick={()=>{setCategory("all")}}><FontAwesomeIcon className='icon-allfields' border={false} icon={faEarthEurope}/>All fields</div>
-            <div className={`filtru-category ${category === 'education' ? 'topline' : ''}`} onClick={() => { setCategory('education') }}>Education</div>
-            <div className={`filtru-category ${category === 'environment' ? 'topline' : ''}`} onClick={()=>{setCategory("environment")}}>Environment</div>
-          </div>
-          <div className='filtru-date' onClick={()=>{setDateDirection(!dateDirection)}}>Date posted
+      <div className='container-big2'>
+        <div className='container-campaigns-manager2SHADOW'></div>
+        <div className='container-campaigns-manager2'>
+            <div className={`container-campaign-full-empty ${activeMoreInfoIndex !== null ? 'filemode':''}`}>
+                <FontAwesomeIcon className='arrowupfullempty' icon={faArrowUp}></FontAwesomeIcon>
+            </div>
             {
-              dateDirection ? (<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowDown}/></>):(<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowUp}/></>)
+              filteredCampaigns.map((campaignData, index) => (
+                <CampaignManager key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
+                toggleMoreInfo={() => toggleMoreInfo(index)}/>
+              ))
             }
-          </div>
-        </div>
-
-        <div className='container-campaigns'>
-        {
-          filteredCampaigns.map((campaignData, index) => (
-            <Campaign key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
-            toggleMoreInfo={() => toggleMoreInfo(index)}/>
-          ))
-        }
         </div>
 
       </div>
