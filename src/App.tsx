@@ -26,6 +26,7 @@ import * as queries from './graphql/queries';
 import * as mutations from './graphql/mutations';
 import Home from 'components/Home';
 import CreateCampaign from 'components/CreateCampaign';
+import ManagerDashboard from 'components/ManagerDashboard';
 // import * as subscriptions from './graphql/subscriptions';
 // import schema from './models/schema'
 // import {
@@ -75,6 +76,7 @@ export const App = () => {
                 <Route path='*' element={<PageNotFound />} />
                 <Route path='/CreateCampaign' element={<CreateCampaign/>} />
                 <Route path='/Home' element={<Home />} />
+                <Route path='/ManagerDashboard' element={<ManagerDashboard></ManagerDashboard>}/>
               </Routes>
             </Layout>
             
