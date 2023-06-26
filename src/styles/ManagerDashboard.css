@@ -354,3 +354,15 @@
     height: 105px;
     z-index: 9;
 }
+
+.container-chart{
+    width: 370px;
+    height: 250px;
+    position: fixed;
+    top: 150px;
+    right:80px;
+    background-color: var(--human-white);
+    z-index: 9;
+    border-radius: 10px;
+    padding: 1rem;
+}

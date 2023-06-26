@@ -29,7 +29,64 @@ import '../styles/ManagerDashboard.css'
 import Campaign from './Campaign';
 import { faArrowAltCircleDown, faArrowDown, faArrowUp, faCalendar, faEarthEurope, faFilter, faHeadSideCoughSlash } from '@fortawesome/free-solid-svg-icons';
 import LoadingPage from './LoadingPage';
-import CampaignManager from './CampaignManager';
+import CampaignManager from './CampaignManager';import { Bar } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+  import { Line } from 'react-chartjs-2';
+  import { faker } from '@faker-js/faker';
+  
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+  
+  export const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      title: {
+        display: true,
+        text: 'Overview Campaigns',
+      },
+    }
+  };
+  
+  
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  
+  export const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Fulfilled',
+        data: labels.map(() => faker.number.int()),
+        borderColor: 'rgb(215, 82, 255)',
+        backgroundColor: 'rgb(215, 82, 255, 0.5)',
+      },
+      {
+        label: 'Pending',
+        data: labels.map(() => faker.number.int()),
+        borderColor: 'rgb(24, 159, 250)',
+        backgroundColor: 'rgb(24, 159, 250,0.5)',
+      },
+    ],
+  };
 
 
 export default function ManagerDashboard(){
@@ -219,6 +276,9 @@ export default function ManagerDashboard(){
       loadPage && (<LoadingPage></LoadingPage>)
     }
       <div className='container-big2'>
+        <div className='container-chart'>
+        <Line options={options} data={data} />
+        </div>
         <div className='container-campaigns-manager2SHADOW'></div>
         <div className='container-campaigns-manager2'>
             <div className={`container-campaign-full-empty ${activeMoreInfoIndex !== null ? 'filemode':''}`}>
