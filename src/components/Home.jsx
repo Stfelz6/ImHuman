@@ -55,7 +55,7 @@ export default function Home(){
       setTimeout(()=>{
         setLoadPage(false);
       },4000)
-    })
+    },[])
 
     const campaignDataArray = [
       {
