@@ -29,7 +29,94 @@ import '../styles/ManagerDashboard.css'
 import Campaign from './Campaign';
 import { faArrowAltCircleDown, faArrowDown, faArrowUp, faCalendar, faEarthEurope, faFilter, faHeadSideCoughSlash } from '@fortawesome/free-solid-svg-icons';
 import LoadingPage from './LoadingPage';
-import CampaignManager from './CampaignManager';
+import CampaignManager from './CampaignManager';import { Bar, Pie } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement
+  } from 'chart.js';
+  import { Line } from 'react-chartjs-2';
+  import { faker } from '@faker-js/faker';
+import { PieChartOutline } from '@mui/icons-material';
+  
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+  
+  export const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      title: {
+        display: true,
+        text: 'Overview Campaigns',
+      },
+    }
+  };
+  
+  
+  const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  
+  export const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Fulfilled',
+        data: labels.map(() => faker.number.int(10)),
+        borderColor: 'rgb(215, 82, 255)',
+        backgroundColor: 'rgb(215, 82, 255, 0.5)',
+      },
+      {
+        label: 'Pending',
+        data: labels.map(() => faker.number.int(10)),
+        borderColor: 'rgb(24, 159, 250)',
+        backgroundColor: 'rgb(24, 159, 250,0.5)',
+      },
+    ],
+  };
+
+  export const dataPie = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    datasets: [
+      {
+        label: '# of People helped',
+        data: [132, 149, 23, 54, 25, 93],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
 
 
 export default function ManagerDashboard(){
@@ -37,6 +124,7 @@ export default function ManagerDashboard(){
     const [category, setCategory] = useState('all');
     const [loadPage, setLoadPage] = useState(true);
     const [activeMoreInfoIndex, setActiveMoreInfoIndex] = useState(null);
+    const [activeFilter, setActiveFilter] = useState('Active');
     
     useEffect(() => {
       const pathnameWithoutFirstSlash = location.pathname.substring(1);
@@ -68,7 +156,8 @@ export default function ManagerDashboard(){
           category:'education',
           date:'2/03/2021',
           daysLeft:17,
-          noPeople:3
+          noPeople:3,
+          pending: false
       },
       {
           title: "Giving water for the vulnerable",
@@ -79,7 +168,8 @@ export default function ManagerDashboard(){
           category:'education',
           date:'2/03/2023',
           daysLeft:33,
-          noPeople:1.7
+          noPeople:1.7,
+          pending: false
       },
       {
           title: "Campaign 3",
@@ -90,7 +180,8 @@ export default function ManagerDashboard(){
           category:'environment',
           date:'4/03/2022',
           daysLeft:33,
-          noPeople:2.7
+          noPeople:2.7,
+          pending: false
       },
       {
           title: "Campaign 4",
@@ -101,7 +192,8 @@ export default function ManagerDashboard(){
           category:'environment',
           date:'2/03/2022',
           daysLeft:17,
-          noPeople:5.4
+          noPeople:5.4,
+          pending: false
       },
       {
           title: "Campaign 5",
@@ -112,7 +204,8 @@ export default function ManagerDashboard(){
           category:'education',
           date:'2/03/2022',
           daysLeft:28,
-          noPeople:3.3
+          noPeople:3.3,
+          pending: false
       },
       {
           title: "Campaign 6",
@@ -123,7 +216,8 @@ export default function ManagerDashboard(){
           category:'environment',
           date:'2/03/2022',
           daysLeft:45,
-          noPeople:3
+          noPeople:3,
+          pending: false
       },
       {
           title: "Campaign 7",
@@ -134,7 +228,8 @@ export default function ManagerDashboard(){
           category:'environment',
           date:'2/03/2022',
           daysLeft:19,
-          noPeople:9.3
+          noPeople:9.3,
+          pending: true
       },
       {
           title: "Campaign 8",
@@ -145,7 +240,8 @@ export default function ManagerDashboard(){
           category:'education',
           date:'2/03/2022',
           daysLeft:22,
-          noPeople:4.2
+          noPeople:4.2,
+          pending: false
       },
       {
           title: "Campaign 9",
@@ -156,7 +252,8 @@ export default function ManagerDashboard(){
           category:'education',
           date:'2/03/2022',
           daysLeft:66,
-          noPeople:1.8
+          noPeople:1.8,
+          pending: true
       },
       {
           title: "Campaign 10",
@@ -167,7 +264,8 @@ export default function ManagerDashboard(){
           category:'environment',
           date:'2/03/2022',
           daysLeft:87,
-          noPeople:1.4
+          noPeople:1.4,
+          pending: false
       },
       {
           title: "Campaign 11",
@@ -178,7 +276,8 @@ export default function ManagerDashboard(){
           category:'education',
           date:'2/03/2022',
           daysLeft:90,
-          noPeople:20
+          noPeople:20,
+          pending: true
       },
       {
           title: "Campaign 12",
@@ -189,7 +288,8 @@ export default function ManagerDashboard(){
           category:'environment',
           date:'2/03/2022',
           daysLeft:90,
-          noPeople:5.3
+          noPeople:5.3,
+          pending: false
       }
   ];
   
@@ -209,9 +309,17 @@ export default function ManagerDashboard(){
       if (dateDirection) {
         sortedCampaigns.sort((a, b) => new Date(a.date) - new Date(b.date));
       }
+      
+      if (activeFilter === 'Active') {
+        sortedCampaigns = sortedCampaigns.filter(campaign => campaign.pending === false);
+      }
+      
+      if (activeFilter === 'Pending') {
+        sortedCampaigns = sortedCampaigns.filter(campaign => campaign.pending === true);
+      }
     
       setFilteredCampaigns(sortedCampaigns);
-    }, [category, dateDirection]);
+    }, [category, dateDirection, activeFilter]);
     
   
     return(<>
@@ -219,19 +327,40 @@ export default function ManagerDashboard(){
       loadPage && (<LoadingPage></LoadingPage>)
     }
       <div className='container-big2'>
-        <div className='container-campaigns-manager2SHADOW'></div>
-        <div className='container-campaigns-manager2'>
-            <div className={`container-campaign-full-empty ${activeMoreInfoIndex !== null ? 'filemode':''}`}>
-                <FontAwesomeIcon className='arrowupfullempty' icon={faArrowUp}></FontAwesomeIcon>
+        <div className='container-big2-1'>
+        <div className='container-big2-1MODIFIED'>
+            <div className='container-big2-1-FILTERS'>
+                <div className={`filter-1 ${activeFilter === 'Active' ? 'active' : ''}`}   onClick={()=>{setActiveFilter('Active')}}>
+                    Active
+                </div>
+                <div className={`filter-2 ${activeFilter === 'Pending' ? 'active' : ''}`} onClick={() => { setActiveFilter('Pending') }}>
+                    Pending
+                </div>
             </div>
-            {
-              filteredCampaigns.map((campaignData, index) => (
-                <CampaignManager key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
-                toggleMoreInfo={() => toggleMoreInfo(index)}/>
-              ))
-            }
+            {/* <div className='container-campaigns-manager2SHADOW'></div> */}
+            <div className='container-big2-1-SCROLLABLE'>
+                <div className='container-campaigns-manager2'>
+                    <div className={`container-campaign-full-empty ${activeMoreInfoIndex !== null ? 'filemode':''}`}>
+                        <FontAwesomeIcon className='arrowupfullempty' icon={faArrowUp}></FontAwesomeIcon>
+                    </div>
+                    {
+                      filteredCampaigns.map((campaignData, index) => (
+                        <CampaignManager key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
+                        toggleMoreInfo={() => toggleMoreInfo(index)} activeFilter={activeFilter}/>
+                      ))
+                    }
+                </div>
+            </div>
         </div>
-
+        </div>
+        <div className='container-big2-3'>
+            <div className='container-chart'>
+                <Line options={options} data={data} />
+            </div>
+            <div className='container-chart'>
+                <Pie data={dataPie} />
+            </div>
+        </div>
       </div>
     </>)
 

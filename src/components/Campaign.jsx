@@ -37,6 +37,7 @@ export default function Campaign(props){
 
     const [loading, setLoading] = useState(true);
     const [copied, setCopied] = useState(false);
+    const [btnDropdown,setBtnDropdown] = useState(false);
     const [fullCampaignCategory, setFullCampaignCategory] = useState('donate');
 
     function abbreviateAmount(amount) {
@@ -82,7 +83,7 @@ export default function Campaign(props){
       (
         <div className={`container-campaign-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`} >
           <FontAwesomeIcon className='close-container-full' icon={faClose} onClick={props.toggleMoreInfo}/>
-            <div className={`container-campaign-full-1 ${fullCampaignCategory === 'file' ? 'filemode' : ''}`} style={{backgroundImage:`url(${props.campaignData.image})`}}>
+            <div className={`container-campaign-full-1 ${fullCampaignCategory === 'file' ? 'filemode' : fullCampaignCategory === 'story' ? 'storymode' : ''}`} style={{backgroundImage:`url(${props.campaignData.image})`}}>
               <div className={`info-tag-people-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.noPeople}K <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie}/></div>
               <div className={`info-tag-donated-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.noPeople}K <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill}/></div>
               <div className={`info-tag-title ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.title}</div>
@@ -215,7 +216,14 @@ export default function Campaign(props){
               </div>
             </div>
             <div className='container-campaign-3'>
-              <div className='donate-btn'><FontAwesomeIcon className='fast-donate-icon' icon={faBoltLightning}/> Fast Donate</div>
+              <div className='donate-btn' onMouseEnter={()=>{setBtnDropdown(true)}} onMouseLeave={()=>{setBtnDropdown(false)}}><FontAwesomeIcon className='fast-donate-icon' icon={faBoltLightning}/> Fast Donate</div>
+              {
+                btnDropdown && (
+                  <>
+                    <div className='donate-btn-dropdown' onMouseEnter={()=>{setBtnDropdown(true)}} onMouseLeave={()=>{setBtnDropdown(false)}}> <FontAwesomeIcon className='donate-icon-arrow-down' icon={faArrowAltCircleDown}/> You will sign a transaction of 0.5 EGLD.</div>
+                  </>
+                )
+              }
               <div className='donate-info' onClick={props.toggleMoreInfo}>
                 {
                   props.moreInfo ? (<FontAwesomeIcon icon={faClose}/>) : (<FontAwesomeIcon icon={faDove}/>)

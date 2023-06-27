@@ -169,20 +169,44 @@ export default function CampaignManager(props){
                 </div>
                 </>) :
                 fullCampaignCategory === 'approve' ? (<>
-                <div className='download-btn-full-container'>
-                  <div className='decision-btn-full-text'>
-                    Please make your decision
-                  </div>
-                  <div className='decisionBOX'>
-                    <div className='deny-btn-full'>
-                      Deny
-                    </div>
+                {
+                    props.activeFilter === 'Active' ? (<>
+                        <div className='download-btn-full-container'>
+                          <div className='decision-btn-full-text'>
+                            <div className='other-methods2'>Please make your decision</div>
+                            <div className='other-methods-line2'></div>
+                          </div>
+                          <div className='decisionBOX'>
+                            <div className='deny-btn-full'>
+                              Delete
+                            </div>
 
-                    <div className='approve-btn-full'>
-                      Approve
-                    </div>
-                  </div>
-                </div>
+                            <div className='approve-btn-full'>
+                              Make Inactive
+                            </div>
+                          </div>
+                        </div>
+                    </>) :
+                    (<>
+                    
+                        <div className='download-btn-full-container'>
+                        <div className='decision-btn-full-text'>
+                            <div className='other-methods2'>Please make your decision</div>
+                            <div className='other-methods-line2'></div>
+                          </div>
+                          <div className='decisionBOX'>
+                            <div className='deny-btn-full'>
+                              Deny
+                            </div>
+
+                            <div className='approve-btn-full'>
+                              Approve
+                            </div>
+                          </div>
+                        </div>
+                    </>)
+                }
+
                 </>): (<></>)
               }
             </div>
@@ -214,7 +238,7 @@ export default function CampaignManager(props){
             </div>
             <div className='container-campaign-2'>
               <div className='donate-bar'>
-                <div className='bar-title'>{props.campaignData.title}</div>
+                <div className='bar-title2'>{props.campaignData.title}</div>
 
               </div>
             </div>

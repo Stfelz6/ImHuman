@@ -5,6 +5,7 @@ import {
   faFileSignature,
   faFlag,
   faPowerOff,
+  faScrewdriverWrench,
   faSearch
 } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
@@ -184,6 +185,7 @@ export const Navbar = () => {
       <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
       <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
       <div className='start-campaign-btn' onClick={()=>{navigate('/CreateCampaign');}}><FontAwesomeIcon className='flag-create-campaign' icon={faFlag} />Start a campaign</div>
+      <div className='manage-campaign-btn' onClick={()=>{navigate('/ManagerDashboard');}}><FontAwesomeIcon className='flag-create-campaign' icon={faScrewdriverWrench} />Manage campaigns</div>
     </div>
       <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
         {/* is logged in ? da / nu */}
