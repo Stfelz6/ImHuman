@@ -1,15 +1,51 @@
 .container-big2{
+    position: absolute;
+    height: 100%;
+    width: 1200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden !important;
+    gap:35%;
+}
+.container-big2-1{
+    position: relative;
+    width: 33%;
+    height: 87%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    flex-direction: column;
+    gap:1rem;
+}
+.container-big2-3{
+    width: 34%;
     position: relative;
     height: 100%;
-    width: 100%;
     display: flex;
-    justify-content: start;
+    justify-content: center;
     align-items: start;
     flex-direction: column;
-    padding-top: 4rem;
-    margin-top: 5rem;
-    padding-left: 10rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    gap:2rem;
 }
+
+.container-big2-1MODIFIED{
+    position: relative;
+    width: 70%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap:1rem;
+}
+
 
 .arrowupfullempty{
     width: 100%;
@@ -67,8 +103,9 @@
     flex-direction: column;
     transition: all ease-in-out 0.3s;
     direction: ltr;
-    z-index: 999;
+    z-index: 999 !important;
     animation: enterCard 1s ease-in-out;
+    box-shadow: 0px 0px 30px #bdbdbd;
 }
 
 @keyframes enterCard{
@@ -101,52 +138,34 @@
 }
 
 .container-campaigns-manager2 {
-    position: fixed;
     display: flex;
-    width: 330px;
-    height: 670px;
-    overflow-y: scroll;
-    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
     flex-direction: column;
-    gap: 1rem;
-    scroll-behavior: smooth;
-    border-radius: 10px;
-    padding: 1rem;
-    direction: rtl;
-  }
-  
-  .container-campaigns-manager2::-webkit-scrollbar {
-    width: 0.5rem; /* Adjust the width as needed */
-    background-color: transparent;
-  }
-  
-  .container-campaigns-manager2::-webkit-scrollbar-thumb {
-    background-color: #ccc; /* Adjust the color as needed */
-    border-radius: 10px; /* Adjust the radius as needed */
-  }
-  
-  .container-campaigns-manager2::-webkit-scrollbar-thumb:hover {
-    background-color: #aaa; /* Adjust the hover color as needed */
+    align-items: center;
+    gap:1rem;
   }
   
 
 
 .container-campaign2{
-    width: 280px;
+    width: 100%;
     height: 220px;
     background-color: var(--human-white);;
     border-radius: 10px;
-    border: 0px solid white;
-    /* box-shadow: 5px 5px 0px var(--human-blue); */
+    border: 0px solid var(--human-greydark);
+    box-shadow: 0px 0px 30px #bdbdbd;
     transition: all ease-in-out 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: relative;
 }
 
 .container-campaign2:hover{
-    transform: scale(1.01);
+    transform: scale(1.03);
 }
 
 
@@ -296,7 +315,7 @@
     justify-content: center;
     align-items: center;
     font-weight: 600;
-    opacity: 0.5;
+    opacity: 0.7;
 }
 
 .deny-btn-full{
@@ -349,20 +368,121 @@
 .container-campaigns-manager2SHADOW{
     position: absolute;
     width: 350px;
-    top:630px;
+    bottom:100px;
     background: linear-gradient(0deg, var(--human-grey) 40%, rgba(255,255,255,0) 100%);
     height: 105px;
     z-index: 9;
 }
 
 .container-chart{
-    width: 370px;
-    height: 250px;
-    position: fixed;
-    top: 150px;
-    right:80px;
+    width: 85%;
+    height: 300px;
+    position: relative;
     background-color: var(--human-white);
     z-index: 9;
     border-radius: 10px;
     padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-big2-1-SCROLLABLE{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 580px;
+    background-color: white;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    flex-direction: column;
+    scroll-behavior: smooth;
+    border-radius: 10px;
+    padding: 1rem;
+    direction: rtl;
+}
+
+  
+.container-big2-1-SCROLLABLE::-webkit-scrollbar {
+    width: 0.5rem; /* Adjust the width as needed */
+    background-color: transparent;
+}
+
+.container-big2-1-SCROLLABLE::-webkit-scrollbar-thumb {
+  background-color: #ccc; /* Adjust the color as needed */
+  border-radius: 10px; /* Adjust the radius as needed */
+}
+
+.container-big2-1-SCROLLABLE::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa; /* Adjust the hover color as needed */
+}
+
+.container-big2-1-FILTERS{
+    height: 40px;
+    width: 100%;
+    position: relative;
+    display:flex;
+    background-color: var(--human-white);
+    justify-content: center;
+    border-radius: 10px;
+    align-items: center;
+    padding: 5px;
+    gap: 5px;
+}
+
+.filter-1,.filter-2{
+    width: 50%;
+    position: relative;
+    display:flex;
+    background-color: var(--human-white);
+    justify-content: center;
+    border-radius: 6px;
+    align-items: center;
+    transition: all ease-in-out 0.3s;
+    cursor: pointer;
+    height: 100%;
+}
+
+.filter-1.active,.filter-2.active{
+    background-color: var(--human-darkpink);
+    color: var(--human-white);
+}
+
+
+
+.other-methods-line2{
+    position: absolute;
+    width: 92%;
+    height: 10px;
+    border-bottom: solid 1px var(--human-greydark);
+    text-align: center;
+    top:16px;
+    left:15px;
+    user-select: none;
+}
+.other-methods2{
+    text-align: center;
+    background-color: white;
+    border:solid 1px var(--human-greydark);
+    color: var(--human-greydark);
+    border-radius: 10px;
+    width: 200px;
+    position: relative;
+    z-index: 99;
+    font-size: 14px;
+    user-select: none;
+}
+
+
+.bar-title2{
+    position: relative;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    top:2px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden; 
+    width: 100%; 
+    user-select: none;
 }

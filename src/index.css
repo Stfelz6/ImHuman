@@ -68,6 +68,28 @@ code {
 }
 
 
+.manage-campaign-btn{
+  position: relative;
+  width: 200px;
+  background-color: var(--human-pink);
+  border-radius: 10px;
+  height: 40px;
+  left:4.5rem;
+  margin-right: 1rem;
+  display: flex;
+  color: var(--human-white);
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in 0.3s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.manage-campaign-btn:hover{
+  background-color: var(--human-darkpink);
+}
+
+
 .logo{
   position: relative;
   width: 160px;
