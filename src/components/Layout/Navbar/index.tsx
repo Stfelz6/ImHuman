@@ -207,7 +207,7 @@ export const Navbar = () => {
                 />
               </Link>
             </NavItem> */}
-            <NavItem>
+            {/* <NavItem>
               <OverlayTrigger placement="left" overlay={CustomTooltipLogout}>
                 <button className='btn btn-link' onClick={handleLogout}>
                   <FontAwesomeIcon
@@ -216,7 +216,7 @@ export const Navbar = () => {
                   />
                 </button>
               </OverlayTrigger>
-            </NavItem>
+            </NavItem> */}
           </>
         )}
         

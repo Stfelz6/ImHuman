@@ -4,8 +4,8 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import styles from './../dashboard.module.scss';
 import { Link } from 'react-router-dom';
-import { Actions } from './Actions';
-import { TopInfo } from './TopInfo';
+// import { Actions } from './Actions/Actions';
+// import { TopInfo } from './TopInfo';
 import { routeNames } from 'routes';
 import videoSource from '../../../assets/videos/baloons.mp4';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -158,7 +158,7 @@ export const DashboardLayout = ({ children }: React.PropsWithChildren) => {
                 <a className='custom-hint'>Make the donation &nbsp; |</a>
               </div>
               <div className='col-6 col-md-2'>
-                <Actions inputValue={inputValue} locked={false}/>
+                {/* <Actions inputValue={inputValue} locked={false}/> */}
               </div>
             </div>
             

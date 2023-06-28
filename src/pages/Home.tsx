@@ -3,7 +3,6 @@ import React from 'react';
 /* eslint-disable */ 
 import styles from './../dashboard.module.scss';
 import { Link } from 'react-router-dom';
-import { Actions } from './Dashboard/components/Actions';
 import { TopInfo } from './Dashboard/components/TopInfo';
 import { routeNames } from 'routes';
 import videoSource from '../../../assets/videos/baloons.mp4';
@@ -145,7 +144,7 @@ const HomePage = () => {
                       <a className='custom-hint'>Log in to donate &nbsp; |</a>
                     </div>
                     <div className='col-6 col-md-2'>
-                      <Actions locked={true}/>
+                      {/* <Actions locked={true}/> */}
                     </div>
                   </div>
 

@@ -357,7 +357,7 @@ export default function ManagerDashboard(){
             <div className='container-chart'>
                 <Line options={options} data={data} />
             </div>
-            <div className='container-chart'>
+            <div className='container-chart2'>
                 <Pie data={dataPie} />
             </div>
         </div>

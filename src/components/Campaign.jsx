@@ -31,6 +31,17 @@ import { faShareSquare, faSquareMinus } from '@fortawesome/free-regular-svg-icon
 import LinearWithValueLabel from './LinearProgressWithLabel';
 import { PromptProps } from 'react-router-dom';
 import ContactMap from './ContactMap';
+import { useGetPendingTransactions } from '@multiversx/sdk-dapp/hooks/transactions/useGetPendingTransactions';
+import { sendTransactions } from '@multiversx/sdk-dapp/services';
+import { Link } from 'react-router-dom';
+import { refreshAccount } from '@multiversx/sdk-dapp/utils';
+import moment from 'moment';
+import { contractAddress } from 'config';
+import { useGetTimeToPong, useGetPingAmount } from '../pages/Dashboard/components/Actions/helpers';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
+import { Transaction } from '@multiversx/sdk-core';
 
 
 export default function Campaign(props){
@@ -39,6 +50,15 @@ export default function Campaign(props){
     const [copied, setCopied] = useState(false);
     const [btnDropdown,setBtnDropdown] = useState(false);
     const [fullCampaignCategory, setFullCampaignCategory] = useState('donate');
+
+    const { hasPendingTransactions } = useGetPendingTransactions();
+    const getTimeToPong = useGetTimeToPong();
+    const pingAmount = useGetPingAmount();
+  
+    const [secondsLeft, setSecondsLeft] = useState();
+    const [hasPing, setHasPing] = useState(false);
+    const [transactionSessionId, setTransactionSessionId] = useState(null);
+
 
     function abbreviateAmount(amount) {
       if (amount >= 1000 && amount < 1000000) {
@@ -50,6 +70,10 @@ export default function Campaign(props){
       }
       return amount;
     }
+
+    useEffect(()=>{
+      console.log(transactionSessionId);
+    },[transactionSessionId])
     
 
     useEffect(()=>{
@@ -76,6 +100,51 @@ export default function Campaign(props){
         };
       }
     }, [props.campaignData]);
+
+
+    const sendTransactionToSC = async () => {
+      let no = 1;
+      let copy = no;
+      if (no < 0) {
+        const decimalCount = no.toString().split('.')[1].length;
+        const zeroesCount = 20 - decimalCount;
+        copy = Math.abs(no * Math.pow(10, zeroesCount)).toFixed(0);
+      } else {
+        copy = (no * 1000000000000000000).toFixed(0);
+      }
+  
+      console.log("-----------");
+  
+      const pingTransaction = {
+        // value: pingAmount,
+        value: copy,
+        data: 'ping',
+        receiver: contractAddress,
+        gasLimit: '60000000'
+      };
+      await refreshAccount();
+  
+      const { sessionId /*, error*/ } = await sendTransactions({
+        transactions: pingTransaction,
+        transactionsDisplayInfo: {
+          processingMessage: 'Processing Ping transaction',
+          errorMessage: 'An error has occured during Ping',
+          successMessage: 'Ping transaction successful'
+        },
+        redirectAfterSign: false
+      });
+
+      
+      console.log(sessionId);
+      
+      if (sessionId != null) {
+        setTransactionSessionId(sessionId);
+      }
+    };
+    
+    
+
+
 
     return(<>
     {
@@ -113,7 +182,7 @@ export default function Campaign(props){
                     <div className='forall-container-input2'>
                       <div className='circle-logo-egld'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
                       <input className='input-donation-forall2' type='number' placeholder='Amount'></input>
-                      <div className='input-donation-refresh-forall'>Send</div>
+                      <div className='input-donation-refresh-forall' onClick={()=>{sendTransactionToSC();}}>Send</div>
                       <div className='container-balance2'>Balance: 0.4 EGLD</div>
                     </div>
                   </div>

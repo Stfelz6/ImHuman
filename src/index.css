@@ -135,7 +135,7 @@ code {
 }
 
 .custom-connect-btn:hover{
-  opacity: 1;
+  opacity: 1 !important;
 }
 
 .custom-btn-heart{
@@ -533,4 +533,29 @@ input[type=number]::-webkit-outer-spin-button {
   display: flex;
   justify-content: start;
   align-items: center;
+}
+
+.dapp-core-component__transactionToast-styles__success{
+  background-color: var(--human-pink) !important;
+}
+.dapp-core-component__transactionToast-styles__loading{
+  background-color: var(--human-blue) !important;
+}
+.dapp-core-component__transactionToast-styles__warning{
+  background-color: var(--human-blue) !important;
+}
+
+.dapp-core-component__progressStyles__bar{
+  background-color: var(--human-blue) !important;
+  height: 5px !important;
+  bottom: 0px !important;
+  opacity: 1 !important;
+}
+
+.dapp-transaction-toast{
+  border-radius: 10px !important;
+}
+
+.dapp-modal-dialog-content{
+  border-radius: 15px !important;
 }
