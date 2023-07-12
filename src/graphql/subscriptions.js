@@ -25,6 +25,14 @@ export const onCreateUser = /* GraphQL */ `
           needsValidation
           urgencyLevel
           userID
+          category
+          noPeople
+          date
+          bankAccounts
+          revolutAccounts
+          phoneContact
+          emailContact
+          address
           createdAt
           updatedAt
           _version
@@ -69,6 +77,14 @@ export const onUpdateUser = /* GraphQL */ `
           needsValidation
           urgencyLevel
           userID
+          category
+          noPeople
+          date
+          bankAccounts
+          revolutAccounts
+          phoneContact
+          emailContact
+          address
           createdAt
           updatedAt
           _version
@@ -113,6 +129,14 @@ export const onDeleteUser = /* GraphQL */ `
           needsValidation
           urgencyLevel
           userID
+          category
+          noPeople
+          date
+          bankAccounts
+          revolutAccounts
+          phoneContact
+          emailContact
+          address
           createdAt
           updatedAt
           _version
@@ -149,6 +173,14 @@ export const onCreateCampaign = /* GraphQL */ `
       needsValidation
       urgencyLevel
       userID
+      category
+      noPeople
+      date
+      bankAccounts
+      revolutAccounts
+      phoneContact
+      emailContact
+      address
       createdAt
       updatedAt
       _version
@@ -174,6 +206,14 @@ export const onUpdateCampaign = /* GraphQL */ `
       needsValidation
       urgencyLevel
       userID
+      category
+      noPeople
+      date
+      bankAccounts
+      revolutAccounts
+      phoneContact
+      emailContact
+      address
       createdAt
       updatedAt
       _version
@@ -199,6 +239,14 @@ export const onDeleteCampaign = /* GraphQL */ `
       needsValidation
       urgencyLevel
       userID
+      category
+      noPeople
+      date
+      bankAccounts
+      revolutAccounts
+      phoneContact
+      emailContact
+      address
       createdAt
       updatedAt
       _version

@@ -15,7 +15,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 
-export const Actions = (props) => {
+export default function Actions (props)  {
   const { hasPendingTransactions } = useGetPendingTransactions();
   const getTimeToPong = useGetTimeToPong();
   const pingAmount = useGetPingAmount();
@@ -143,52 +143,23 @@ console.log(`account.balance:${account.balance}`);
     .seconds(secondsLeft || 0)
     .format('mm:ss');
 
+
+  useEffect(()=>{
+    console.log(props.locked);
+  },[props.locked])
+
   return (
     <>
       {props.locked === false ? (
         <>
           {hasPing !== undefined && (
             <>
-              {/* {hasPing && !hasPendingTransactions ? ( */}
-                <div className='action-btn custom-btn-heart mt-3 text-white' onClick={sendPingTransaction}>
-                      <FontAwesomeIcon
-                        className='custom-icon'
-                        icon={faHeart as IconProp}
-                      />
-                </div>
-              {/* // ) : (
-              //    <>
-              //      <div className='d-flex flex-column'>
-              //        <div
-              //          {...{
-              //            className: `action-btn ${notAllowedClass}`,
-              //            ...(pongAllowed ? { onClick: sendPongTransaction } : {})
-              //          }}
-              //        >
-              //          <button className={`btn ${notAllowedClass}`}>
-              //            <FontAwesomeIcon
-              //              icon={faArrowDown}
-              //              className='text-primary'
-              //            />
-              //          </button>
-              //          <span className='text-white'>
-              //            {pongAllowed ? (
-              //              <a href='/' className='text-white text-decoration-none'>
-              //                Pong
-              //              </a>
-              //            ) : (
-              //              <>Pong</>
-              //            )}
-              //          </span>
-              //        </div>
-              //        {!pongAllowed && !hasPendingTransactions && (
-              //          <span className='opacity-6 text-white'>
-              //            {timeRemaining} until able to Pong
-              //          </span>
-              //        )}
-              //      </div>
-              //    </>
-              //  )}  */}
+              <div className='action-btn custom-btn-heart mt-3 text-white' onClick={sendPingTransaction}>
+                    <FontAwesomeIcon
+                      className='custom-icon'
+                      icon={faHeart as IconProp}
+                    />
+              </div>
             </>
           )}
         </>

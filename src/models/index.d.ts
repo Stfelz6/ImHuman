@@ -62,6 +62,14 @@ type EagerCampaign = {
   readonly needsValidation?: string | null;
   readonly urgencyLevel?: string | null;
   readonly userID: string;
+  readonly category?: string | null;
+  readonly noPeople?: string | null;
+  readonly date?: string | null;
+  readonly bankAccounts?: string | null;
+  readonly revolutAccounts?: string | null;
+  readonly phoneContact?: string | null;
+  readonly emailContact?: string | null;
+  readonly address?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -84,6 +92,14 @@ type LazyCampaign = {
   readonly needsValidation?: string | null;
   readonly urgencyLevel?: string | null;
   readonly userID: string;
+  readonly category?: string | null;
+  readonly noPeople?: string | null;
+  readonly date?: string | null;
+  readonly bankAccounts?: string | null;
+  readonly revolutAccounts?: string | null;
+  readonly phoneContact?: string | null;
+  readonly emailContact?: string | null;
+  readonly address?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

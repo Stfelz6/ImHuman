@@ -25,6 +25,14 @@ export const getUser = /* GraphQL */ `
           needsValidation
           urgencyLevel
           userID
+          category
+          noPeople
+          date
+          bankAccounts
+          revolutAccounts
+          phoneContact
+          emailContact
+          address
           createdAt
           updatedAt
           _version
@@ -131,6 +139,14 @@ export const getCampaign = /* GraphQL */ `
       needsValidation
       urgencyLevel
       userID
+      category
+      noPeople
+      date
+      bankAccounts
+      revolutAccounts
+      phoneContact
+      emailContact
+      address
       createdAt
       updatedAt
       _version
@@ -161,6 +177,14 @@ export const listCampaigns = /* GraphQL */ `
         needsValidation
         urgencyLevel
         userID
+        category
+        noPeople
+        date
+        bankAccounts
+        revolutAccounts
+        phoneContact
+        emailContact
+        address
         createdAt
         updatedAt
         _version
@@ -201,6 +225,14 @@ export const syncCampaigns = /* GraphQL */ `
         needsValidation
         urgencyLevel
         userID
+        category
+        noPeople
+        date
+        bankAccounts
+        revolutAccounts
+        phoneContact
+        emailContact
+        address
         createdAt
         updatedAt
         _version
@@ -243,6 +275,14 @@ export const campaignsByUserID = /* GraphQL */ `
         needsValidation
         urgencyLevel
         userID
+        category
+        noPeople
+        date
+        bankAccounts
+        revolutAccounts
+        phoneContact
+        emailContact
+        address
         createdAt
         updatedAt
         _version
