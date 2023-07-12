@@ -22,4 +22,13 @@ type Campaign @model @auth(rules: [{allow: public}]) {
   needsValidation: String
   urgencyLevel: String
   userID: ID! @index(name: "byUser")
+  category: String
+  noPeople: String
+  date: String
+  bankAccounts: String
+  revolutAccounts: String
+  phoneContact: String
+  emailContact: String
+  address: String
 }
+ 

@@ -6,10 +6,10 @@ import { faArrowAltCircleDown, faArrowAltCircleLeft, faArrowAltCircleRight, faAr
 import '../../../styles/layout.css'
 import Heartbeat from 'components/Heartbeat';
 import RecentDoner from 'components/RecentDoner';
+import { refreshAccount } from '@multiversx/sdk-dapp/utils';
 import { useEffect, useRef } from 'react';
 import Marquee from 'react-marquee-slider';
 import { useStore } from 'react-three-fiber';
-import { refreshAccount } from '@multiversx/sdk-dapp/utils';
 import RecentUser from 'components/RecentUser';
 import { ChevronLeft } from '@mui/icons-material';
 import { useGetPendingTransactions } from '@multiversx/sdk-dapp/hooks/transactions/useGetPendingTransactions';
@@ -40,7 +40,8 @@ export const Footer = () => {
   const [useri, setUseri] = useState([]);
   const [hoverDonateAll, setHoverDonateAll] = useState(false);
   const [moreInfo, setMoreInfo] = useState(false);
-  
+
+
   const { hasPendingTransactions } = useGetPendingTransactions();
   const getTimeToPong = useGetTimeToPong();
   const pingAmount = useGetPingAmount();
@@ -55,7 +56,7 @@ export const Footer = () => {
 
   const distributeFunds = async (wallet) => {
     console.log('distributeFunds');
-  
+
     let userAddress = new Address(wallet);
     const transaction = {
       value: 0,
@@ -64,7 +65,7 @@ export const Footer = () => {
       gasLimit: '60000000',
       args: [userAddress],
     };
-  
+
     const response = await sendTransactions({
       transactions: [transaction],
       transactionsDisplayInfo: {
@@ -74,14 +75,14 @@ export const Footer = () => {
       },
       redirectAfterSign: false,
     });
-  
+
     console.log(response);
   };
-  
+
   const handleDistributeFunds2 = () => {
     console.log('handleDistributeFunds');
     const wallet = 'erd19zh0k4s4q6856znc86jy8a2evsznmtgt6ndazqutt66qpqf2spgskzuft3';
-  
+
     distributeFunds(wallet)
       .then(() => {
         // Handle success
@@ -92,7 +93,7 @@ export const Footer = () => {
         console.error('Error occurred during funds distribution:', error);
       });
   };
-  
+
   const handleDistributeFunds1 = async () => {
 
     try {
@@ -100,7 +101,7 @@ export const Footer = () => {
        const networkConfig = await apiNetworkProvider.getNetworkConfig();
        console.log(networkConfig.MinGasPrice);
        console.log(networkConfig.ChainID);
-    
+
       //  let abiJson = await promises.readFile("./ping-pong.abi.json", { encoding: "utf8" });
        const response = await axios.get("https://testedwise-storage-bbc2484c230134-staging.s3.eu-north-1.amazonaws.com/public/ping-pong.abi.json");
        let abiRegistry = AbiRegistry.create(response.data);
@@ -129,7 +130,7 @@ export const Footer = () => {
        let contAdr = new Address(contractAddress);
        const pleaseDistributeFunds = scabi.getEndpoint("distribute_funds");
        console.log(pleaseDistributeFunds)
-       
+
        let tx1 = legacyDelegationContract.call({
         func: {name: "distribute_funds"},
         gasLimit: 5000000,
@@ -139,13 +140,13 @@ export const Footer = () => {
 
         tx1.setNonce(42);
         console.log(tx1);
-        
+
        let query = legacyDelegationContract.createQuery({
            func: {name:"distribute_funds"},
            args: [new AddressValue(contAdr)]
        });
        console.log(query);
-        
+
       let queryResponse = await apiNetworkProvider.queryContract(query);
       let { values } = new ResultsParser().parseQueryResponse(queryResponse, pleaseDistributeFunds);
       console.log(values[0].valueOf().toFixed(0));
@@ -158,7 +159,7 @@ export const Footer = () => {
       //    let interaction = legacyDelegationContract.methods.pleaseDistributeFunds([userAdr]);
       //    let query2 = interaction.check().buildQuery();
       //    console.log(query2);
-           
+
     } catch (error) {
         console.log(error);
     }
@@ -180,10 +181,10 @@ export const Footer = () => {
           args: [new AddressValue(userWallet)],
           chainID: "D"
       });
-      
+
       tx1.setNonce(42);
       console.log(tx1);
-           
+
     } catch (error) {
         console.log(error);
     }
@@ -192,16 +193,16 @@ export const Footer = () => {
 
   const sendFunds = async (wallets) => {
     const addresses = wallets.map((address) => Address.fromBech32(address).hex()).join('');
-  
+
     const distributeFundsTransaction = {
       value: 0,
       data: "distribute_funds@" + addresses,
       receiver: contractAddress,
       gasLimit: '60000000'
     };
-  
+
     await refreshAccount();
-  
+
     const { sessionId /*, error*/ } = await sendTransactions({
       transactions: distributeFundsTransaction,
       transactionsDisplayInfo: {
@@ -211,9 +212,9 @@ export const Footer = () => {
       },
       redirectAfterSign: false
     });
-  
+
     console.log(sessionId);
-  
+
     if (sessionId != null) {
       setTransactionSessionId(sessionId);
     }
@@ -224,11 +225,6 @@ export const Footer = () => {
     let wallets = ['erd19zh0k4s4q6856znc86jy8a2evsznmtgt6ndazqutt66qpqf2spgskzuft3', 'erd1tyn9lhgg9c5f88q5u628guzsnd7hj8wexncmg2aeefwfvestelgsm9ndqf', 'erd1ywdpcad3fynzzeyqut59dl2atslud7t9e84yj23g4fhpe9l4ul3qfy8v4f']
     sendFunds(wallets);
   }
-  
-
-
-  
-  
 
   return (
     <>
@@ -262,7 +258,7 @@ export const Footer = () => {
           <div className='forall-container-input'>
             <div className='circle-logo-egld'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
             <input className='input-donation-forall' type='number' placeholder='Amount'></input>
-            <div className='input-donation-refresh-forall' ><FontAwesomeIcon icon={faRefresh}/></div>
+            <div className='input-donation-refresh-forall' onClick={()=>{handleDistributeFunds();}}><FontAwesomeIcon icon={faRefresh}/></div>
             <div className='container-balance'>Balance: 0.4 EGLD</div>
           </div>
 
@@ -291,7 +287,7 @@ export const Footer = () => {
       </>
       )
     }
-    <FontAwesomeIcon border={true} className='arrowdown' onClick={()=>{setHoverDonateAll(!hoverDonateAll);handleDistributeFunds()}} icon={faHeart}/>
+    <FontAwesomeIcon border={true} className='arrowdown' onClick={()=>{setHoverDonateAll(!hoverDonateAll);}} icon={faHeart}/>
     <div className='arrowdown2'>
       <div className='label-recent-doners'><FontAwesomeIcon border={true} className='iconlabelsdoners' icon={faArrowAltCircleLeft}/>Recent Donators</div>
       <div className='label-recent-joiners'>Recent Users<FontAwesomeIcon border={true} className='iconlabelsdoners' icon={faArrowAltCircleRight}/></div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { EnvironmentsEnum } from '@multiversx/sdk-dapp/types';
 import {
   TransactionsToastList,
@@ -45,6 +45,8 @@ import Actions from './pages/Dashboard/components/Actions/Actions'
 
 export const App = () => {
 
+  const [role, setRole] = useState('');
+
   return (
     <>
     <AxiosInterceptorContext.Provider>
@@ -60,7 +62,7 @@ export const App = () => {
               walletConnectV2ProjectId
             }}
           >
-            <Layout>
+            <Layout role={role} setRole={setRole}>
               <AxiosInterceptorContext.Listener />
               <TransactionsToastList />
               <NotificationModal />
@@ -77,7 +79,7 @@ export const App = () => {
                 <Route path='*' element={<PageNotFound />} />
                 <Route path='/CreateCampaign' element={<CreateCampaign/>} />
                 <Route path='/Home' element={<Home />} />
-                <Route path='/ManagerDashboard' element={<ManagerDashboard/>}/>
+                <Route path='/ManagerDashboard' element={<ManagerDashboard role={role}></ManagerDashboard>}/>
                 <Route path='/Actions' element={<Actions locked={false}/>}/>
               </Routes>
             </Layout>

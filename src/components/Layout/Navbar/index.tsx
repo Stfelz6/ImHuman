@@ -43,10 +43,10 @@ import {
   useParams,
   useNavigate
 } from 'react-router-dom';
-// import awsconfig from '../../../aws-exports.js';
-// Amplify.configure(awsconfig);
+import awsconfig from '../../../aws-exports.js';
+Amplify.configure(awsconfig);
 
-export const Navbar = () => {
+export const Navbar = (props) => {
   const commonProps = {
     callbackRoute: routeNames.dashboard,
     nativeAuth: true // optional
@@ -142,6 +142,8 @@ export const Navbar = () => {
       console.log(response);
       if (response.data.listUsers.items.length === 0) {
         putNewUserToCustomDB();
+      }else{
+        props.setRole(response.data.listUsers.items[0].role);
       }
     } catch (error) {
       console.log(error);
@@ -185,7 +187,10 @@ export const Navbar = () => {
       <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
       <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
       <div className='start-campaign-btn' onClick={()=>{navigate('/CreateCampaign');}}><FontAwesomeIcon className='flag-create-campaign' icon={faFlag} />Start a campaign</div>
-      <div className='manage-campaign-btn' onClick={()=>{navigate('/ManagerDashboard');}}><FontAwesomeIcon className='flag-create-campaign' icon={faScrewdriverWrench} />Manage campaigns</div>
+      {
+        props.role === 'Admin' && (<div className='manage-campaign-btn' onClick={()=>{navigate('/ManagerDashboard');}}><FontAwesomeIcon className='flag-create-campaign' icon={faScrewdriverWrench} />Manage campaigns</div>)
+      }
+      
     </div>
       <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
         {/* is logged in ? da / nu */}
@@ -207,7 +212,7 @@ export const Navbar = () => {
                 />
               </Link>
             </NavItem> */}
-            {/* <NavItem>
+            {/*<NavItem>
               <OverlayTrigger placement="left" overlay={CustomTooltipLogout}>
                 <button className='btn btn-link' onClick={handleLogout}>
                   <FontAwesomeIcon

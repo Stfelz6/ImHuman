@@ -39,6 +39,16 @@ export default function CampaignManager(props){
     const [copied, setCopied] = useState(false);
     const [fullCampaignCategory, setFullCampaignCategory] = useState('donate');
     
+    function abbreviateAmount(amount) {
+      if (amount >= 1000 && amount < 1000000) {
+        const abbreviatedAmount = (amount / 1000).toFixed(1);
+        return `${abbreviatedAmount}K`;
+      } else if (amount >= 1000000) {
+        const abbreviatedAmount = (amount / 1000000).toFixed(1);
+        return `${abbreviatedAmount}M`;
+      }
+      return amount;
+    }
 
     useEffect(()=>{
       setTimeout(()=>{
@@ -53,7 +63,7 @@ export default function CampaignManager(props){
         setLoading(true);
   
         const image = new Image();
-        image.src = props.campaignData.image;
+        image.src = props.campaignData.photo;
   
         image.onload = () => {
 
@@ -65,6 +75,60 @@ export default function CampaignManager(props){
       }
     }, [props.campaignData]);
 
+
+    const makeInactive = async ()=>{
+      console.log('Am apasat sa fie inactiva')
+
+      try {
+        // update answer in DB
+        const updateCampaign = await API.graphql(graphqlOperation(mutations.updateCampaign, {
+            input: {
+              id: props.campaignData.id,
+              _version: props.campaignData._version,
+              isActive: false
+            }
+        }));
+          console.log("Exam has been updated:", updateCampaign);
+        } catch (error) {
+          console.log("Error updating exam:", error);
+        }
+    }
+
+    const makeActive = async ()=>{
+      console.log('Am apasat sa fie activa')
+
+      try {
+        // update answer in DB
+        const updateCampaign = await API.graphql(graphqlOperation(mutations.updateCampaign, {
+            input: {
+              id: props.campaignData.id,
+              _version: props.campaignData._version,
+              isActive: true
+            }
+        }));
+          console.log("Exam has been updated:", updateCampaign);
+        } catch (error) {
+          console.log("Error updating exam:", error);
+        }
+    }
+
+    const deteleCampaign = async ()=>{
+      console.log('Am apasat sa fie stearsa')
+
+      try {
+        // update answer in DB
+        const updateCampaign = await API.graphql(graphqlOperation(mutations.deleteCampaign, {
+            input: {
+              id: props.campaignData.id,
+              _version: props.campaignData._version,
+            }
+        }));
+          console.log("Exam has been updated:", updateCampaign);
+        } catch (error) {
+          console.log("Error updating exam:", error);
+        }
+    }
+
     return(<>
     
     {
@@ -73,11 +137,11 @@ export default function CampaignManager(props){
         <>
         <div className={`container-campaign-full2 ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`} >
           <FontAwesomeIcon className='close-container-full' icon={faClose} onClick={props.toggleMoreInfo}/>
-            <div className={`container-campaign-full-1-2 ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : fullCampaignCategory === 'story' ? 'storymode' : ''}`} style={{backgroundImage:`url(${props.campaignData.image})`}}>
-              <div className={`info-tag-people-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.noPeople}K <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie}/></div>
-              <div className={`info-tag-donated-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.noPeople}K <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill}/></div>
+            <div className={`container-campaign-full-1-2 ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : fullCampaignCategory === 'story' ? 'storymode' : ''}`} style={{backgroundImage:`url(${props.campaignData.photo})`}}>
+              <div className={`info-tag-people-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.noPeople)} <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie}/></div>
+              <div className={`info-tag-donated-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.amountCurrent)} <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill}/></div>
               <div className={`info-tag-title ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.title}</div>
-              <div className={`info-tag-date ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.date}</div>
+              <div className={`info-tag-date ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{new Date(props.campaignData.deadline).toLocaleDateString()}</div>
             </div>
             <div className={`container-campaign-full-2 ${fullCampaignCategory === 'approve'  || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>
               <div className='container-switch2'>
@@ -116,13 +180,25 @@ export default function CampaignManager(props){
                     <div className='other-methods-line'></div>
                     <br></br>
                     <div className='other-method1'><FontAwesomeIcon icon={faBank}/> Bank Accounts</div>
-                    <div className='other-method2'>RO11RNCB0049538375</div>
-                    <div className='other-method3'>RO11RNCB0074574593</div>
+                    {props.campaignData.bankAccounts ? (<div>
+                      {props.campaignData.bankAccounts.split(',').map((accountNumber, index) => (
+                        <div key={index} className={`other-method${index + 2}`}>{accountNumber.trim()}</div>
+                      ))}
+                    </div>) : (<div></div>)
+
+                    }
                     <br></br>
                     <div className='revolut-container'>
                       <div className='other-method1'>Revolut</div>
-                      <div className='other-method2'>revolut.me/steflz</div>
-                      <div className='other-method3'>revolut.me/iamhuman</div>
+                      {props.campaignData.revolutAccounts ? (
+                      <div>
+                      {props.campaignData.revolutAccounts.split(',').map((accountNumber, index) => (
+                        <div key={index} className={`other-method${index+2}`}>revolut.me/{accountNumber.trim()}</div>
+                      ))}
+                    </div>) 
+                    : 
+                    (<div></div>)
+                    }
                     </div>
                       <img className='qr-revolut' src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png"/>
                   </div>
@@ -146,13 +222,13 @@ export default function CampaignManager(props){
                 <div className='container-contact'>
                   
                   <div className='contact-phoneNo'>
-                    Phone number: 07834785343
+                    Phone number: {props.campaignData.phoneContact}
                   </div>
                   <div className='contact-email'>
-                    Email: iamhuman@gmail.com
+                    Email: {props.campaignData.emailContact}
                   </div>
                   <div className='contact-address'>
-                    Address: Bulevardul Ion C. Brătianu 44, București 030177
+                    Address: {props.campaignData.address}
                   </div>
                     <ContactMap/>
                   
@@ -177,11 +253,11 @@ export default function CampaignManager(props){
                             <div className='other-methods-line2'></div>
                           </div>
                           <div className='decisionBOX'>
-                            <div className='deny-btn-full'>
+                            <div className='deny-btn-full' onClick={deteleCampaign}>
                               Delete
                             </div>
 
-                            <div className='approve-btn-full'>
+                            <div className='approve-btn-full' onClick={makeInactive}>
                               Make Inactive
                             </div>
                           </div>
@@ -199,7 +275,7 @@ export default function CampaignManager(props){
                               Deny
                             </div>
 
-                            <div className='approve-btn-full'>
+                            <div className='approve-btn-full' onClick={makeActive}>
                               Approve
                             </div>
                           </div>
@@ -225,8 +301,8 @@ export default function CampaignManager(props){
                 </div>
           </>) : 
           (<>
-            <div className='container-campaign-1' onClick={props.toggleMoreInfo} style={{backgroundImage:`url(${props.campaignData.image})`}}>
-              <div className='info-tag'>{props.campaignData.daysLeft} days left</div>
+            <div className='container-campaign-1' onClick={props.toggleMoreInfo} style={{backgroundImage:`url(${props.campaignData.photo})`}}>
+              <div className='info-tag'>{Math.ceil((Date.parse(props.campaignData.deadline) - Date.now()) / (1000 * 60 * 60 * 24))} days left</div>
               {
                 copied ? (
                   <div className='info-copied'>Link copied</div>
@@ -234,7 +310,7 @@ export default function CampaignManager(props){
                     <FontAwesomeIcon className='info-share' onClick={()=>{setCopied(!copied);}} icon={faShareSquare}/>
                   )
               }
-              <div className='info-tag-people'>{props.campaignData.noPeople}K <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie}/></div>
+              <div className='info-tag-people'>{abbreviateAmount(props.campaignData.noPeople)} <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie}/></div>
             </div>
             <div className='container-campaign-2'>
               <div className='donate-bar'>

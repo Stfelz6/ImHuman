@@ -119,9 +119,9 @@ import { PieChartOutline } from '@mui/icons-material';
   };
 
 
-export default function ManagerDashboard(){
+export default function ManagerDashboard(props){
     const [dateDirection, setDateDirection] = useState(false);
-    const [category, setCategory] = useState('all');
+    const [category, setCategory] = useState('');
     const [loadPage, setLoadPage] = useState(true);
     const [activeMoreInfoIndex, setActiveMoreInfoIndex] = useState(null);
     const [activeFilter, setActiveFilter] = useState('Active');
@@ -141,157 +141,52 @@ export default function ManagerDashboard(){
     }
 
     useEffect(()=>{
+      getQuestionFromDB();
       setTimeout(()=>{
         setLoadPage(false);
       },4000)
     },[])
 
-    const campaignDataArray = [
-      {
-          title: "Trisha's Village",
-          description: "This is a sample campaign.",
-          amountDonated: 0,
-          amountTotal: 5000,
-          image:'https://images.ctfassets.net/wvozpes63uc8/3r2HxoLc7yulCiFl5ugjRg/0d4c05c22e877bca637aa735ea8bdb32/charity-water-social-preview.jpeg',
-          category:'education',
-          date:'2/03/2021',
-          daysLeft:17,
-          noPeople:3,
-          pending: false
-      },
-      {
-          title: "Giving water for the vulnerable",
-          description: " In a small town called Meadowville, there lived a young woman named Emily. Emily was a hardworking and kind-hearted individual who had fallen on tough times. She had recently lost her job and was struggling to make ends meetEmily lived in a modest apartment and was barely able to afford her basic necessities. She often skipped meals to save money and couldn't afford proper winter clothing to keep warm during the cold months. Despite her own challenges, she always maintained a positive attitude and never stopped believing that things would get better.One day, word about Emily's situation reached the community. The townspeople were deeply moved by her perseverance and decided to come together to help her. They organized a donation drive where they collected warm clothes, non-perishable food items, and essential supplies for Emily.The community's kindness didn't stop there. The local grocery store owner offered Emily a part-time job to help her regain financial stability. Additionally, a group of volunteers started a crowdfunding campaign to assist Emily in paying her rent and bills until she could find a new job.Overwhelmed with gratitude, Emily couldn't believe the generosity and support she received from her neighbors. Their collective efforts not only provided her with immediate relief but also restored her faith in humanity.With the support of the community, Emily was able to get back on her feet. She eventually found a new job and worked hard to rebuild her life. Inspired by the kindness she experienced, Emily became an active participant in community service initiatives, dedicated to helping others who were in need, just as she once was. This heartwarming story of compassion and solidarity reminds us of the power of community and the difference we can make in someone's life when we come together to lend a helping hand to those in need.",
-          amountDonated: 0,
-          amountTotal: 10000,
-          image:'https://static.independent.co.uk/s3fs-public/thumbnails/image/2014/01/23/19/36-charity-afpgt.jpg',
-          category:'education',
-          date:'2/03/2023',
-          daysLeft:33,
-          noPeople:1.7,
-          pending: false
-      },
-      {
-          title: "Campaign 3",
-          description: "Yet another campaign.",
-          amountDonated: 0,
-          amountTotal: 7500,
-          image:'https://www.canadahelps.org/media/Giving-Life-Blog_8-Unique-Charities-Supporting-People-Experiencing-Homelessness_Main-Image.png',
-          category:'environment',
-          date:'4/03/2022',
-          daysLeft:33,
-          noPeople:2.7,
-          pending: false
-      },
-      {
-          title: "Campaign 4",
-          description: " In a small town called Meadowville, there lived a young woman named Emily. Emily was a hardworking and kind-hearted individual who had fallen on tough times. She had recently lost her job and was struggling to make ends meetEmily lived in a modest apartment and was barely able to afford her basic necessities. She often skipped meals to save money and couldn't afford proper winter clothing to keep warm during the cold months. Despite her own challenges, she always maintained a positive attitude and never stopped believing that things would get better.One day, word about Emily's situation reached the community. The townspeople were deeply moved by her perseverance and decided to come together to help her. They organized a donation drive where they collected warm clothes, non-perishable food items, and essential supplies for Emily.The community's kindness didn't stop there. The local grocery store owner offered Emily a part-time job to help her regain financial stability. Additionally, a group of volunteers started a crowdfunding campaign to assist Emily in paying her rent and bills until she could find a new job.Overwhelmed with gratitude, Emily couldn't believe the generosity and support she received from her neighbors. Their collective efforts not only provided her with immediate relief but also restored her faith in humanity.With the support of the community, Emily was able to get back on her feet. She eventually found a new job and worked hard to rebuild her life. Inspired by the kindness she experienced, Emily became an active participant in community service initiatives, dedicated to helping others who were in need, just as she once was. This heartwarming story of compassion and solidarity reminds us of the power of community and the difference we can make in someone's life when we come together to lend a helping hand to those in need.",
-          amountDonated: 0,
-          amountTotal: 3000,
-          image:'https://www.we-are-one.dk/wp-content/uploads/2019/03/Skjermbilde-2019-04-02-kl.-13.24.15-1024x530.png',
-          category:'environment',
-          date:'2/03/2022',
-          daysLeft:17,
-          noPeople:5.4,
-          pending: false
-      },
-      {
-          title: "Campaign 5",
-          description: "Fifth campaign description.",
-          amountDonated: 0,
-          amountTotal: 20000,
-          image:'https://u4h.org.uk/wp-content/uploads/2020/12/PHOTO-2020-04-29-14-17-57.jpg',
-          category:'education',
-          date:'2/03/2022',
-          daysLeft:28,
-          noPeople:3.3,
-          pending: false
-      },
-      {
-          title: "Campaign 6",
-          description: "This is the sixth campaign.",
-          amountDonated: 0,
-          amountTotal: 15000,
-          image:'https://offloadmedia.feverup.com/secretmanchester.com/wp-content/uploads/2018/11/17105211/RS12279_DSC03208-e1542216569150-1024x671.jpg',
-          category:'environment',
-          date:'2/03/2022',
-          daysLeft:45,
-          noPeople:3,
-          pending: false
-      },
-      {
-          title: "Campaign 7",
-          description: " In a small town called Meadowville, there lived a young woman named Emily. Emily was a hardworking and kind-hearted individual who had fallen on tough times. She had recently lost her job and was struggling to make ends meetEmily lived in a modest apartment and was barely able to afford her basic necessities. She often skipped meals to save money and couldn't afford proper winter clothing to keep warm during the cold months. Despite her own challenges, she always maintained a positive attitude and never stopped believing that things would get better.One day, word about Emily's situation reached the community. The townspeople were deeply moved by her perseverance and decided to come together to help her. They organized a donation drive where they collected warm clothes, non-perishable food items, and essential supplies for Emily.The community's kindness didn't stop there. The local grocery store owner offered Emily a part-time job to help her regain financial stability. Additionally, a group of volunteers started a crowdfunding campaign to assist Emily in paying her rent and bills until she could find a new job.Overwhelmed with gratitude, Emily couldn't believe the generosity and support she received from her neighbors. Their collective efforts not only provided her with immediate relief but also restored her faith in humanity.With the support of the community, Emily was able to get back on her feet. She eventually found a new job and worked hard to rebuild her life. Inspired by the kindness she experienced, Emily became an active participant in community service initiatives, dedicated to helping others who were in need, just as she once was. This heartwarming story of compassion and solidarity reminds us of the power of community and the difference we can make in someone's life when we come together to lend a helping hand to those in need.",
-          amountDonated: 0,
-          amountTotal: 4000,
-          image:'https://astanatimes.com/wp-content/uploads/2020/07/DSC_1001-%D0%9A%D1%8B%D0%B4%D1%8B%D1%80%D0%B0%D0%BB%D0%B81.jpg',
-          category:'environment',
-          date:'2/03/2022',
-          daysLeft:19,
-          noPeople:9.3,
-          pending: true
-      },
-      {
-          title: "Campaign 8",
-          description: "Campaign number eight description.",
-          amountDonated: 0,
-          amountTotal: 9000,
-          image:'https://faresharemidlands.org.uk/articlemanager/userfiles/images/iCare%20Pic%202.jpg',
-          category:'education',
-          date:'2/03/2022',
-          daysLeft:22,
-          noPeople:4.2,
-          pending: false
-      },
-      {
-          title: "Campaign 9",
-          description: "Ninth campaign for testing.",
-          amountDonated: 0,
-          amountTotal: 6000,
-          image:'https://www.nspcc.org.uk/globalassets/blocks---please-dont-save-images-here/03.-support-us/partner-with-us/partners-in-business/25296-exp-2024-01.jpg?width=876&mode=crop&anchor=middlecenter',
-          category:'education',
-          date:'2/03/2022',
-          daysLeft:66,
-          noPeople:1.8,
-          pending: true
-      },
-      {
-          title: "Campaign 10",
-          description: "Tenth and final campaign.",
-          amountDonated: 0,
-          amountTotal: 12000,
-          image:'https://miro.medium.com/v2/resize:fit:1400/1*7t2hbYeUqGyKWW6P-zZ-YA.jpeg',
-          category:'environment',
-          date:'2/03/2022',
-          daysLeft:87,
-          noPeople:1.4,
-          pending: false
-      },
-      {
-          title: "Campaign 11",
-          description: " In a small town called Meadowville, there lived a young woman named Emily. Emily was a hardworking and kind-hearted individual who had fallen on tough times. She had recently lost her job and was struggling to make ends meetEmily lived in a modest apartment and was barely able to afford her basic necessities. She often skipped meals to save money and couldn't afford proper winter clothing to keep warm during the cold months. Despite her own challenges, she always maintained a positive attitude and never stopped believing that things would get better.One day, word about Emily's situation reached the community. The townspeople were deeply moved by her perseverance and decided to come together to help her. They organized a donation drive where they collected warm clothes, non-perishable food items, and essential supplies for Emily.The community's kindness didn't stop there. The local grocery store owner offered Emily a part-time job to help her regain financial stability. Additionally, a group of volunteers started a crowdfunding campaign to assist Emily in paying her rent and bills until she could find a new job.Overwhelmed with gratitude, Emily couldn't believe the generosity and support she received from her neighbors. Their collective efforts not only provided her with immediate relief but also restored her faith in humanity.With the support of the community, Emily was able to get back on her feet. She eventually found a new job and worked hard to rebuild her life. Inspired by the kindness she experienced, Emily became an active participant in community service initiatives, dedicated to helping others who were in need, just as she once was. This heartwarming story of compassion and solidarity reminds us of the power of community and the difference we can make in someone's life when we come together to lend a helping hand to those in need.",
-          amountDonated: 0,
-          amountTotal: 12000,
-          image:'https://i.ytimg.com/vi/AmPbr1432c8/maxresdefault.jpg',
-          category:'education',
-          date:'2/03/2022',
-          daysLeft:90,
-          noPeople:20,
-          pending: true
-      },
-      {
-          title: "Campaign 12",
-          description: " In a small town called Meadowville, there lived a young woman named Emily. Emily was a hardworking and kind-hearted individual who had fallen on tough times. She had recently lost her job and was struggling to make ends meetEmily lived in a modest apartment and was barely able to afford her basic necessities. She often skipped meals to save money and couldn't afford proper winter clothing to keep warm during the cold months. Despite her own challenges, she always maintained a positive attitude and never stopped believing that things would get better.One day, word about Emily's situation reached the community. The townspeople were deeply moved by her perseverance and decided to come together to help her. They organized a donation drive where they collected warm clothes, non-perishable food items, and essential supplies for Emily.The community's kindness didn't stop there. The local grocery store owner offered Emily a part-time job to help her regain financial stability. Additionally, a group of volunteers started a crowdfunding campaign to assist Emily in paying her rent and bills until she could find a new job.Overwhelmed with gratitude, Emily couldn't believe the generosity and support she received from her neighbors. Their collective efforts not only provided her with immediate relief but also restored her faith in humanity.With the support of the community, Emily was able to get back on her feet. She eventually found a new job and worked hard to rebuild her life. Inspired by the kindness she experienced, Emily became an active participant in community service initiatives, dedicated to helping others who were in need, just as she once was. This heartwarming story of compassion and solidarity reminds us of the power of community and the difference we can make in someone's life when we come together to lend a helping hand to those in need.",
-          amountDonated: 0,
-          amountTotal: 12000,
-          image:'https://www.bbcchildreninneed.co.uk/wp-content/uploads/2020/03/Trevor-Rose-Pudsey-Nick-Knowles-and-Gaby-Blackman-at-the-CRS-for-the-launch-of-DIY-SOS-Big-Build-Special-for-Children-in-Need_small-1920x1280.jpg',
-          category:'environment',
-          date:'2/03/2022',
-          daysLeft:90,
-          noPeople:5.3,
-          pending: false
+    const [campaignDataArray, setCampaignDataArray] = useState([]);
+    const getQuestionFromDB = async ()=>{
+      try {
+
+          let variables = {
+            filter:{
+              _deleted:{
+                ne:true
+              }
+            },
+              limit: 1000
+          };
+
+          let items = [];
+          let data;
+          do {
+            data = await API.graphql({
+              query: queries.listCampaigns,
+              variables: variables,
+              authMode: 'API_KEY' // Specify the authentication mode
+            });            
+            items = [...items, ...data.data.listCampaigns.items];
+            variables.nextToken = data.data.listCampaigns.nextToken;
+          } while (variables.nextToken);
+
+          if (items.length === 0) {
+              console.log("N-am chestii");
+              return;
+          }else{
+            console.log("Question retrieved and added to questions array.");
+            setCampaignDataArray(items);
+            setCategory('all')
+            console.log(campaignDataArray)
+            
+          }
+
+      } catch (error) {
+          console.error("Error retrieving question:", error);
       }
-  ];
+  };
   
   const [filteredCampaigns, setFilteredCampaigns] = useState([]);
 
@@ -301,7 +196,7 @@ export default function ManagerDashboard(){
 
     useEffect(() => {
       let sortedCampaigns = [...campaignDataArray];
-    
+      console.log(category, dateDirection, activeFilter)
       if (category !== 'all') {
         sortedCampaigns = sortedCampaigns.filter(campaign => campaign.category === category);
       }
@@ -311,11 +206,12 @@ export default function ManagerDashboard(){
       }
       
       if (activeFilter === 'Active') {
-        sortedCampaigns = sortedCampaigns.filter(campaign => campaign.pending === false);
+        
+        sortedCampaigns = sortedCampaigns.filter(campaign => campaign.isActive === "true");
       }
       
       if (activeFilter === 'Pending') {
-        sortedCampaigns = sortedCampaigns.filter(campaign => campaign.pending === true);
+        sortedCampaigns = sortedCampaigns.filter(campaign => campaign.isActive === "false");
       }
     
       setFilteredCampaigns(sortedCampaigns);
@@ -326,6 +222,8 @@ export default function ManagerDashboard(){
     {
       loadPage && (<LoadingPage></LoadingPage>)
     }
+    {
+      props.role === 'Admin' ? (
       <div className='container-big2'>
         <div className='container-big2-1'>
         <div className='container-big2-1MODIFIED'>
@@ -362,6 +260,8 @@ export default function ManagerDashboard(){
             </div>
         </div>
       </div>
+      ) : (<div style={{position:'absolute', width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center', textAlign:'center', left:'0px',top:'0px', fontSize:'35px', color:'red'}}>You are not an Admin.</div>)
+    }
     </>)
 
 }

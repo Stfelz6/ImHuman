@@ -15,7 +15,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 
-export default function Actions (props) {
+export default function Actions (props)  {
   const { hasPendingTransactions } = useGetPendingTransactions();
   const getTimeToPong = useGetTimeToPong();
   const pingAmount = useGetPingAmount();
@@ -143,11 +143,11 @@ console.log(`account.balance:${account.balance}`);
     .seconds(secondsLeft || 0)
     .format('mm:ss');
 
-    useEffect(()=>{
-      console.log(props.locked);
-    },[props.locked])
 
-    
+  useEffect(()=>{
+    console.log(props.locked);
+  },[props.locked])
+
   return (
     <>
       {props.locked === false ? (
