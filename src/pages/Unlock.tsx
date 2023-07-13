@@ -16,7 +16,7 @@ import logoMultiversx from '../assets/img/GlowingX.png';
 
 const UnlockPage = () => {
   const commonProps = {
-    callbackRoute: routeNames.dashboard,
+    callbackRoute: routeNames.home,
     nativeAuth: true // optional
   };
   const location = useLocation();

@@ -6,7 +6,8 @@ import {
   faFlag,
   faPowerOff,
   faScrewdriverWrench,
-  faSearch
+  faSearch,
+  faWrench
 } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -48,7 +49,7 @@ Amplify.configure(awsconfig);
 
 export const Navbar = (props) => {
   const commonProps = {
-    callbackRoute: routeNames.dashboard,
+    callbackRoute: routeNames.home,
     nativeAuth: true // optional
   };
 
@@ -187,8 +188,9 @@ export const Navbar = (props) => {
       <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
       <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
       <div className='start-campaign-btn' onClick={()=>{navigate('/CreateCampaign');}}><FontAwesomeIcon className='flag-create-campaign' icon={faFlag} />Start a campaign</div>
+      <div className='start-campaign-btn2' onClick={()=>{navigate('/ManageCampaigns');}}><FontAwesomeIcon className='flag-create-campaign' icon={faWrench} />Manage your Campaigns</div>
       {
-        props.role === 'Admin' && (<div className='manage-campaign-btn' onClick={()=>{navigate('/ManagerDashboard');}}><FontAwesomeIcon className='flag-create-campaign' icon={faScrewdriverWrench} />Manage campaigns</div>)
+        props.role === 'Admin' && (<div className='manage-campaign-btn' onClick={()=>{navigate('/ManagerDashboard');}}><FontAwesomeIcon className='flag-create-campaign' icon={faScrewdriverWrench} />Admin panel</div>)
       }
       
     </div>
