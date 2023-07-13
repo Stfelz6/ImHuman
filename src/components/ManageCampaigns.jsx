@@ -167,9 +167,9 @@ const ManageCampaigns = () => {
     {
       loadPage && (<LoadingPage></LoadingPage>)
     }
-      <div className='create-campaign-container'>
+      <div className='create-campaign-container2'>
         
-      <div className='container-big2-1MODIFIED'>
+      <div className='container-big2-1MODIFIED1'>
             <div className='container-big2-1-FILTERS'>
                 <div style={{display:'flex', position:'relative', alignItems:'center', textAlign:'center', justifyContent:'center'}} >
                     Choose the campaign you want to update

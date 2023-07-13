@@ -226,7 +226,7 @@ export default function ManagerDashboard(props){
       props.role === 'Admin' ? (
       <div className='container-big2'>
         <div className='container-big2-1'>
-        <div className='container-big2-1MODIFIED'>
+        <div className='container-big2-1MODIFIED2'>
             <div className='container-big2-1-FILTERS'>
                 <div className={`filter-1 ${activeFilter === 'Active' ? 'active' : ''}`}   onClick={()=>{setActiveFilter('Active')}}>
                     Active
