@@ -89,13 +89,16 @@ export const Navbar = (props) => {
       .then((data) => {
         // do something with the returned data
         // alert("Welcome, @" + data.data.username + "");
-        if(data.data.username != ''){
+        if(data && data.data && data.data.username != ''){
           const FinalUsername = '@' + data.data.username
           setHerotag(FinalUsername)
+        }else{
+          console.log(data);
         }
       })
       .catch((error) => {
         // handle any errors
+        console.log(error);
       });
 
   }
