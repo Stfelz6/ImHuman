@@ -28,6 +28,8 @@ import Home from 'components/Home';
 import CreateCampaign from 'components/CreateCampaign';
 import ManagerDashboard from 'components/ManagerDashboard';
 import Actions from './pages/Dashboard/components/Actions/Actions'
+import CampaignManager from 'components/CampaignManager';
+import ManageCampaigns from 'components/ManageCampaigns';
 // import * as subscriptions from './graphql/subscriptions';
 // import schema from './models/schema'
 // import {
@@ -78,6 +80,7 @@ export const App = () => {
                 ))}
                 <Route path='*' element={<PageNotFound />} />
                 <Route path='/CreateCampaign' element={<CreateCampaign/>} />
+                <Route path='/ManageCampaigns' element={<ManageCampaigns/>} />
                 <Route path='/Home' element={<Home />} />
                 <Route path='/ManagerDashboard' element={<ManagerDashboard role={role}></ManagerDashboard>}/>
                 <Route path='/Actions' element={<Actions locked={false}/>}/>

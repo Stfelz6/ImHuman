@@ -68,6 +68,29 @@ code {
 }
 
 
+.start-campaign-btn2{
+  position: relative;
+  width: 220px;
+  background-color: var(--human-blue);
+  border-radius: 10px;
+  height: 40px;
+  left:4.5rem;
+  margin-right: 1rem;
+  display: flex;
+  color: var(--human-white);
+  justify-content: center;
+  align-items: center;
+  transition: all ease-in 0.3s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.start-campaign-btn2:hover{
+  background-color: var(--human-darkblue);
+}
+
+
+
 .manage-campaign-btn{
   position: relative;
   width: 200px;
