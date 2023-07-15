@@ -30,5 +30,6 @@ type Campaign @model @auth(rules: [{allow: public}]) {
   phoneContact: String
   emailContact: String
   address: String
-}
- 
+  latitude_longitude: String
+  beneficiaryName: String
+} 

@@ -70,6 +70,8 @@ type EagerCampaign = {
   readonly phoneContact?: string | null;
   readonly emailContact?: string | null;
   readonly address?: string | null;
+  readonly latitude_longitude?: string | null;
+  readonly beneficiaryName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -100,6 +102,8 @@ type LazyCampaign = {
   readonly phoneContact?: string | null;
   readonly emailContact?: string | null;
   readonly address?: string | null;
+  readonly latitude_longitude?: string | null;
+  readonly beneficiaryName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

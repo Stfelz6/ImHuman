@@ -31,6 +31,12 @@ import { faShareSquare, faSquareMinus } from '@fortawesome/free-regular-svg-icon
 import LinearWithValueLabel from './LinearProgressWithLabel';
 import { PromptProps } from 'react-router-dom';
 import ContactMap from './ContactMap';
+import QRCode from 'qrcode.react';
+import { useGetAccountInfo , useTrackTransactionStatus } from '@multiversx/sdk-dapp/hooks';
+import { contractAddress } from 'config';
+import { refreshAccount } from '@multiversx/sdk-dapp/utils';
+import { sendTransactions } from '@multiversx/sdk-dapp/services';
+
 
 
 export default function CampaignManager(props){
@@ -38,6 +44,9 @@ export default function CampaignManager(props){
     const [loading, setLoading] = useState(true);
     const [copied, setCopied] = useState(false);
     const [fullCampaignCategory, setFullCampaignCategory] = useState('donate');
+    const { address, account } = useGetAccountInfo();
+    const [ sendEgldValue,setSendEgldValue] = useState(0);
+    const [transactionSessionId, setTransactionSessionId] = useState(null);
     
     function abbreviateAmount(amount) {
       if (amount >= 1000 && amount < 1000000) {
@@ -49,6 +58,71 @@ export default function CampaignManager(props){
       }
       return amount;
     }
+
+    const [saveValueToUpdate, setSaveValueToUpdate] = useState(0);
+    const onSuccess = async ()=>{
+      const newValue = (saveValueToUpdate*33 + parseFloat(props.campaignData.amountCurrent))
+      const newPeople = parseInt(props.campaignData.noPeople)+1
+        try {
+          const updateCampaign = await API.graphql(graphqlOperation(mutations.updateCampaign, {
+              input: {
+                id: props.campaignData.id,
+                _version: props.campaignData._version,
+                amountCurrent: newValue,
+                noPeople: newPeople
+              }
+          }));
+            console.log("Database updated with new amount current:", updateCampaign);
+            window.location.reload();
+          } catch (error) {
+            console.log("Error updating exam:", error);
+          }
+    }
+    const transactionStatus = useTrackTransactionStatus({
+      transactionId:transactionSessionId,
+      onSuccess
+    })
+
+    const sendTransactionToSC = async () => {
+      let no = parseFloat(sendEgldValue); // Valoarea din input
+      setSaveValueToUpdate(parseFloat(sendEgldValue));
+      let copy = no;
+      if (no < 0) {
+        const decimalCount = no.toString().split('.')[1].length;
+        const zeroesCount = 20 - decimalCount;
+        copy = Math.abs(no * Math.pow(10, zeroesCount)).toFixed(0);
+      } else {
+        copy = (no * 1000000000000000000).toFixed(0);
+      }
+  
+      console.log("-----------");
+  
+      const pingTransaction = {
+        // value: pingAmount,
+        value: copy,
+        data: 'ping',
+        receiver: contractAddress,
+        gasLimit: '60000000'
+      };
+      await refreshAccount();
+  
+      const { sessionId /*, error*/ } = await sendTransactions({
+        transactions: pingTransaction,
+        transactionsDisplayInfo: {
+          processingMessage: 'Processing Ping transaction',
+          errorMessage: 'An error has occured during Ping',
+          successMessage: 'Ping transaction successful'
+        },
+        redirectAfterSign: false
+      });
+  
+  
+      console.log(sessionId);
+  
+      if (sessionId != null) {
+        setTransactionSessionId(sessionId);
+      }
+    };
 
     useEffect(()=>{
       setTimeout(()=>{
@@ -89,6 +163,7 @@ export default function CampaignManager(props){
             }
         }));
           console.log("Exam has been updated:", updateCampaign);
+          window.location.reload();
         } catch (error) {
           console.log("Error updating exam:", error);
         }
@@ -107,6 +182,7 @@ export default function CampaignManager(props){
             }
         }));
           console.log("Exam has been updated:", updateCampaign);
+          window.location.reload();
         } catch (error) {
           console.log("Error updating exam:", error);
         }
@@ -124,9 +200,41 @@ export default function CampaignManager(props){
             }
         }));
           console.log("Exam has been updated:", updateCampaign);
+          window.location.reload();
         } catch (error) {
           console.log("Error updating exam:", error);
         }
+    }
+
+    const downloadDocs = async () => {
+      if (props.campaignData.docs)
+      {
+        const fileUrl = props.campaignData.docs; // Replace with the actual file URL
+        const fileName = `${props.campaignData.title}.pdf`; // Replace with the desired file name
+    
+        try {
+          const response = await fetch(fileUrl, {
+            method: 'GET',
+            responseType: 'blob', // Retrieve the file as a binary object
+          });
+    
+          const blob = await response.blob();
+    
+          // Create a temporary link to trigger the download
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        } catch (error) {
+          console.error('Error downloading file:', error);
+        }
+      }else
+      {
+        alert('No file uploaded for this campaign.')
+      }
+      
     }
 
     return(<>
@@ -139,7 +247,7 @@ export default function CampaignManager(props){
           <FontAwesomeIcon className='close-container-full' icon={faClose} onClick={props.toggleMoreInfo}/>
             <div className={`container-campaign-full-1-2 ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : fullCampaignCategory === 'story' ? 'storymode' : ''}`} style={{backgroundImage:`url(${props.campaignData.photo})`}}>
               <div className={`info-tag-people-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.noPeople)} <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie}/></div>
-              <div className={`info-tag-donated-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.amountCurrent)} <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill}/></div>
+              <div className={`info-tag-donated-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{parseFloat(abbreviateAmount(props.campaignData.amountCurrent)).toFixed(2)} <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill}/></div>
               <div className={`info-tag-title ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.title}</div>
               <div className={`info-tag-date ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{new Date(props.campaignData.deadline).toLocaleDateString()}</div>
             </div>
@@ -169,9 +277,9 @@ export default function CampaignManager(props){
                   <div className='box-details-donate'>
                     <div className='forall-container-input2'>
                       <div className='circle-logo-egld'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
-                      <input className='input-donation-forall2' type='number' placeholder='Amount'></input>
-                      <div className='input-donation-refresh-forall'>Send</div>
-                      <div className='container-balance2'>Balance: 0.4 EGLD</div>
+                      <input className='input-donation-forall2' type='number' placeholder='Amount' onChange={(e)=>setSendEgldValue(e.target.value)}></input>
+                      <div className='input-donation-refresh-forall' onClick={sendTransactionToSC}>Send</div>
+                      <div className='container-balance2'>Balance: {(account.balance/1000000000000000000).toFixed(2)} EGLD</div>
                     </div>
                   </div>
                   
@@ -200,7 +308,7 @@ export default function CampaignManager(props){
                     (<div></div>)
                     }
                     </div>
-                      <img className='qr-revolut' src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png"/>
+                    <QRCode className='qr-revolut' value={`revolut.me/${props.campaignData.revolutAccounts.split(',')[0]}`} />
                   </div>
                   
 
@@ -239,7 +347,7 @@ export default function CampaignManager(props){
                   <div className='download-btn-full-text'>
                     You can download all data files that atest veridicity of campaign.
                   </div>
-                  <div className='download-btn-full'>
+                  <div className='download-btn-full' onClick={downloadDocs}>
                     Download
                   </div>
                 </div>

@@ -45,9 +45,23 @@ import ManageCampaigns from 'components/ManageCampaigns';
 // import AddQuestionJUSTTESTING from './Components/HUD/LoggedDashboard/AddQuestionJUSTTESTING';
 // var AWS = require("aws-sdk");
 
+Amplify.configure({
+  Auth: {
+    identityPoolId: 'eu-north-1:9cb82dba-7079-440a-b66b-458bf0455a06', // Your Identity Pool ID
+    region: 'eu-north-1', // Your region
+  },
+  Storage: {
+    AWSS3: {
+      bucket: 'iamhumanbucket', // Your bucket name
+      region: 'eu-north-1', // Your region
+    }
+  }
+});
+
 export const App = () => {
 
   const [role, setRole] = useState('');
+  const [searchValue, setSearchValue] = useState('');
 
   return (
     <>
@@ -64,7 +78,7 @@ export const App = () => {
               walletConnectV2ProjectId
             }}
           >
-            <Layout role={role} setRole={setRole}>
+            <Layout role={role} setRole={setRole} searchValue={searchValue} setSearchValue={setSearchValue}>
               <AxiosInterceptorContext.Listener />
               <TransactionsToastList />
               <NotificationModal />
@@ -81,7 +95,7 @@ export const App = () => {
                 <Route path='*' element={<PageNotFound />} />
                 <Route path='/CreateCampaign' element={<CreateCampaign/>} />
                 <Route path='/ManageCampaigns' element={<ManageCampaigns/>} />
-                <Route path='/Home' element={<Home />} />
+                <Route path='/Home' element={<Home searchValue={searchValue} setSearchValue={setSearchValue}/>} />
                 <Route path='/ManagerDashboard' element={<ManagerDashboard role={role}></ManagerDashboard>}/>
                 <Route path='/Actions' element={<Actions locked={false}/>}/>
               </Routes>
