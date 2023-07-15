@@ -40,8 +40,9 @@ import { contractAddress } from 'config';
 import { useGetTimeToPong, useGetPingAmount } from '../pages/Dashboard/components/Actions/helpers';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
-import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
+import { useGetAccountInfo, useTrackTransactionStatus } from '@multiversx/sdk-dapp/hooks';
 import { Transaction } from '@multiversx/sdk-core';
+import QRCode from 'qrcode.react';
 
 
 export default function Campaign(props) {
@@ -56,6 +57,8 @@ export default function Campaign(props) {
   const [secondsLeft, setSecondsLeft] = useState();
   const [hasPing, setHasPing] = useState(false);
   const [transactionSessionId, setTransactionSessionId] = useState(null);
+  const { address, account } = useGetAccountInfo();
+  const [ sendEgldValue,setSendEgldValue] = useState(0);
 
 
   function abbreviateAmount(amount) {
@@ -69,13 +72,137 @@ export default function Campaign(props) {
     return amount;
   }
 
-  
-  useEffect(()=>{
+  const [saveValueToUpdate, setSaveValueToUpdate] = useState(0);
+
+  useEffect(() => {
     console.log(transactionSessionId);
-  },[transactionSessionId])
+  }, [transactionSessionId])
+
+  const onSuccess = async ()=>{
+    const newValue = (saveValueToUpdate*33 + parseFloat(props.campaignData.amountCurrent))
+    const newPeople = parseInt(props.campaignData.noPeople)+1
+      try {
+        const updateCampaign = await API.graphql(graphqlOperation(mutations.updateCampaign, {
+            input: {
+              id: props.campaignData.id,
+              _version: props.campaignData._version,
+              amountCurrent: newValue,
+              noPeople: newPeople
+            }
+        }));
+          console.log("Database updated with new amount current:", updateCampaign);
+          window.location.reload();
+        } catch (error) {
+          console.log("Error updating exam:", error);
+        }
+  }
+  const transactionStatus = useTrackTransactionStatus({
+    transactionId:transactionSessionId,
+    onSuccess
+  })
 
   const sendTransactionToSC = async () => {
-    let no = 1;
+    let no = parseFloat(sendEgldValue); // Valoarea din input
+    setSaveValueToUpdate(parseFloat(sendEgldValue));
+    let copy = no;
+    if (no < 0) {
+      const decimalCount = no.toString().split('.')[1].length;
+      const zeroesCount = 20 - decimalCount;
+      copy = Math.abs(no * Math.pow(10, zeroesCount)).toFixed(0);
+    } else {
+      copy = (no * 1000000000000000000).toFixed(0);
+    }
+
+    console.log("-----------");
+
+    const pingTransaction = {
+      // value: pingAmount,
+      value: copy,
+      data: 'ping',
+      receiver: contractAddress,
+      gasLimit: '60000000'
+    };
+    await refreshAccount();
+
+    const { sessionId /*, error*/ } = await sendTransactions({
+      transactions: pingTransaction,
+      transactionsDisplayInfo: {
+        processingMessage: 'Processing Ping transaction',
+        errorMessage: 'An error has occured during Ping',
+        successMessage: 'Ping transaction successful'
+      },
+      redirectAfterSign: false
+    });
+
+
+    console.log(sessionId);
+    
+
+    if (sessionId != null) {
+      setTransactionSessionId(sessionId);
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (copied)
+        setCopied(false);
+    }, 1000);
+  }, [copied])
+
+  useEffect(() => {
+    console.log(props.campaignData);
+    if (props.campaignData) {
+      setLoading(true);
+
+      const image = new Image();
+      image.src = props.campaignData.photo;
+
+      image.onload = () => {
+
+        //de sters timeout => doar pt suspans
+        setTimeout(() => {
+          setLoading(false);
+        }, 400)
+      };
+    }
+  }, [props.campaignData]);
+
+
+  const downloadDocs = async () => {
+    if (props.campaignData.docs)
+    {
+      const fileUrl = props.campaignData.docs; // Replace with the actual file URL
+      const fileName = `${props.campaignData.title}.pdf`; // Replace with the desired file name
+  
+      try {
+        const response = await fetch(fileUrl, {
+          method: 'GET',
+          responseType: 'blob', // Retrieve the file as a binary object
+        });
+  
+        const blob = await response.blob();
+  
+        // Create a temporary link to trigger the download
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error('Error downloading file:', error);
+      }
+    }else
+    {
+      alert('No file uploaded for this campaign.')
+    }
+    
+  }
+
+  const fastDonate = async () => {
+    let no = 0.5; // Valoarea din input
+    setSaveValueToUpdate(0.5);
     let copy = no;
     if (no < 0) {
       const decimalCount = no.toString().split('.')[1].length;
@@ -114,31 +241,6 @@ export default function Campaign(props) {
     }
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      if (copied)
-        setCopied(false);
-    }, 1000);
-  }, [copied])
-
-  useEffect(() => {
-    console.log(props.campaignData);
-    if (props.campaignData) {
-      setLoading(true);
-
-      const image = new Image();
-      image.src = props.campaignData.photo;
-
-      image.onload = () => {
-
-        //de sters timeout => doar pt suspans
-        setTimeout(() => {
-          setLoading(false);
-        }, 400)
-      };
-    }
-  }, [props.campaignData]);
-
   return (<>
     {
       props.moreInfo &&
@@ -147,7 +249,7 @@ export default function Campaign(props) {
           <FontAwesomeIcon className='close-container-full' icon={faClose} onClick={props.toggleMoreInfo} />
           <div className={`container-campaign-full-1 ${fullCampaignCategory === 'file' ? 'filemode' : fullCampaignCategory === 'story' ? 'storymode' : ''}`} style={{ backgroundImage: `url(${props.campaignData.photo})` }}>
             <div className={`info-tag-people-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.noPeople)} <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie} /></div>
-            <div className={`info-tag-donated-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.amountCurrent)} <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill} /></div>
+            <div className={`info-tag-donated-full ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{parseFloat(abbreviateAmount(props.campaignData.amountCurrent)).toFixed(1)} <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill} /></div>
             <div className={`info-tag-title ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.title}</div>
             <div className={`info-tag-date ${fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{new Date(props.campaignData.createdAt).toLocaleDateString()}</div>
           </div>
@@ -174,9 +276,9 @@ export default function Campaign(props) {
                   <div className='box-details-donate'>
                     <div className='forall-container-input2'>
                       <div className='circle-logo-egld'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
-                      <input className='input-donation-forall2' type='number' placeholder='Amount'></input>
-                      <div className='input-donation-refresh-forall' onClick={()=>{sendTransactionToSC();}}>Send</div>
-                      <div className='container-balance2'>Balance: 0.4 EGLD</div>
+                      <input className='input-donation-forall2' type='number' placeholder='Amount' onChange={(e) => setSendEgldValue(e.target.value)}></input>
+                      <div className='input-donation-refresh-forall' onClick={() => { sendTransactionToSC(); }}>Send</div>
+                      <div className='container-balance2'>Balance: {(account.balance/1000000000000000000).toFixed(2)} EGLD</div>
                     </div>
                   </div>
 
@@ -196,16 +298,16 @@ export default function Campaign(props) {
                     <div className='revolut-container'>
                       <div className='other-method1'>Revolut</div>
                       {props.campaignData.revolutAccounts ? (
-                      <div>
-                      {props.campaignData.revolutAccounts.split(',').map((accountNumber, index) => (
-                        <div key={index} className={`other-method${index+2}`}>revolut.me/{accountNumber.trim()}</div>
-                      ))}
-                    </div>) 
-                    : 
-                    (<div></div>)
-                    }
+                        <div>
+                          {props.campaignData.revolutAccounts.split(',').map((accountNumber, index) => (
+                            <div key={index} className={`other-method${index + 2}`}>revolut.me/{accountNumber.trim()}</div>
+                          ))}
+                        </div>)
+                        :
+                        (<div></div>)
+                      }
                     </div>
-                    <img className='qr-revolut' src="https://www.investopedia.com/thmb/hJrIBjjMBGfx0oa_bHAgZ9AWyn0=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/qr-code-bc94057f452f4806af70fd34540f72ad.png" />
+                    <QRCode className='qr-revolut' value={`revolut.me/${props.campaignData.revolutAccounts.split(',')[0]}`} />
                   </div>
 
 
@@ -244,7 +346,7 @@ export default function Campaign(props) {
                         <div className='download-btn-full-text'>
                           You can download all data files that atest veridicity of campaign.
                         </div>
-                        <div className='download-btn-full'>
+                        <div className='download-btn-full' onClick={downloadDocs}>
                           Download
                         </div>
                       </div>
@@ -281,16 +383,16 @@ export default function Campaign(props) {
                 <div className='bar-title'>{props.campaignData.title}</div>
                 <div className='bar-amountDonated'>
                   <div className='bar-money'>
-                    {abbreviateAmount(props.campaignData.amountCurrent)} $ / {abbreviateAmount(props.campaignData.amountNeeded)} $
+                    {parseFloat(abbreviateAmount(props.campaignData.amountCurrent)).toFixed(1)} $ / {parseFloat(abbreviateAmount(props.campaignData.amountNeeded)).toFixed(1)} $
                   </div>
-                  <div className='bar-bar'><LinearWithValueLabel /></div>
+                  <div className='bar-bar'><LinearWithValueLabel campaignData={props.campaignData} /></div>
 
                 </div>
 
               </div>
             </div>
             <div className='container-campaign-3'>
-              <div className='donate-btn' onMouseEnter={() => { setBtnDropdown(true) }} onMouseLeave={() => { setBtnDropdown(false) }}><FontAwesomeIcon className='fast-donate-icon' icon={faBoltLightning} /> Fast Donate</div>
+              <div className='donate-btn' onMouseEnter={() => { setBtnDropdown(true) }} onMouseLeave={() => { setBtnDropdown(false) }} onClick={fastDonate}><FontAwesomeIcon className='fast-donate-icon' icon={faBoltLightning} /> Fast Donate</div>
               {
                 btnDropdown && (
                   <>

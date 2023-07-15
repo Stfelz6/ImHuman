@@ -11,16 +11,18 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
   );
 }
 
-export default function LinearWithValueLabel() {
-  const [progress, setProgress] = React.useState(10);
+export default function LinearWithValueLabel(props) {
+  const [progress, setProgress] = React.useState(0);
 
   React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 10 : prevProgress + 10));
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
+    if (props.campaignData.amountNeeded ===0)
+    {
+      setProgress(0)
+    }else
+    {
+      setProgress((props.campaignData.amountCurrent/props.campaignData.amountNeeded)*100)
+    }
+    
   }, []);
 
   return (

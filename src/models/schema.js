@@ -253,6 +253,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "latitude_longitude": {
+                    "name": "latitude_longitude",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "beneficiaryName": {
+                    "name": "beneficiaryName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -308,5 +322,5 @@ export const schema = {
     "enums": {},
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "85313af39e9a701554bd38a7942b4fc7"
+    "version": "630c184fc7560d71977f2b1076435bee"
 };

@@ -33,6 +33,8 @@ export const getUser = /* GraphQL */ `
           phoneContact
           emailContact
           address
+          latitude_longitude
+          beneficiaryName
           createdAt
           updatedAt
           _version
@@ -147,6 +149,8 @@ export const getCampaign = /* GraphQL */ `
       phoneContact
       emailContact
       address
+      latitude_longitude
+      beneficiaryName
       createdAt
       updatedAt
       _version
@@ -185,6 +189,8 @@ export const listCampaigns = /* GraphQL */ `
         phoneContact
         emailContact
         address
+        latitude_longitude
+        beneficiaryName
         createdAt
         updatedAt
         _version
@@ -233,6 +239,8 @@ export const syncCampaigns = /* GraphQL */ `
         phoneContact
         emailContact
         address
+        latitude_longitude
+        beneficiaryName
         createdAt
         updatedAt
         _version
@@ -283,6 +291,8 @@ export const campaignsByUserID = /* GraphQL */ `
         phoneContact
         emailContact
         address
+        latitude_longitude
+        beneficiaryName
         createdAt
         updatedAt
         _version

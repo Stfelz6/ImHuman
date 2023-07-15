@@ -36,35 +36,35 @@ var AWS = require("aws-sdk");
 
 
 
-export default function Home(){
-    const [dateDirection, setDateDirection] = useState(false);
-    const [category, setCategory] = useState('');
-    const [loadPage, setLoadPage] = useState(true);
-    const [activeMoreInfoIndex, setActiveMoreInfoIndex] = useState(null);
-    
-    useEffect(() => {
-      const pathnameWithoutFirstSlash = location.pathname.substring(1);
-      const capitalizedPathname = pathnameWithoutFirstSlash.charAt(0).toUpperCase() + pathnameWithoutFirstSlash.substring(1);
-      document.title = `Home • Human`;
-    }, [location]);
+export default function Home(props) {
+  const [dateDirection, setDateDirection] = useState(false);
+  const [category, setCategory] = useState('');
+  const [loadPage, setLoadPage] = useState(true);
+  const [activeMoreInfoIndex, setActiveMoreInfoIndex] = useState(null);
 
-    const toggleMoreInfo = (index) => {
-      if (index === activeMoreInfoIndex) {
-        setActiveMoreInfoIndex(null);  // If the active index is clicked again, close the active more info
-      } else {
-        setActiveMoreInfoIndex(index); // Otherwise, set the active index to the clicked index
-      }
+  useEffect(() => {
+    const pathnameWithoutFirstSlash = location.pathname.substring(1);
+    const capitalizedPathname = pathnameWithoutFirstSlash.charAt(0).toUpperCase() + pathnameWithoutFirstSlash.substring(1);
+    document.title = `Home • Human`;
+  }, [location]);
+
+  const toggleMoreInfo = (index) => {
+    if (index === activeMoreInfoIndex) {
+      setActiveMoreInfoIndex(null);  // If the active index is clicked again, close the active more info
+    } else {
+      setActiveMoreInfoIndex(index); // Otherwise, set the active index to the clicked index
     }
+  }
 
 
-    useEffect(()=>{
-      getCampaignFromDB();
-      
-      setTimeout(()=>{
-        setLoadPage(false);
-      },4000)
-      
-    },[])
+  useEffect(() => {
+    getCampaignFromDB();
+
+    setTimeout(() => {
+      setLoadPage(false);
+    }, 4000)
+
+  }, [])
 
   //   {
   //     title: "Campaign 12",
@@ -79,96 +79,103 @@ export default function Home(){
   // } 
 
 
-    const [campaignDataArray, setCampaignDataArray] = useState([]);
-    const getCampaignFromDB = async ()=>{
-      try {
-          let variables = {
-            filter:{
-            _deleted:{
-              ne:true
-            },
-            isActive:{
-              eq:'true'
-            }
+  const [campaignDataArray, setCampaignDataArray] = useState([]);
+  const getCampaignFromDB = async () => {
+    try {
+      let variables = {
+        filter: {
+          _deleted: {
+            ne: true
           },
-              limit: 1000
-          };
-
-          let items = [];
-          let data;
-          do {
-            data = await API.graphql({
-              query: queries.listCampaigns,
-              variables: variables,
-              authMode: 'API_KEY' // Specify the authentication mode
-            });            
-            items = [...items, ...data.data.listCampaigns.items];
-            variables.nextToken = data.data.listCampaigns.nextToken;
-          } while (variables.nextToken);
-
-          if (items.length === 0) {
-              console.log("N-am chestii");
-              return;
-          }else{
-            console.log("Campaign retrieved and added to capmaigns array.");
-            console.log(items);
-            setCampaignDataArray(items);
-            setCategory('all')
+          isActive: {
+            eq: 'true'
           }
+        },
+        limit: 1000
+      };
 
-      } catch (error) {
-          console.error("Error retrieving question:", error);
+      let items = [];
+      let data;
+      do {
+        data = await API.graphql({
+          query: queries.listCampaigns,
+          variables: variables,
+          authMode: 'API_KEY' // Specify the authentication mode
+        });
+        items = [...items, ...data.data.listCampaigns.items];
+        variables.nextToken = data.data.listCampaigns.nextToken;
+      } while (variables.nextToken);
+
+      if (items.length === 0) {
+        console.log("N-am chestii");
+        return;
+      } else {
+        console.log("Campaign retrieved and added to capmaigns array.");
+        console.log(items);
+        setCampaignDataArray(items);
+        setCategory('all')
       }
+
+    } catch (error) {
+      console.error("Error retrieving question:", error);
+    }
   };
-  
+
   const [filteredCampaigns, setFilteredCampaigns] = useState([]);
 
-    useEffect(()=>{
-      setFilteredCampaigns( category === 'all' ? campaignDataArray : campaignDataArray.filter(campaign => campaign.category === category));
-    },[category])
+  useEffect(() => {
+    setFilteredCampaigns(category === 'all' ? campaignDataArray : campaignDataArray.filter(campaign => campaign.category === category));
+  }, [category])
 
-    useEffect(() => {
-      let sortedCampaigns = [...campaignDataArray];
-      if (category !== 'all') {
-        sortedCampaigns = sortedCampaigns.filter(campaign => campaign.category === category);
-      }
-    
-      if (dateDirection) {
-        sortedCampaigns.sort((a, b) => new Date(a.date) - new Date(b.date));
-      }
-    
-      setFilteredCampaigns(sortedCampaigns);
-    }, [category, dateDirection]);
-    
-  
-    return(<>
+  useEffect(() => {
+    let sortedCampaigns = [...campaignDataArray];
+    if (category !== 'all') {
+      sortedCampaigns = sortedCampaigns.filter(campaign => campaign.category === category);
+    }
+
+    if (dateDirection) {
+      sortedCampaigns.sort((a, b) => new Date(a.date) - new Date(b.date));
+    }
+
+    setFilteredCampaigns(sortedCampaigns);
+  }, [category, dateDirection]);
+
+  useEffect(()=>{
+
+    setFilteredCampaigns(
+      campaignDataArray.filter(campaign => campaign.title.includes(props.searchValue))
+    );
+  },[props.searchValue])
+
+
+  return (<>
     {
       loadPage && (<LoadingPage></LoadingPage>)
     }
-      <div className='container-big'>
-        <div className='container-filters'>
-          <div className='container-categories'>
-            <div className='filtru-allfields' onClick={()=>{setCategory("all")}}><FontAwesomeIcon className='icon-allfields' border={false} icon={faEarthEurope}/>All fields</div>
-            <div className={`filtru-category ${category === 'education' ? 'topline' : ''}`} onClick={() => { setCategory('education') }}>Education</div>
-            <div className={`filtru-category ${category === 'environment' ? 'topline' : ''}`} onClick={() => {setCategory("environment")}}>Environment</div>
-          </div>
-          <div className='filtru-date' onClick={()=>{setDateDirection(!dateDirection)}}>Date posted
-            {
-              dateDirection ? (<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowDown}/></>):(<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowUp}/></>)
-            }
-          </div>
+    <div className='container-big'>
+      <div className='container-filters'>
+        <div className='container-categories'>
+          <div className='filtru-allfields' onClick={() => { setCategory("all") }}><FontAwesomeIcon className='icon-allfields' border={false} icon={faEarthEurope} />All fields</div>
+          <div className={`filtru-category ${category === 'education' ? 'topline' : ''}`} onClick={() => { setCategory('education') }}>Education</div>
+          <div className={`filtru-category ${category === 'environment' ? 'topline' : ''}`} onClick={() => { setCategory("environment") }}>Environment</div>
         </div>
+        <div className='filtru-date' onClick={() => { setDateDirection(!dateDirection) }}>Date posted {props.searchValue}
+          {
+            dateDirection ? (<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowDown} /></>) : (<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowUp} /></>)
+          }
+        </div>
+      </div>
 
-        <div className='container-campaigns'>
+      <div className='container-campaigns'>
         {
           filteredCampaigns.map((campaignData, index) => (
             <Campaign key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
-            toggleMoreInfo={() => toggleMoreInfo(index)}/>
+              toggleMoreInfo={() => toggleMoreInfo(index)} />
           ))
         }
-        </div>
-
       </div>
-    </>)
+
+    </div>
+  </>)
 
 }

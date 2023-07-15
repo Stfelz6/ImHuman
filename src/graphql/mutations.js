@@ -36,6 +36,8 @@ export const createUser = /* GraphQL */ `
           phoneContact
           emailContact
           address
+          latitude_longitude
+          beneficiaryName
           createdAt
           updatedAt
           _version
@@ -91,6 +93,8 @@ export const updateUser = /* GraphQL */ `
           phoneContact
           emailContact
           address
+          latitude_longitude
+          beneficiaryName
           createdAt
           updatedAt
           _version
@@ -146,6 +150,8 @@ export const deleteUser = /* GraphQL */ `
           phoneContact
           emailContact
           address
+          latitude_longitude
+          beneficiaryName
           createdAt
           updatedAt
           _version
@@ -193,6 +199,8 @@ export const createCampaign = /* GraphQL */ `
       phoneContact
       emailContact
       address
+      latitude_longitude
+      beneficiaryName
       createdAt
       updatedAt
       _version
@@ -229,6 +237,8 @@ export const updateCampaign = /* GraphQL */ `
       phoneContact
       emailContact
       address
+      latitude_longitude
+      beneficiaryName
       createdAt
       updatedAt
       _version
@@ -265,6 +275,8 @@ export const deleteCampaign = /* GraphQL */ `
       phoneContact
       emailContact
       address
+      latitude_longitude
+      beneficiaryName
       createdAt
       updatedAt
       _version

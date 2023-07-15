@@ -27,13 +27,13 @@ import { useRef } from 'react';
 import { useThree } from '@react-three/fiber';
 import '../../styles/layout.css'
 
-export const Layout = ({ children, role, setRole }: { children: React.ReactNode, role: string, setRole:React.Dispatch<React.SetStateAction<string>>}) => {
+export const Layout = ({ children, searchValue, setSearchValue, role, setRole }: { children: React.ReactNode,searchValue:string,setSearchValue:React.Dispatch<React.SetStateAction<string>>, role: string, setRole:React.Dispatch<React.SetStateAction<string>>}) => {
   const { search } = useLocation();
   return (
     <>
     <div style={{ position: 'relative', zIndex: 0  }}>
       <div className='bg-img d-flex flex-column flex-fill wrapper'>
-        <Navbar role={role} setRole={setRole}/>
+        <Navbar role={role} setRole={setRole} searchValue={searchValue} setSearchValue={setSearchValue}/>
         <main className='d-flex flex-column flex-grow-1'>
           <AuthenticatedRoutesWrapper
             routes={routes}

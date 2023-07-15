@@ -47,14 +47,18 @@ import {
 import awsconfig from '../../../aws-exports.js';
 Amplify.configure(awsconfig);
 
+
 export const Navbar = (props) => {
+
+
+
   const commonProps = {
     callbackRoute: routeNames.home,
     nativeAuth: true // optional
   };
 
   const navigate = useNavigate();
-
+  
   const { address, account } = useGetAccountInfo();
   {/* eslint-disable */ }
 
@@ -176,6 +180,7 @@ export const Navbar = (props) => {
     </Tooltip>
   );
   const [isInSearch, setIsInSearch] = useState(false);
+  
 
   return (
     <>
@@ -188,7 +193,7 @@ export const Navbar = (props) => {
     <BsNavbar className='px-4 py-3 navbar-pos'>
     <div className='containerNavAll'>
       <div className='logo' onClick={()=>{navigate('/Home');}}>#imhuman</div>
-      <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign'></input>
+      <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign' onChange={(e)=>{props.setSearchValue(e.target.value)}}></input>
       <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
       <div className='start-campaign-btn' onClick={()=>{navigate('/CreateCampaign');}}><FontAwesomeIcon className='flag-create-campaign' icon={faFlag} />Start a campaign</div>
       <div className='start-campaign-btn2' onClick={()=>{navigate('/ManageCampaigns');}}><FontAwesomeIcon className='flag-create-campaign' icon={faWrench} />Manage your Campaigns</div>
@@ -276,3 +281,5 @@ export const Navbar = (props) => {
     </>
   );
 };
+
+
