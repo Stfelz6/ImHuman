@@ -197,14 +197,21 @@
     height: 40%;
 }
 
-.campaign-primary-details-button-done{
+.campaign-primary-details-button-done-create{
     position: relative;
     width: 100%;
     height: 60%;
     border-radius: 10px;
     cursor: pointer;
     transition: all ease-in-out 0.3s;
+    background-color: var(--human-pink);
+    color: white;
 }
+
+.campaign-primary-details-button-done-create:hover{
+    background-color: var(--human-darkpink);
+}
+
 .campaign-deadline-done-container{
     position: relative;
     width: 28%;
@@ -235,7 +242,7 @@
     align-items: center;
 }
 
-.camp-amountNeeded,.camp-deadline,.camp-wallet,.camp-description,.camp-title,.camp-bank,.camp-revolut{
+.camp-amountNeeded,.camp-deadline,.camp-wallet,.camp-description,.camp-title,.camp-bank,.camp-revolut,.camp-category{
     color: black;
     border: solid 1px var(--human-greydark);
     border-radius: 10px;
@@ -244,7 +251,7 @@
     transition: all ease 0.3s;
 }
 
-.camp-amountNeeded.active,.camp-deadline.active,.camp-wallet.active,.camp-description.active,.camp-title.active,.camp-bank.active,.camp-revolut.active{
+.camp-amountNeeded.active,.camp-deadline.active,.camp-wallet.active,.camp-description.active,.camp-title.active,.camp-bank.active,.camp-revolut.active,.camp-category.active{
     color: black;
     border: solid 1px var(--human-blue);
     border-radius: 10px;
@@ -270,6 +277,14 @@
 }
 
 .camp-wallet{
+    width: 100%;
+    height: 100%;
+    resize: none; /* Prevents resizing of the textarea */
+    overflow-y: auto; /* Adds vertical scrollbars if needed */
+    padding: 10px; /* Optional: Add padding for better readability */
+}
+
+.camp-category{
     width: 100%;
     height: 100%;
     resize: none; /* Prevents resizing of the textarea */
@@ -303,6 +318,9 @@
     position: relative;
     width: 72%;
     height: 100%;
+    flex-direction: row;
+    display: flex;
+    gap:1rem;
 }
 
 .campaign-primary-details-amountNeeded{

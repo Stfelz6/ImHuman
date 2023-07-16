@@ -14,7 +14,7 @@ var AWS = require("aws-sdk");
 import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 import CampaignManager from './CampaignManager';
 
-const ManageCampaigns = () => {
+const ManageCampaigns = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
   const [loadPage, setLoadPage] = useState(true);
@@ -40,7 +40,7 @@ const ManageCampaigns = () => {
   };
 
   useEffect(() => {
-    getCampaignFromDB();
+    getCampaignsFromDB();
     setTimeout(() => {
       setLoadPage(false);
     }, 4000)
@@ -123,6 +123,7 @@ const ManageCampaigns = () => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [beneficiaryWallet, setBeneficiaryWallet] = useState('')
+  const [category, setCategory] = useState('')
   const [bankAccount, setBankAccount] = useState('')
   const [revolutAccount, setRevolutAccount] = useState('')
   const [deadline, setDeadline] = useState('')
@@ -132,10 +133,12 @@ const ManageCampaigns = () => {
   const [emailContact, setEmailContact] = useState('')
   const [latitudeLongitude, setLatitudeLongitude] = useState('')
   const { address, account } = useGetAccountInfo();
+  const [campaignDataArray, setCampaignDataArray] = useState([]);
 
   const updateCampaignFunction = async () => {
     try {
       await putFileInUserFolder(selectedCampaign);
+  
       const updateCampaign = await API.graphql(graphqlOperation(mutations.updateCampaign, {
         input: {
           id: selectedCampaign.id,
@@ -143,6 +146,7 @@ const ManageCampaigns = () => {
           title: title,
           description: description,
           wallet: beneficiaryWallet,
+          category: category,
           bankAccounts: bankAccount,
           revolutAccounts: revolutAccount,
           deadline: deadline,
@@ -152,24 +156,31 @@ const ManageCampaigns = () => {
           emailContact: emailContact,
           address: addressContact,
           latitude_longitude: latitudeLongitude
-
         }
       }));
-      console.log("Exam has been updated:", updateCampaign);
-      setTimeout(() => {
-        
-      }, 4000)
-      window.location.reload();
+      console.log("Campaign has been updated:", updateCampaign);
+      const updatedCampaign = updateCampaign.data.updateCampaign;
+  
+      if (campaignDataArray) {
+        // Update campaignDataArray with the updated campaign
+        const updatedCampaignDataArray = campaignDataArray.map((campaign) =>
+          campaign.id === updatedCampaign.id ? updatedCampaign : campaign
+        );
+        setCampaignDataArray(updatedCampaignDataArray);
+      }
+  
+      props.setAlert({
+        type: 'updateUserCampaign',
+        title: 'Campaign updated!',
+        body: 'You successfully updated the campaign.',
+      });
     } catch (error) {
-      console.log("Error updating exam:", error);
+      console.log("Error updating campaign:", error);
     }
-  }
+  };
 
-
-
-
-  const [campaignDataArray, setCampaignDataArray] = useState([]);
-  const getCampaignFromDB = async () => {
+  const getCampaignsFromDB = async () => {
+    console.log('account.address',account.address)
     try {
       let variables = {
         filter: {
@@ -220,7 +231,6 @@ const ManageCampaigns = () => {
     }
     return amount;
   }
-
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const selectareEdit = (campaignData) => {
     setSelectedCampaign(campaignData);
@@ -228,6 +238,7 @@ const ManageCampaigns = () => {
     setTitle(campaignData.title);
     setDescription(campaignData.description);
     setBeneficiaryWallet(campaignData.wallet);
+    setCategory(campaignData.category);
     setBankAccount(campaignData.bankAccounts);
     setRevolutAccount(campaignData.revolutAccounts);
     setDeadline(campaignData.deadline);
@@ -241,25 +252,108 @@ const ManageCampaigns = () => {
     setImageSrc(campaignData.photo);
   };
 
+  const getCampaign = async (ID) => {
+    console.log(ID);
+    try {
+      let variables = {
+        filter: {
+          id:{
+            eq: ID
+          }
+        },
+        limit: 1000
+      };
 
+      let items = [];
+      let data;
+      do {
+        data = await API.graphql({
+          query: queries.listCampaigns,
+          variables: variables,
+          authMode: 'API_KEY' // Specify the authentication mode
+        });
+        items = [...items, ...data.data.listCampaigns.items];
+        variables.nextToken = data.data.listCampaigns.nextToken;
+      } while (variables.nextToken);
+
+      if (items.length === 0) {
+        console.log("N-am chestii");
+        return;
+      } else {
+        console.log("Campaign retrieved and added to capmaigns array.");
+        console.log(items)
+        return items
+      }
+
+    } catch (error) {
+      console.error("Error retrieving question:", error);
+    }
+  };
 
   const deteleCampaign = async () => {
-    console.log('Am apasat sa fie stearsa')
-
+    console.log('Am apasat sa fie stearsa');
+    const updatedCampaign = await getCampaign(selectedCampaign.id);
+    console.log(updatedCampaign);
     try {
-      // update answer in DB
-      const updateCampaign = await API.graphql(graphqlOperation(mutations.deleteCampaign, {
+      // Delete campaign from DB
+      const deleteCampaign = await API.graphql(graphqlOperation(mutations.deleteCampaign, {
         input: {
           id: selectedCampaign.id,
           _version: selectedCampaign._version,
-        }
+        },
       }));
-      console.log("Exam has been updated:", updateCampaign);
-      window.location.reload();
+      console.log("Campaign has been deleted:", deleteCampaign);
+  
+      // Check if campaignDataArray exists and is not null
+      if(campaignDataArray){
+        // Remove deleted campaign from campaignDataArray
+        let updatedCampaignDataArray = campaignDataArray.filter(
+          (campaign) => campaign.id !== selectedCampaign.id
+        );
+  
+        // If updatedCampaignDataArray is empty, assign it as null or []
+        if(updatedCampaignDataArray.length === 0){
+          updatedCampaignDataArray = null; // or [] as per your needs
+        }
+  
+        setCampaignDataArray(updatedCampaignDataArray);
+      }
+
+      emptyFields();
+  
+      props.setAlert({
+        type: 'deleteUserCampaign',
+        title: 'Campaign deleted!',
+        body: 'You successfully deleted the campaign.',
+      });
+  
     } catch (error) {
-      console.log("Error updating exam:", error);
+      console.log("Error deleting campaign:", error);
     }
+  };
+
+  const emptyFields = () =>{
+    setSelectedCampaign('');
+    setTitle('');
+    setDescription('');
+    setBeneficiaryWallet('');
+    setCategory('');
+    setBankAccount('');
+    setRevolutAccount('');
+    setDeadline('');
+    setBeneficiaryName('');
+    setPhoneContact('');
+    setEmailContact('');
+    setAddressContact('');
+    setFromDtoX('');
+    setFromXtoD(0);
+    setLatitudeLongitude('');
+    setImageSrc('');
+    setSelectedFile(null);
+    setActiveDiv(null);
+
   }
+  
 
   return (
     <>
@@ -281,7 +375,9 @@ const ManageCampaigns = () => {
               {/* <div className={`container-campaign-full-empty ${activeMoreInfoIndex !== null ? 'filemode':''}`}>
                         <FontAwesomeIcon className='arrowupfullempty' icon={faArrowUp}></FontAwesomeIcon>
                     </div> */}
-              {campaignDataArray.map((campaignData, index) => (
+              {
+              campaignDataArray && 
+              campaignDataArray.map((campaignData, index) => (
                 <div className='container-campaign2' key={index}>
                   <div
                     className='container-campaign-1'
@@ -302,7 +398,9 @@ const ManageCampaigns = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))
+              
+              }
             </div>
           </div>
         </div>
@@ -350,6 +448,7 @@ const ManageCampaigns = () => {
             <div className='campaign-wallet-amount-container'>
               <div className='campaign-primary-details-wallet' onClick={() => { setActiveDiv('wallet') }}>
                 <input className={`camp-wallet ${activeDiv === 'wallet' ? 'active' : ''}`} placeholder="Beneficiary's wallet" value={beneficiaryWallet} onChange={(e) => setBeneficiaryWallet(e.target.value)}></input>
+                <input className={`camp-category ${activeDiv === 'category' ? 'active' : ''}`} onClick={() => { setActiveDiv('category') }} placeholder="Category"  value={category} onChange={(e) => setCategory(e.target.value)}></input>
               </div>
               <div className='campaign-primary-details-amountNeeded' onClick={() => { setActiveDiv('amountNeeded') }}>
                 <input max={99999} className={`camp-amountNeeded ${activeDiv === 'amountNeeded' ? 'active' : ''}`} onKeyDown={(e) => { if (e.target.value.length >= 5 && e.key !== 'Backspace') { e.preventDefault() } }} value={fromDtoX} onChange={(e) => { const value = Math.min(e.target.value, 99999); setFromDtoX((e.target.value)); setFromXtoD((e.target.value * 33).toFixed(1)) }} type='number' placeholder='Amount EGLD'></input>

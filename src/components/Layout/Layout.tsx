@@ -25,9 +25,15 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { useRef } from 'react';
 import { useThree } from '@react-three/fiber';
-import '../../styles/layout.css'
+import '../../styles/layout.css';
 
-export const Layout = ({ children, searchValue, setSearchValue, role, setRole }: { children: React.ReactNode,searchValue:string,setSearchValue:React.Dispatch<React.SetStateAction<string>>, role: string, setRole:React.Dispatch<React.SetStateAction<string>>}) => {
+type AlertType = {
+  type: string;
+  title: string;
+  body: string;
+};
+
+export const Layout = ({ children, searchValue, setSearchValue, role, setRole, setAlert }: { children: React.ReactNode,searchValue:string,setSearchValue:React.Dispatch<React.SetStateAction<string>>, role: string, setRole:React.Dispatch<React.SetStateAction<string>>, setAlert: (alert: AlertType) => void}) => {
   const { search } = useLocation();
   return (
     <>
@@ -44,7 +50,7 @@ export const Layout = ({ children, searchValue, setSearchValue, role, setRole }:
         </main>
       </div>
       {/* <CanvasBackground /> */}
-      <Footer />
+      <Footer setAlert={setAlert}/>
     </div>
     </>
   );

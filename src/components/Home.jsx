@@ -113,7 +113,7 @@ export default function Home(props) {
         console.log("Campaign retrieved and added to capmaigns array.");
         console.log(items);
         setCampaignDataArray(items);
-        setCategory('all')
+        setCategory('All')
       }
 
     } catch (error) {
@@ -124,17 +124,29 @@ export default function Home(props) {
   const [filteredCampaigns, setFilteredCampaigns] = useState([]);
 
   useEffect(() => {
-    setFilteredCampaigns(category === 'all' ? campaignDataArray : campaignDataArray.filter(campaign => campaign.category === category));
+    setFilteredCampaigns(category === 'All' ? campaignDataArray : campaignDataArray.filter(campaign => campaign.category === category));
   }, [category])
 
   useEffect(() => {
     let sortedCampaigns = [...campaignDataArray];
-    if (category !== 'all') {
+    if (category !== 'All') {
       sortedCampaigns = sortedCampaigns.filter(campaign => campaign.category === category);
     }
 
     if (dateDirection) {
-      sortedCampaigns.sort((a, b) => new Date(a.date) - new Date(b.date));
+      sortedCampaigns.sort((a, b) => {
+        const daysRemainingA = Math.ceil((Date.parse(a.deadline) - Date.now()) / (1000 * 60 * 60 * 24));
+        const daysRemainingB = Math.ceil((Date.parse(b.deadline) - Date.now()) / (1000 * 60 * 60 * 24));
+        
+        return daysRemainingB - daysRemainingA;
+      });      
+    }else{
+      sortedCampaigns.sort((a, b) => {
+        const daysRemainingA = Math.ceil((Date.parse(a.deadline) - Date.now()) / (1000 * 60 * 60 * 24));
+        const daysRemainingB = Math.ceil((Date.parse(b.deadline) - Date.now()) / (1000 * 60 * 60 * 24));
+        
+        return daysRemainingA - daysRemainingB;
+      });      
     }
 
     setFilteredCampaigns(sortedCampaigns);
@@ -155,11 +167,12 @@ export default function Home(props) {
     <div className='container-big'>
       <div className='container-filters'>
         <div className='container-categories'>
-          <div className='filtru-allfields' onClick={() => { setCategory("all") }}><FontAwesomeIcon className='icon-allfields' border={false} icon={faEarthEurope} />All fields</div>
-          <div className={`filtru-category ${category === 'education' ? 'topline' : ''}`} onClick={() => { setCategory('education') }}>Education</div>
-          <div className={`filtru-category ${category === 'environment' ? 'topline' : ''}`} onClick={() => { setCategory("environment") }}>Environment</div>
+          <div className='filtru-allfields' onClick={() => { setCategory("All") }}><FontAwesomeIcon className='icon-allfields' border={false} icon={faEarthEurope} />All fields</div>
+          <div className={`filtru-category ${category === 'Education' ? 'topline' : ''}`} onClick={() => { setCategory('Education') }}>Education</div>
+          <div className={`filtru-category ${category === 'Environment' ? 'topline' : ''}`} onClick={() => { setCategory("Environment") }}>Environment</div>
+          <div className={`filtru-category ${category === 'Community' ? 'topline' : ''}`} onClick={() => { setCategory("Community") }}>Community</div>
         </div>
-        <div className='filtru-date' onClick={() => { setDateDirection(!dateDirection) }}>Date posted {props.searchValue}
+        <div className='filtru-date' onClick={() => { setDateDirection(!dateDirection) }}>Days Left
           {
             dateDirection ? (<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowDown} /></>) : (<><FontAwesomeIcon className='filter-icon' border={true} icon={faArrowUp} /></>)
           }
@@ -169,7 +182,7 @@ export default function Home(props) {
       <div className='container-campaigns'>
         {
           filteredCampaigns.map((campaignData, index) => (
-            <Campaign key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
+            <Campaign setAlert={props.setAlert} key={index} filteredCampaigns={filteredCampaigns} setFilteredCampaigns={setFilteredCampaigns} campaignDataArray={campaignDataArray} setCampaignDataArray={setCampaignDataArray}  campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
               toggleMoreInfo={() => toggleMoreInfo(index)} />
           ))
         }

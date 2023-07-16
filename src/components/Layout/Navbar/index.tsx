@@ -37,9 +37,9 @@ import { useGetAccountInfo } from '@multiversx/sdk-dapp/hooks';
 import { FormatAmount } from '@multiversx/sdk-dapp/UI/FormatAmount';
 import { contractAddress } from 'config';
 import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
+  BrowserRouter as Router,
+  Routes,
+  Route,
   Navigate,
   useParams,
   useNavigate
@@ -58,32 +58,32 @@ export const Navbar = (props) => {
   };
 
   const navigate = useNavigate();
-  
+
   const { address, account } = useGetAccountInfo();
   {/* eslint-disable */ }
 
-  
+
   function getCurrentDateAsString() {
     const currentDate = new Date();
-  
+
     // Get day, month, and year components
     const day = currentDate.getDate();
     const month = currentDate.getMonth() + 1; // Month is zero-based, so add 1
     const year = currentDate.getFullYear();
-  
+
     // Pad single-digit day/month with leading zero if necessary
     const formattedDay = day < 10 ? `0${day}` : day;
     const formattedMonth = month < 10 ? `0${month}` : month;
-  
+
     // Format the date as "dd/mm/yyyy"
     const formattedDate = `${formattedDay}/${formattedMonth}/${year}`;
-  
+
     return formattedDate;
   }
 
 
   const [HeroTag, setHerotag] = useState('');
-  const fetchHeroTag = () =>{
+  const fetchHeroTag = () => {
     const endpoint = "https://gateway.multiversx.com/address/";
     const bech32Address = address;
     const path = "/username";
@@ -93,10 +93,10 @@ export const Navbar = (props) => {
       .then((data) => {
         // do something with the returned data
         // alert("Welcome, @" + data.data.username + "");
-        if(data && data.data && data.data.username != ''){
+        if (data && data.data && data.data.username != '') {
           const FinalUsername = '@' + data.data.username
           setHerotag(FinalUsername)
-        }else{
+        } else {
           console.log(data);
         }
       })
@@ -109,20 +109,20 @@ export const Navbar = (props) => {
 
   fetchHeroTag();
 
-  const censoredAddress = address.substring(0, 5) + '...' + address.substring(address.length-5);
+  const censoredAddress = address.substring(0, 5) + '...' + address.substring(address.length - 5);
   const isLoggedIn = useGetIsLoggedIn();
 
   const handleLogout = () => {
     logout(`${window.location.origin}/unlock`);
   };
 
-  
+
   const putNewUserToCustomDB = async () => {
     const userDetails = {
-      wallet:account.address,
-      herotag:HeroTag,
-      totalDonated:0,
-      role:'User',
+      wallet: account.address,
+      herotag: HeroTag,
+      totalDonated: 0,
+      role: 'User',
       date_joined: getCurrentDateAsString()
     };
     try {
@@ -150,63 +150,68 @@ export const Navbar = (props) => {
       console.log(response);
       if (response.data.listUsers.items.length === 0) {
         putNewUserToCustomDB();
-      }else{
+      } else {
         props.setRole(response.data.listUsers.items[0].role);
       }
     } catch (error) {
       console.log(error);
     }
   }
-  
-  
+
+
   useEffect(() => {
     // assuming "account" is the user object
     if (account) {
       createUserIfNotExists();
     }
   }, [account, HeroTag]); // you may want to add "account" as a dependency as well
-  
 
-  
+
+
   const CustomTooltipLogout = (props) => (
     <Tooltip {...props} disabled={false} className='tooltip-custom-1'>
       Log out
     </Tooltip>
   );
-  
+
   const CustomTooltipAddress = (props) => (
     <Tooltip {...props} disabled={false} className='tooltip-custom-2'>
       {address}
     </Tooltip>
   );
   const [isInSearch, setIsInSearch] = useState(false);
-  
+
 
   return (
     <>
-    {
+      {/* {
       isInSearch && (
       <div className='allscreen' onClick={()=>{setIsInSearch(false)}}></div>
       )
-    }
+    } */}
 
-    <BsNavbar className='px-4 py-3 navbar-pos'>
-    <div className='containerNavAll'>
-      <div className='logo' onClick={()=>{navigate('/Home');}}>#imhuman</div>
-      <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign' onChange={(e)=>{props.setSearchValue(e.target.value)}}></input>
-      <FontAwesomeIcon className='iconSearch' icon={faSearch}/>
-      <div className='start-campaign-btn' onClick={()=>{navigate('/CreateCampaign');}}><FontAwesomeIcon className='flag-create-campaign' icon={faFlag} />Start a campaign</div>
-      <div className='start-campaign-btn2' onClick={()=>{navigate('/ManageCampaigns');}}><FontAwesomeIcon className='flag-create-campaign' icon={faWrench} />Manage your Campaigns</div>
-      {
-        props.role === 'Admin' && (<div className='manage-campaign-btn' onClick={()=>{navigate('/ManagerDashboard');}}><FontAwesomeIcon className='flag-create-campaign' icon={faScrewdriverWrench} />Admin panel</div>)
-      }
-      
-    </div>
-      <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
-        {/* is logged in ? da / nu */}
-        {isLoggedIn && (
-          <>
-            {/* <NavItem>
+      <BsNavbar className='px-4 py-3 navbar-pos'>
+        <div className='containerNavAll'>
+          <div className='logo' onClick={() => { navigate('/Home'); }}>#imhuman</div>
+          <input className={`searchBar ${isInSearch ? 'searchBarAnim' : ''}`} onClick={() => setIsInSearch(true)} placeholder='Search for a campaign' onChange={(e) => { props.setSearchValue(e.target.value) }}></input>
+          <FontAwesomeIcon className='iconSearch' icon={faSearch} />
+          {
+            account && account.balance !== '...' ? (<>
+
+              <div className='start-campaign-btn' onClick={() => { navigate('/CreateCampaign'); }}><FontAwesomeIcon className='flag-create-campaign' icon={faFlag} />Start a campaign</div>
+              <div className='start-campaign-btn2' onClick={() => { navigate('/ManageCampaigns'); }}><FontAwesomeIcon className='flag-create-campaign' icon={faWrench} />Manage your Campaigns</div>
+              {
+                props.role === 'Admin' && (<div className='manage-campaign-btn' onClick={() => { navigate('/ManagerDashboard'); }}><FontAwesomeIcon className='flag-create-campaign' icon={faScrewdriverWrench} />Admin panel</div>)
+              }
+            </>) : (<></>)
+          }
+
+        </div>
+        <div className='container-fluid d-flex flex-row-reverse justify-content-start'>
+          {/* is logged in ? da / nu */}
+          {isLoggedIn && (
+            <>
+              {/* <NavItem>
               <Link to={routeNames.statistics} className='nav-link'>
                 <FontAwesomeIcon
                   icon={faChartSimple}
@@ -222,62 +227,62 @@ export const Navbar = (props) => {
                 />
               </Link>
             </NavItem> */}
-            {/*<NavItem>
-              <OverlayTrigger placement="left" overlay={CustomTooltipLogout}>
-                <button className='btn btn-link' onClick={handleLogout}>
-                  <FontAwesomeIcon
-                    icon={faPowerOff}
-                    className='custom-logout-btn'
-                  />
-                </button>
-              </OverlayTrigger>
-            </NavItem> */}
-          </>
-        )}
-        
-        {isLoggedIn ? (
-          HeroTag ? (
-                      <OverlayTrigger placement="bottom" delay={10} overlay={CustomTooltipAddress}>
-                        <WalletConnectLoginButton
-                          className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
-                          loginButtonText={isLoggedIn ? (HeroTag ? HeroTag : censoredAddress ?? '') : 'xPortal Connect'}
-                          disabled={isLoggedIn} // disable button if user is already logged in
-                          {...commonProps}
-                          {...(walletConnectV2ProjectId
-                            ? {
-                                isWalletConnectV2: true
-                              }
-                            : {})}
-                        /> 
-                      </OverlayTrigger>
-                    ) : (
-                        <WalletConnectLoginButton
-                          className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
-                          loginButtonText={isLoggedIn ? (HeroTag ? HeroTag : censoredAddress ?? '') : 'xPortal Connect'}
-                          disabled={isLoggedIn} // disable button if user is already logged in
-                          {...commonProps}
-                          {...(walletConnectV2ProjectId
-                            ? {
-                                isWalletConnectV2: true
-                              }
-                            : {})}
-                        /> 
-                    )
-        ) :         
-        <WalletConnectLoginButton
-          className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
-          loginButtonText={'xPortal Connect'}
-          {...commonProps}
-          {...(walletConnectV2ProjectId
-            ? {
-                isWalletConnectV2: true
-              }
-            : {})}
-        /> 
-      }
+              <NavItem>
+                <OverlayTrigger placement="left" overlay={CustomTooltipLogout}>
+                  <button className='btn btn-link' onClick={handleLogout}>
+                    <FontAwesomeIcon
+                      icon={faPowerOff}
+                      className='custom-logout-btn'
+                    />
+                  </button>
+                </OverlayTrigger>
+              </NavItem>
+            </>
+          )}
 
-      </div>
-    </BsNavbar>
+          {isLoggedIn ? (
+            HeroTag ? (
+              <OverlayTrigger placement="bottom" delay={10} overlay={CustomTooltipAddress}>
+                <WalletConnectLoginButton
+                  className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
+                  loginButtonText={isLoggedIn ? (HeroTag ? HeroTag : censoredAddress ?? '') : 'xPortal Connect'}
+                  disabled={isLoggedIn} // disable button if user is already logged in
+                  {...commonProps}
+                  {...(walletConnectV2ProjectId
+                    ? {
+                      isWalletConnectV2: true
+                    }
+                    : {})}
+                />
+              </OverlayTrigger>
+            ) : (
+              <WalletConnectLoginButton
+                className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
+                loginButtonText={isLoggedIn ? (HeroTag ? HeroTag : censoredAddress ?? '') : 'xPortal Connect'}
+                disabled={isLoggedIn} // disable button if user is already logged in
+                {...commonProps}
+                {...(walletConnectV2ProjectId
+                  ? {
+                    isWalletConnectV2: true
+                  }
+                  : {})}
+              />
+            )
+          ) :
+            <WalletConnectLoginButton
+              className='d-flex custom-connect-btn align-items-center navbar-brand mr-0'
+              loginButtonText={'xPortal Connect'}
+              {...commonProps}
+              {...(walletConnectV2ProjectId
+                ? {
+                  isWalletConnectV2: true
+                }
+                : {})}
+            />
+          }
+
+        </div>
+      </BsNavbar>
     </>
   );
 };
