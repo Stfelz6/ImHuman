@@ -30,20 +30,8 @@ import ManagerDashboard from 'components/ManagerDashboard';
 import Actions from './pages/Dashboard/components/Actions/Actions'
 import CampaignManager from 'components/CampaignManager';
 import ManageCampaigns from 'components/ManageCampaigns';
-// import * as subscriptions from './graphql/subscriptions';
-// import schema from './models/schema'
-// import {
-// 	BrowserRouter as Router,
-// 	Routes,
-// 	Route,
-// 	Link,
-//   Navigate,
-//   useParams,
-//   useNavigate
-// } from 'react-router-dom';
-// import consoleLogo from './consoleLogo.png';
-// import AddQuestionJUSTTESTING from './Components/HUD/LoggedDashboard/AddQuestionJUSTTESTING';
-// var AWS = require("aws-sdk");
+import AlertWidget from 'components/AlertWidget';
+
 
 Amplify.configure({
   Auth: {
@@ -62,6 +50,7 @@ export const App = () => {
 
   const [role, setRole] = useState('');
   const [searchValue, setSearchValue] = useState('');
+  const [alert, setAlert] = useState(null);
 
   return (
     <>
@@ -78,7 +67,7 @@ export const App = () => {
               walletConnectV2ProjectId
             }}
           >
-            <Layout role={role} setRole={setRole} searchValue={searchValue} setSearchValue={setSearchValue}>
+            <Layout role={role} setRole={setRole} searchValue={searchValue} setSearchValue={setSearchValue} setAlert={setAlert}>
               <AxiosInterceptorContext.Listener />
               <TransactionsToastList />
               <NotificationModal />
@@ -93,12 +82,13 @@ export const App = () => {
                   />
                 ))}
                 <Route path='*' element={<PageNotFound />} />
-                <Route path='/CreateCampaign' element={<CreateCampaign/>} />
-                <Route path='/ManageCampaigns' element={<ManageCampaigns/>} />
-                <Route path='/Home' element={<Home searchValue={searchValue} setSearchValue={setSearchValue}/>} />
-                <Route path='/ManagerDashboard' element={<ManagerDashboard role={role}></ManagerDashboard>}/>
+                <Route path='/CreateCampaign' element={<CreateCampaign setAlert={setAlert} alert={alert}/>} />
+                <Route path='/ManageCampaigns' element={<ManageCampaigns alert={alert} setAlert={setAlert}/>} />
+                <Route path='/Home' element={<Home searchValue={searchValue} setSearchValue={setSearchValue} alert={alert} setAlert={setAlert}/>} />
+                <Route path='/ManagerDashboard' element={<ManagerDashboard role={role} alert={alert} setAlert={setAlert}></ManagerDashboard>}/>
                 <Route path='/Actions' element={<Actions locked={false}/>}/>
               </Routes>
+              <AlertWidget alert={alert} setAlert={setAlert}></AlertWidget>
             </Layout>
             
           </DappProvider>

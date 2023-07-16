@@ -15,9 +15,10 @@ const Heartbeat = () => {
   }, []);
 
   return (
-    <div className="heartbeat-container">
-      <div className={`heartbeat-line ${beat ? 'heartbeat-animation' : ''}`} />
-    </div>
+    <></>
+    // <div className="heartbeat-container">
+    //   <div className={`heartbeat-line ${beat ? 'heartbeat-animation' : ''}`} />
+    // </div>
   );
 };
 

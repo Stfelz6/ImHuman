@@ -10,7 +10,7 @@ import { Storage } from 'aws-amplify';
 import { Auth } from "aws-amplify";
 var AWS = require("aws-sdk");
 
-const CreateCampaign = () => {
+const CreateCampaign = (props) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
   const [loadPage, setLoadPage] = useState(true);
@@ -118,6 +118,7 @@ const CreateCampaign = () => {
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [beneficiaryWallet, setBeneficiaryWallet] = useState('')
+  const [category, setCategory] = useState('')
   const [bankAccount, setBankAccount] = useState('')
   const [revolutAccount, setRevolutAccount] = useState('')
   const [deadline, setDeadline] = useState('')
@@ -161,7 +162,8 @@ const CreateCampaign = () => {
       emailContact: emailContact,
       address: addressContact,
       latitude_longitude: latitudeLongitude,
-      beneficiaryName: beneficiaryName
+      beneficiaryName: beneficiaryName,
+      category:category
     };
     try {
       const newC = await API.graphql({
@@ -182,6 +184,7 @@ const CreateCampaign = () => {
           }
         }));
         console.log("Exam has been updated:", updateCampaign);
+        announceFinish();
       } catch (error) {
         console.log("Error updating exam:", error);
       }
@@ -191,10 +194,25 @@ const CreateCampaign = () => {
     }
   }
 
+  const announceFinish = async () =>{
+    setTitle('');
+    setDescription('');
+    setBeneficiaryWallet('');
+    setCategory('')
+    setBankAccount('');
+    setRevolutAccount('');
+    setDeadline('');
+    setBeneficiaryName('');
+    setPhoneContact('');
+    setAddressContact('');
+    setEmailContact('');
+    setLatitudeLongitude('');
+    props.setAlert({type:'createCampaign',title:'Campaign added!', body:'Your campaign was sent to an admin for verification.'});
+  }
+
 
   return (
     <>
-
       {
         loadPage && (<LoadingPage></LoadingPage>)
       }
@@ -205,11 +223,11 @@ const CreateCampaign = () => {
           </div>
           <div className='campaign-primary-details'>
             <div className={`campaign-primary-details-title `} onClick={() => { setActiveDiv('title') }}>
-              <input className={`camp-title ${activeDiv === 'title' ? 'active' : ''}`} placeholder="Campaign's title" onChange={(e) => { setTitle(e.target.value); console.log(e.target.value) }}></input>
+              <input className={`camp-title ${activeDiv === 'title' ? 'active' : ''}`} placeholder="Campaign's title" value={title} onChange={(e) => {setTitle(e.target.value); console.log(e.target.value) }}></input>
             </div>
             <div className='campaign-primary-description-image'>
               <div className='campaign-primary-details-description' onClick={() => { setActiveDiv('description') }}>
-                <textarea className={`camp-description ${activeDiv === 'description' ? 'active' : ''}`} placeholder='Description / Story' onChange={(e) => setDescription(e.target.value)}></textarea>
+                <textarea className={`camp-description ${activeDiv === 'description' ? 'active' : ''}`} placeholder='Description / Story'  value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
               </div>
 
               <div
@@ -241,8 +259,9 @@ const CreateCampaign = () => {
             </div>
 
             <div className='campaign-wallet-amount-container'>
-              <div className='campaign-primary-details-wallet' onClick={() => { setActiveDiv('wallet') }}>
-                <input className={`camp-wallet ${activeDiv === 'wallet' ? 'active' : ''}`} placeholder="Beneficiary's wallet" onChange={(e) => setBeneficiaryWallet(e.target.value)}></input>
+              <div className='campaign-primary-details-wallet' >
+                <input className={`camp-wallet ${activeDiv === 'wallet' ? 'active' : ''}`} onClick={() => { setActiveDiv('wallet') }} placeholder="Beneficiary's wallet"  value={beneficiaryWallet} onChange={(e) => setBeneficiaryWallet(e.target.value)}></input>
+                <input className={`camp-category ${activeDiv === 'category' ? 'active' : ''}`} onClick={() => { setActiveDiv('category') }} placeholder="Category"  value={category} onChange={(e) => setCategory(e.target.value)}></input>
               </div>
               <div className='campaign-primary-details-amountNeeded' onClick={() => { setActiveDiv('amountNeeded') }}>
                 <input max={99999} className={`camp-amountNeeded ${activeDiv === 'amountNeeded' ? 'active' : ''}`} onKeyDown={(e) => { if (e.target.value.length >= 5 && e.key !== 'Backspace') { e.preventDefault() } }} onChange={(e) => { const value = Math.min(e.target.value, 99999); convertFromEgldToUSD(e) }} type='number' placeholder='Amount EGLD'></input>
@@ -254,8 +273,8 @@ const CreateCampaign = () => {
 
               <div className='campaign-bank-revolut-container'>
                 <div className='campaign-bank-revolut'>
-                  <input className={`camp-bank ${activeDiv === 'bank' ? 'active' : ''}`} onClick={() => { setActiveDiv('bank') }} placeholder='(Optional) Bank 1' onChange={(e) => setBankAccount(e.target.value)}></input>
-                  <input className={`camp-revolut ${activeDiv === 'revolut' ? 'active' : ''}`} onClick={() => { setActiveDiv('revolut') }} placeholder='(Optional) Revolut 2' onChange={(e) => setRevolutAccount(e.target.value)}></input>
+                  <input className={`camp-bank ${activeDiv === 'bank' ? 'active' : ''}`} onClick={() => { setActiveDiv('bank') }} placeholder='(Optional) Bank 1'  value={bankAccount} onChange={(e) => setBankAccount(e.target.value)}></input>
+                  <input className={`camp-revolut ${activeDiv === 'revolut' ? 'active' : ''}`} onClick={() => { setActiveDiv('revolut') }} placeholder='(Optional) Revolut 2'  value={revolutAccount} onChange={(e) => setRevolutAccount(e.target.value)}></input>
                 </div>
                 <div className='campaign-bank-tos'>
                   <div className='camp-tos'>Optional: There is no need to fill the area. <br></br> Please note: By pressing the create button, you agree with all our terms & conditions.</div>
@@ -266,14 +285,14 @@ const CreateCampaign = () => {
               <div className='campaign-deadline-done-container'>
                 <div className='deadline-text-label'>Deadline</div>
                 <div className='campaign-primary-details-deadline' onClick={() => { setActiveDiv('deadline') }}>
-                  <input className={`camp-deadline ${activeDiv === 'deadline' ? 'active' : ''}`} type='date' placeholder='Deadline' onChange={(e) => {
+                  <input className={`camp-deadline ${activeDiv === 'deadline' ? 'active' : ''}`}  value={deadline} type='date' placeholder='Deadline' onChange={(e) => {
                     const selectedDate = new Date(e.target.value);
                     const formattedDate = selectedDate.toISOString();
                     setDeadline(formattedDate);
                     console.log(formattedDate);
                   }}></input>
                 </div>
-                <div className='campaign-primary-details-button-done' >
+                <div className='campaign-primary-details-button-done-create' >
                   <div className={`btn-done`} onClick={createCampaignFunction}>Create</div>
                 </div>
               </div>
@@ -292,10 +311,10 @@ const CreateCampaign = () => {
             </div>
 
             <div className='create-campaign-secondary-phone'>
-              <input className={`camp-name ${activeDiv === 'name' ? 'active' : ''}`} onClick={() => { setActiveDiv('name') }} type='name' placeholder="Beneficiary's Name" onChange={(e) => setBeneficiaryName(e.target.value)}></input>
-              <input className={`camp-phone ${activeDiv === 'phone' ? 'active' : ''}`} onClick={() => { setActiveDiv('phone') }} type='phone' placeholder='Phone' onChange={(e) => setPhoneContact(e.target.value)}></input>
-              <input className={`camp-address ${activeDiv === 'address' ? 'active' : ''}`} onClick={() => { setActiveDiv('address') }} type='address' placeholder='Address' onChange={(e) => setAddressContact(e.target.value)}></input>
-              <input className={`camp-address ${activeDiv === 'email' ? 'active' : ''}`} onClick={() => { setActiveDiv('email') }} type='email' placeholder='Email' onChange={(e) => setEmailContact(e.target.value)}></input>
+              <input className={`camp-name ${activeDiv === 'name' ? 'active' : ''}`} onClick={() => { setActiveDiv('name') }} type='name' placeholder="Beneficiary's Name"  value={beneficiaryName} onChange={(e) => setBeneficiaryName(e.target.value)}></input>
+              <input className={`camp-phone ${activeDiv === 'phone' ? 'active' : ''}`} onClick={() => { setActiveDiv('phone') }} type='phone' placeholder='Phone'  value={phoneContact} onChange={(e) => setPhoneContact(e.target.value)}></input>
+              <input className={`camp-address ${activeDiv === 'address' ? 'active' : ''}`} onClick={() => { setActiveDiv('address') }} type='address' placeholder='Address'  value={addressContact} onChange={(e) => setAddressContact(e.target.value)}></input>
+              <input className={`camp-address ${activeDiv === 'email' ? 'active' : ''}`} onClick={() => { setActiveDiv('email') }} type='email' placeholder='Email'  value={emailContact} onChange={(e) => setEmailContact(e.target.value)}></input>
               <input className={`camp-coords ${activeDiv === 'coords' ? 'active' : ''}`} onClick={() => { setActiveDiv('coords') }} placeholder='(Optional*) Latitude / Longitude' value={latitudeLongitude} onChange={(e) => setLatitudeLongitude(e.target.value)}></input>
               <div className='campaign-secondary-done'>
                 *Please upload below any relevant documents to sustain you case.

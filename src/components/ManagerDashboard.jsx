@@ -207,7 +207,7 @@ export default function ManagerDashboard(props) {
         return;
       } else {
         console.log("Question retrieved and added to questions array.");
-        const monthsToCount = ['01','02','03','04','05','06', '07', '08', '09', '10', '11','12'];
+        const monthsToCount = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
         const itemCountByMonth = monthsToCount.map(month => {
           const count = items.reduce((acc, item) => {
@@ -224,7 +224,7 @@ export default function ManagerDashboard(props) {
             {
               label: '# number of Campaigns',
               data: itemCountByMonth,
-              backgroundColor:[
+              backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -262,17 +262,17 @@ export default function ManagerDashboard(props) {
             const itemMonth = item.deadline.slice(5, 7);
             return itemMonth === month && item.isActive === 'true' ? acc + 1 : acc;
           }, 0);
-        
+
           const falseCount = items.reduce((acc, item) => {
             const itemMonth = item.deadline.slice(5, 7);
             return itemMonth === month && item.isActive === 'false' ? acc + 1 : acc;
           }, 0);
-        
+
           return { month, trueCount, falseCount };
         });
-        
+
         const trueCountByMonth = itemStatusByMonth.map(item => item.trueCount);
-const falseCountByMonth = itemStatusByMonth.map(item => item.falseCount);
+        const falseCountByMonth = itemStatusByMonth.map(item => item.falseCount);
 
         setDataLineChart({
           labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -356,8 +356,8 @@ const falseCountByMonth = itemStatusByMonth.map(item => item.falseCount);
                   </div>
                   {
                     filteredCampaigns.map((campaignData, index) => (
-                      <CampaignManager key={index} campaignData={campaignData} moreInfo={activeMoreInfoIndex === index}
-                        toggleMoreInfo={() => toggleMoreInfo(index)} activeFilter={activeFilter} />
+                      <CampaignManager key={index} activeFilter={activeFilter} setActiveFilter={setActiveFilter} filteredCampaigns={filteredCampaigns} setFilteredCampaigns={setFilteredCampaigns} campaignData={campaignData} campaignDataArray={campaignDataArray} setCampaignDataArray={setCampaignDataArray} alert={props.alert} setAlert={props.setAlert} moreInfo={activeMoreInfoIndex === index}
+                        toggleMoreInfo={() => toggleMoreInfo(index)} />
                     ))
                   }
                 </div>

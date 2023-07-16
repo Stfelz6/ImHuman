@@ -59,6 +59,23 @@ export default function Campaign(props) {
   const [transactionSessionId, setTransactionSessionId] = useState(null);
   const { address, account } = useGetAccountInfo();
   const [ sendEgldValue,setSendEgldValue] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [latitude, setLatitude] = useState(0);
+
+
+  useEffect(() => {
+    if (props.campaignData && props.campaignData.latitude_longitude) {
+      const [lat, long] = props.campaignData.latitude_longitude.split('/');
+      setLatitude(parseFloat(lat));
+      setLongitude(parseFloat(long));
+    }
+  }, [props.campaignData]);
+  
+  useEffect(() => {
+    
+    console.log('latitude',latitude)
+    console.log('longitude',longitude)
+  }, [latitude,longitude]);
 
 
   function abbreviateAmount(amount) {
@@ -78,24 +95,49 @@ export default function Campaign(props) {
     console.log(transactionSessionId);
   }, [transactionSessionId])
 
-  const onSuccess = async ()=>{
-    const newValue = (saveValueToUpdate*33 + parseFloat(props.campaignData.amountCurrent))
-    const newPeople = parseInt(props.campaignData.noPeople)+1
-      try {
-        const updateCampaign = await API.graphql(graphqlOperation(mutations.updateCampaign, {
-            input: {
-              id: props.campaignData.id,
-              _version: props.campaignData._version,
-              amountCurrent: newValue,
-              noPeople: newPeople
-            }
-        }));
-          console.log("Database updated with new amount current:", updateCampaign);
-          window.location.reload();
-        } catch (error) {
-          console.log("Error updating exam:", error);
+  const onSuccess = async () => {
+    const newValue = saveValueToUpdate * 33 + parseFloat(props.campaignData.amountCurrent);
+    const newPeople = parseInt(props.campaignData.noPeople) + 1;
+    try {
+      const updatedCampaign = await API.graphql(
+        graphqlOperation(mutations.updateCampaign, {
+          input: {
+            id: props.campaignData.id,
+            _version: props.campaignData._version,
+            amountCurrent: newValue,
+            noPeople: newPeople
+          }
+        })
+      );
+      console.log("Database updated with new amount current:", updateCampaign);
+      const updateCampaign = updatedCampaign.data.updateCampaign;
+      // Update the filteredCampaigns and campaignDataArray arrays
+      const updatedFilteredCampaigns = [...props.filteredCampaigns];
+      const updatedCampaignDataArray = [...props.campaignDataArray];
+  
+      for (let i = 0; i < updatedFilteredCampaigns.length; i++) {
+        if (updatedFilteredCampaigns[i].id === updateCampaign.id) {
+          updatedFilteredCampaigns[i] = updateCampaign;
+          break;
         }
-  }
+      }
+  
+      for (let i = 0; i < updatedCampaignDataArray.length; i++) {
+        if (updatedCampaignDataArray[i].id === updateCampaign.id) {
+          updatedCampaignDataArray[i] = updateCampaign;
+          break;
+        }
+      }
+  
+      props.setFilteredCampaigns(updatedFilteredCampaigns);
+      props.setCampaignDataArray(updatedCampaignDataArray);
+  
+      // window.location.reload();
+    } catch (error) {
+      console.log("Error updating exam:", error);
+    }
+  };
+  
   const transactionStatus = useTrackTransactionStatus({
     transactionId:transactionSessionId,
     onSuccess
@@ -120,6 +162,64 @@ export default function Campaign(props) {
       value: copy,
       data: 'ping',
       receiver: contractAddress,
+      gasLimit: '60000000'
+    };
+    await refreshAccount();
+
+    const { sessionId /*, error*/ } = await sendTransactions({
+      transactions: pingTransaction,
+      transactionsDisplayInfo: {
+        processingMessage: 'Processing Ping transaction',
+        errorMessage: 'An error has occured during Ping',
+        successMessage: 'Ping transaction successful'
+      },
+      redirectAfterSign: false
+    });
+
+
+    console.log(sessionId);
+    
+
+    if (sessionId != null) {
+      setTransactionSessionId(sessionId);
+    }
+  };
+
+  
+  const sendTransactionToWallet = async () => {
+
+    const walletToSendIn = props.campaignData.wallet;
+    console.log(props.campaignData.wallet)
+
+
+    let no = parseFloat(sendEgldValue); // Valoarea din input
+    setSaveValueToUpdate(parseFloat(sendEgldValue));
+    let copy;
+    
+    if (isNaN(no)) {
+      console.log("Invalid input. Please enter a valid number.");
+      props.setAlert({
+        type: 'invalidValue',
+        title: 'Invalid Value.',
+        body: 'You try to send an invalid amount of EGLD.',
+      });
+      return;
+    }
+    if (no < 0) {
+      const decimalCount = no.toString().split('.')[1].length;
+      const zeroesCount = 20 - decimalCount;
+      copy = Math.abs(no * Math.pow(10, zeroesCount)).toFixed(0);
+    } else {
+      copy = (no * 1000000000000000000).toFixed(0);
+    }
+
+    console.log("-----------");
+
+    const pingTransaction = {
+      // value: pingAmount,
+      value: copy,
+      data: 'ping',
+      receiver: walletToSendIn,
       gasLimit: '60000000'
     };
     await refreshAccount();
@@ -241,6 +341,10 @@ export default function Campaign(props) {
     }
   };
 
+  useEffect(()=>{
+    console.log(account);
+  },[account])
+
   return (<>
     {
       props.moreInfo &&
@@ -275,10 +379,14 @@ export default function Campaign(props) {
                 (<>
                   <div className='box-details-donate'>
                     <div className='forall-container-input2'>
-                      <div className='circle-logo-egld'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
+                      <div className='circle-logo-egld-2'><img className='logo-egld' src='https://i.imgur.com/MFHKiPj.png'></img></div>
                       <input className='input-donation-forall2' type='number' placeholder='Amount' onChange={(e) => setSendEgldValue(e.target.value)}></input>
-                      <div className='input-donation-refresh-forall' onClick={() => { sendTransactionToSC(); }}>Send</div>
-                      <div className='container-balance2'>Balance: {(account.balance/1000000000000000000).toFixed(2)} EGLD</div>
+                      <div className='input-donation-refresh-forall' onClick={() => { sendTransactionToWallet(); }}>Send</div>
+                      <div className='container-balance2'>
+                        {
+                          account.balance !== '...' ?(<>Balance: {(account.balance/1000000000000000000).toFixed(2)} EGLD</>):(<>Not connected</>)
+                        }
+                      </div>
                     </div>
                   </div>
 
@@ -337,7 +445,7 @@ export default function Campaign(props) {
                       <div className='contact-address'>
                         Address: {props.campaignData.address}
                       </div>
-                      <ContactMap />
+                      <ContactMap longitude={longitude} latitude={latitude} />
 
                     </div>
                   </>) :
