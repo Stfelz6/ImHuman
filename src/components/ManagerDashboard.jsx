@@ -65,7 +65,7 @@ export const options = {
     },
     title: {
       display: true,
-      text: 'Overview Campaigns',
+      text: 'Overview users joined',
     },
   }
 };
@@ -177,6 +177,39 @@ export default function ManagerDashboard(props) {
     }, 4000)
   }, [])
 
+  const getAllUsers = async () => {
+    try {
+
+      let variables = {
+        limit: 1000
+      };
+
+      let items = [];
+      let data;
+      do {
+        data = await API.graphql({
+          query: queries.listUsers,
+          variables: variables,
+          authMode: 'API_KEY' // Specify the authentication mode
+        });
+        items = [...items, ...data.data.listUsers.items];
+        variables.nextToken = data.data.listUsers.nextToken;
+      } while (variables.nextToken);
+
+      if (items.length === 0) {
+        console.log("N-am chestii");
+        return null;
+      } else {
+        console.log("Question retrieved and added to questions array.");
+        return items;
+      }
+
+    } catch (error) {
+      console.error("Error retrieving question:", error);
+    }
+  }
+
+
   const [campaignDataArray, setCampaignDataArray] = useState([]);
   const getQuestionFromDB = async () => {
     try {
@@ -208,6 +241,7 @@ export default function ManagerDashboard(props) {
       } else {
         console.log("Question retrieved and added to questions array.");
         const monthsToCount = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+        const monthsToCount2 = ['08','09','10','11', '12','01', '02', '03', '04', '05', '06', '07'];
 
         const itemCountByMonth = monthsToCount.map(month => {
           const count = items.reduce((acc, item) => {
@@ -257,44 +291,33 @@ export default function ManagerDashboard(props) {
           ],
         })
 
-        const itemStatusByMonth = monthsToCount.map(month => {
-          const trueCount = items.reduce((acc, item) => {
-            const itemMonth = item.deadline.slice(5, 7);
-            return itemMonth === month && item.isActive === 'true' ? acc + 1 : acc;
+        const users = await getAllUsers();
+        console.log(users);
+        const usersCountByMonth = monthsToCount2.map(month => {
+          const count = users.reduce((acc, item) => {
+            const itemMonth = item.createdAt.slice(5, 7);
+            return itemMonth === month ? acc + 1 : acc;
           }, 0);
 
-          const falseCount = items.reduce((acc, item) => {
-            const itemMonth = item.deadline.slice(5, 7);
-            return itemMonth === month && item.isActive === 'false' ? acc + 1 : acc;
-          }, 0);
-
-          return { month, trueCount, falseCount };
+          return count;
         });
 
-        const trueCountByMonth = itemStatusByMonth.map(item => item.trueCount);
-        const falseCountByMonth = itemStatusByMonth.map(item => item.falseCount);
-
         setDataLineChart({
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          labels: ['August','September','October','November','December','January', 'February', 'March', 'April', 'May', 'June', 'July'],
           datasets: [
             {
-              label: 'Active',
-              data: trueCountByMonth,
-              borderColor: 'rgb(215, 82, 255)',
-              backgroundColor: 'rgb(215, 82, 255, 0.5)',
-            },
-            {
-              label: 'Pending',
-              data: falseCountByMonth,
+              label: 'No. users',
+              data: usersCountByMonth,
               borderColor: 'rgb(24, 159, 250)',
               backgroundColor: 'rgb(24, 159, 250,0.5)',
             },
           ],
         })
+
         setCampaignDataArray(items);
         setCategory('all')
-
       }
+
 
     } catch (error) {
       console.error("Error retrieving question:", error);
