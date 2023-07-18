@@ -89,6 +89,7 @@ const CreateCampaign = (props) => {
 
 
   const putFileInUserFolder = async (campaign) => {
+    
     if (file) {
       try {
         const fileExtension = file.type === 'application/pdf' ? 'pdf' : 'png';
@@ -111,7 +112,6 @@ const CreateCampaign = (props) => {
         console.error(err);
       }
     }
-
   };
 
 
@@ -285,7 +285,7 @@ const CreateCampaign = (props) => {
               <div className='campaign-deadline-done-container'>
                 <div className='deadline-text-label'>Deadline</div>
                 <div className='campaign-primary-details-deadline' onClick={() => { setActiveDiv('deadline') }}>
-                  <input className={`camp-deadline ${activeDiv === 'deadline' ? 'active' : ''}`}  value={deadline} type='date' placeholder='Deadline' onChange={(e) => {
+                  <input className={`camp-deadline ${activeDiv === 'deadline' ? 'active' : ''}`} type='date' placeholder='Deadline' onChange={(e) => {
                     const selectedDate = new Date(e.target.value);
                     const formattedDate = selectedDate.toISOString();
                     setDeadline(formattedDate);

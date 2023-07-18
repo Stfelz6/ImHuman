@@ -32,7 +32,6 @@ import CampaignManager from 'components/CampaignManager';
 import ManageCampaigns from 'components/ManageCampaigns';
 import AlertWidget from 'components/AlertWidget';
 
-
 Amplify.configure({
   Auth: {
     identityPoolId: 'eu-north-1:9cb82dba-7079-440a-b66b-458bf0455a06', // Your Identity Pool ID

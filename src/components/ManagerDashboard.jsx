@@ -211,7 +211,7 @@ export default function ManagerDashboard(props) {
 
         const itemCountByMonth = monthsToCount.map(month => {
           const count = items.reduce((acc, item) => {
-            const itemMonth = item.deadline.slice(5, 7);
+            const itemMonth = item.createdAt.slice(5, 7);
             return itemMonth === month ? acc + 1 : acc;
           }, 0);
 

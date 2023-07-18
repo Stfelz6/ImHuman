@@ -116,7 +116,6 @@ export const Navbar = (props) => {
     logout(`${window.location.origin}/unlock`);
   };
 
-
   const putNewUserToCustomDB = async () => {
     const userDetails = {
       wallet: account.address,
