@@ -467,7 +467,7 @@ export default function CampaignManager(props) {
                                     <div className='other-methods-line2'></div>
                                   </div>
                                   <div className='decisionBOX'>
-                                    <div className='deny-btn-full'>
+                                    <div className='deny-btn-full' onClick={deteleCampaign}>
                                       Deny
                                     </div>
 

@@ -155,7 +155,8 @@ const ManageCampaigns = (props) => {
           phoneContact: phoneContact,
           emailContact: emailContact,
           address: addressContact,
-          latitude_longitude: latitudeLongitude
+          latitude_longitude: latitudeLongitude,
+          isActive: 'false'
         }
       }));
       console.log("Campaign has been updated:", updateCampaign);
