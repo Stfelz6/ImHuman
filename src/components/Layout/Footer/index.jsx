@@ -29,6 +29,9 @@ import { ProxyNetworkProvider } from "@multiversx/sdk-network-providers";
 import { ResultsParser } from "@multiversx/sdk-core";
 import axios from "axios";
 import { Transaction } from '@multiversx/sdk-core';
+import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import * as queries from '../../../graphql/queries';
+import * as mutations from '../../../graphql/mutations';
 
 const proxyNetworkProvider = new ProxyNetworkProvider("https://devnet-gateway.multiversx.com");
 
@@ -55,6 +58,47 @@ export const Footer = (props) => {
   useEffect(() => {
     console.log(transactionSessionId);
   }, [transactionSessionId])
+
+  const getCampaignsFromDB = async () => {
+    try {
+      let variables = {
+        filter: {
+          _deleted: {
+            ne: true
+          },
+          isActive: {
+            eq: 'true'
+          }
+        },
+        limit: 1000
+      };
+
+      let items = [];
+      let data;
+      do {
+        data = await API.graphql({
+          query: queries.listCampaigns,
+          variables: variables,
+          authMode: 'API_KEY' // Specify the authentication mode
+        });
+        items = [...items, ...data.data.listCampaigns.items];
+        variables.nextToken = data.data.listCampaigns.nextToken;
+      } while (variables.nextToken);
+
+      if (items.length === 0) {
+        console.log("N-am chestii");
+        return;
+      } else {
+        console.log("Campaign retrieved and added to capmaigns array.");
+        console.log(items);
+        // Extract wallets from items and return
+        const wallets = items.map((item) => item.wallet);
+        return wallets;
+      }
+    } catch (error) {
+      console.error("Error retrieving question:", error);
+    }
+  };
 
   const distributeFunds = async (wallet) => {
     console.log('distributeFunds');
@@ -231,7 +275,7 @@ export const Footer = (props) => {
       body: 'You try to call the distributeFunds() endpoint.',
     });
 
-    let wallets = ['erd19zh0k4s4q6856znc86jy8a2evsznmtgt6ndazqutt66qpqf2spgskzuft3', 'erd1tyn9lhgg9c5f88q5u628guzsnd7hj8wexncmg2aeefwfvestelgsm9ndqf', 'erd1ywdpcad3fynzzeyqut59dl2atslud7t9e84yj23g4fhpe9l4ul3qfy8v4f']
+    let wallets = await getCampaignsFromDB();
     sendFunds(wallets);
   }
 
@@ -240,8 +284,10 @@ export const Footer = (props) => {
   
   const sendTransactionToSC = async () => {
     let no = parseFloat(sendEgldValue); // Convert to number
-    let copy;
-    if (isNaN(no)) {
+    setSaveValueToUpdate(no);
+    let copy = no;
+
+    if (isNaN(no) || no === 0) {
       console.log("Invalid input. Please enter a valid number.");
       props.setAlert({
         type: 'invalidValue',
@@ -250,18 +296,11 @@ export const Footer = (props) => {
       });
       return;
     }
-    setSaveValueToUpdate(no);
-  
-    if (no < 0) {
-      const decimalCount = no.toString().split('.')[1].length;
-      const zeroesCount = 20 - decimalCount;
-      copy = Math.abs(no * Math.pow(10, zeroesCount)).toFixed(0);
-    } else {
-      copy = (no * 1000000000000000000).toFixed(0);
-    }
 
-    console.log("-----------");
-
+    copy = no * 1000000000000000000;
+    console.log('copy: ', copy);
+    console.log('copy type: ', typeof(copy));
+    
     const pingTransaction = {
       // value: pingAmount,
       value: copy,

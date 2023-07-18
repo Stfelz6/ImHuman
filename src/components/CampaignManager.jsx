@@ -75,7 +75,7 @@ export default function CampaignManager(props) {
       const abbreviatedAmount = (amount / 1000000).toFixed(1);
       return `${abbreviatedAmount}M`;
     }
-    return amount;
+    return parseFloat(amount).toFixed(1);
   }
 
   const [saveValueToUpdate, setSaveValueToUpdate] = useState(0);
@@ -106,13 +106,19 @@ export default function CampaignManager(props) {
     let no = parseFloat(sendEgldValue); // Valoarea din input
     setSaveValueToUpdate(parseFloat(sendEgldValue));
     let copy = no;
-    if (no < 0) {
-      const decimalCount = no.toString().split('.')[1].length;
-      const zeroesCount = 20 - decimalCount;
-      copy = Math.abs(no * Math.pow(10, zeroesCount)).toFixed(0);
-    } else {
-      copy = (no * 1000000000000000000).toFixed(0);
+
+    if (isNaN(no) || no === 0) {
+      console.log("Invalid input. Please enter a valid number.");
+      props.setAlert({
+        type: 'invalidValue',
+        title: 'Invalid Value.',
+        body: 'You try to send an invalid amount of EGLD.',
+      });
+      return;
     }
+    
+    copy = no * 1000000000000000000;
+    
 
     console.log("-----------");
 
@@ -325,7 +331,7 @@ export default function CampaignManager(props) {
             <FontAwesomeIcon className='close-container-full' icon={faClose} onClick={props.toggleMoreInfo} />
             <div className={`container-campaign-full-1-2 ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : fullCampaignCategory === 'story' ? 'storymode' : ''}`} style={{ backgroundImage: `url(${props.campaignData.photo})` }}>
               <div className={`info-tag-people-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.noPeople)} <FontAwesomeIcon className='icon-info-tag-people' icon={faUserTie} /></div>
-              <div className={`info-tag-donated-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{parseFloat(abbreviateAmount(props.campaignData.amountCurrent)).toFixed(2)} <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill} /></div>
+              <div className={`info-tag-donated-full ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{abbreviateAmount(props.campaignData.amountCurrent)} <FontAwesomeIcon className='icon-info-tag-people' icon={faMoneyBill} /></div>
               <div className={`info-tag-title ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{props.campaignData.title}</div>
               <div className={`info-tag-date ${fullCampaignCategory === 'approve' || fullCampaignCategory === 'file' ? 'filemode' : ''}`}>{new Date(props.campaignData.deadline).toLocaleDateString()}</div>
             </div>

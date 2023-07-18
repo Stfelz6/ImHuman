@@ -1,5 +1,5 @@
 export const contractAddress =
-  'erd1qqqqqqqqqqqqqpgq5rcp2085mxnmanzznlda2qemuymks08gpljqp7t45m';
+  'erd1qqqqqqqqqqqqqpgqy2wszkxt4vjgg37arxq3ez2eyxxvue49pljq26ppm2';
 
 export const dAppName = 'Human';
 
